@@ -1,0 +1,38 @@
+{
+"sistemaSolar": {
+    "titulo": "Sistema Solar Interactivo",
+    "subtitulo": "Explora los planetas del sistema solar",
+    "controles": {
+    "pausar": "Pausar",
+    "reanudar": "Reanudar",
+    "resetVista": "Restablecer Vista",
+    "vistaGeneral": "Vista General",
+    "velocidad": "Velocidad de Animación",
+    "acercar": "Acercar al Planeta",
+    "cerrarFicha": "Cerrar"
+    },
+    "instrucciones": {
+    "clicPlaneta": "Haz clic en un planeta para ver su información",
+    "zoom": "Usa la rueda del mouse para hacer zoom",
+    "rotar": "Arrastra para rotar la vista",
+    "velocidad": "Ajusta la velocidad de la animación"
+    },
+    "ficha": {
+    "titulo": "Información del Planeta",
+    "anterior": "Anterior",
+    "siguiente": "Siguiente",
+    "datos": {
+        "diametro": "Diámetro",
+        "distanciaSol": "Distancia al Sol",
+        "periodoRotacion": "Período de Rotación",
+        "periodoOrbital": "Período Orbital",
+        "datosCuriosos": "Datos Curiosos"
+    }
+    },
+    "menu": {
+    "verPlanetas": "Ver Lista de Planetas",
+    "volverVisualizacion": "Volver a Visualización 3D"
+    }
+}
+}
+

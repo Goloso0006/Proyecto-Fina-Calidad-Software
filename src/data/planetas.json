@@ -1,0 +1,125 @@
+{
+  "planetas": [
+    {
+      "id": "mercurio",
+      "nombre": "Mercurio",
+      "descripcion": "Mercurio es el planeta más cercano al Sol y el más pequeño del sistema solar. Tiene una superficie rocosa cubierta de cráteres, similar a la Luna.",
+      "imagen": "// Aquí va URL - Mercurio",
+      "diametro": "4,879 km",
+      "distanciaSol": "57.9 millones de km",
+      "periodoRotacion": "58.6 días terrestres",
+      "periodoOrbital": "88 días terrestres",
+      "datosCuriosos": [
+        "Un día en Mercurio dura más que un año: tarda 176 días terrestres en completar un día completo (día solar).",
+        "No tiene atmósfera, por lo que las temperaturas varían extremadamente: de 427°C durante el día a -173°C por la noche.",
+        "Es el planeta más denso después de la Tierra, a pesar de ser el más pequeño."
+      ]
+    },
+    {
+      "id": "venus",
+      "nombre": "Venus",
+      "descripcion": "Venus es el planeta más caliente del sistema solar debido a su densa atmósfera de dióxido de carbono que crea un efecto invernadero extremo.",
+      "imagen": "// Aquí va URL - Venus",
+      "diametro": "12,104 km",
+      "distanciaSol": "108.2 millones de km",
+      "periodoRotacion": "243 días terrestres (rotación retrógrada)",
+      "periodoOrbital": "225 días terrestres",
+      "datosCuriosos": [
+        "Venus rota en sentido contrario a la mayoría de planetas (rotación retrógrada).",
+        "Su superficie está oculta por una densa capa de nubes de ácido sulfúrico.",
+        "Un día en Venus es más largo que su año: tarda 243 días terrestres en rotar una vez."
+      ]
+    },
+    {
+      "id": "tierra",
+      "nombre": "Tierra",
+      "descripcion": "La Tierra es el único planeta conocido con vida. Tiene océanos de agua líquida, una atmósfera rica en oxígeno y una superficie diversa.",
+      "imagen": "// Aquí va URL - Tierra",
+      "diametro": "12,756 km",
+      "distanciaSol": "149.6 millones de km (1 UA)",
+      "periodoRotacion": "23.9 horas (1 día)",
+      "periodoOrbital": "365.25 días (1 año)",
+      "datosCuriosos": [
+        "Es el único planeta del sistema solar con agua líquida en su superficie de forma estable.",
+        "La Tierra tiene un campo magnético que la protege de las radiaciones solares.",
+        "Más del 70% de la superficie terrestre está cubierta por océanos."
+      ]
+    },
+    {
+      "id": "marte",
+      "nombre": "Marte",
+      "descripcion": "Marte, conocido como el planeta rojo, tiene una atmósfera delgada y evidencia de agua líquida en el pasado. Es el objetivo de futuras misiones tripuladas.",
+      "imagen": "// Aquí va URL - Marte",
+      "diametro": "6,792 km",
+      "distanciaSol": "227.9 millones de km",
+      "periodoRotacion": "24.6 horas",
+      "periodoOrbital": "687 días terrestres",
+      "datosCuriosos": [
+        "Marte tiene el volcán más grande del sistema solar: el Monte Olympus, con 21 km de altura.",
+        "Tiene dos lunas pequeñas e irregulares: Fobos y Deimos.",
+        "Las condiciones en Marte son las más similares a la Tierra de todos los planetas del sistema solar."
+      ]
+    },
+    {
+      "id": "jupiter",
+      "nombre": "Júpiter",
+      "descripcion": "Júpiter es el planeta más grande del sistema solar. Es un gigante gaseoso con una atmósfera turbulenta y la famosa Gran Mancha Roja.",
+      "imagen": "// Aquí va URL - Júpiter",
+      "diametro": "142,984 km",
+      "distanciaSol": "778.5 millones de km",
+      "periodoRotacion": "9.9 horas",
+      "periodoOrbital": "12 años terrestres",
+      "datosCuriosos": [
+        "Júpiter es tan grande que podría contener todos los demás planetas del sistema solar dentro de él.",
+        "Tiene más de 80 lunas conocidas, incluyendo las cuatro lunas galileanas: Ío, Europa, Ganímedes y Calisto.",
+        "La Gran Mancha Roja es una tormenta más grande que la Tierra que lleva activa al menos 400 años."
+      ]
+    },
+    {
+      "id": "saturno",
+      "nombre": "Saturno",
+      "descripcion": "Saturno es famoso por sus espectaculares anillos compuestos de hielo y roca. Es el segundo planeta más grande del sistema solar.",
+      "imagen": "// Aquí va URL - Saturno",
+      "diametro": "120,536 km",
+      "distanciaSol": "1,432 millones de km",
+      "periodoRotacion": "10.7 horas",
+      "periodoOrbital": "29 años terrestres",
+      "datosCuriosos": [
+        "Saturno tiene más de 80 lunas, siendo Titán la más grande y la única luna con una atmósfera densa.",
+        "Sus anillos están compuestos principalmente de partículas de hielo y roca, algunas del tamaño de un grano de arena.",
+        "Saturno es menos denso que el agua: si hubiera un océano lo suficientemente grande, flotaría."
+      ]
+    },
+    {
+      "id": "urano",
+      "nombre": "Urano",
+      "descripcion": "Urano es un gigante de hielo que rota de lado, probablemente debido a una colisión en el pasado. Tiene una atmósfera azul verdosa.",
+      "imagen": "// Aquí va URL - Urano",
+      "diametro": "51,118 km",
+      "distanciaSol": "2,867 millones de km",
+      "periodoRotacion": "17.2 horas (rotación retrógrada)",
+      "periodoOrbital": "84 años terrestres",
+      "datosCuriosos": [
+        "Urano rota casi de lado: su eje de rotación está inclinado 98 grados, probablemente por una colisión masiva.",
+        "Tiene 13 anillos conocidos, aunque son mucho más tenues que los de Saturno.",
+        "Es el planeta más frío del sistema solar, con temperaturas de hasta -224°C."
+      ]
+    },
+    {
+      "id": "neptuno",
+      "nombre": "Neptuno",
+      "descripcion": "Neptuno es el planeta más lejano del Sol y el más ventoso del sistema solar, con vientos que pueden alcanzar hasta 2,100 km/h.",
+      "imagen": "// Aquí va URL - Neptuno",
+      "diametro": "49,528 km",
+      "distanciaSol": "4,515 millones de km",
+      "periodoRotacion": "16.1 horas",
+      "periodoOrbital": "165 años terrestres",
+      "datosCuriosos": [
+        "Neptuno tiene los vientos más fuertes del sistema solar, alcanzando velocidades de hasta 2,100 km/h.",
+        "Fue el primer planeta descubierto mediante cálculos matemáticos antes de ser observado directamente.",
+        "Su luna Tritón tiene una órbita retrógrada, lo que sugiere que fue capturada por la gravedad de Neptuno."
+      ]
+    }
+  ]
+}
+
