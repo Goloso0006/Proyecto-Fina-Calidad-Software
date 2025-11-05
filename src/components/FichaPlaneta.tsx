@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import planetasData from "../data/planetas.json";
 import textosData from "../data/textos-interfaz.json";
+import type { PlanetasData, TextosInterfaz } from "../types/planetas";
 
 interface FichaPlanetaProps {
 planetaId: string | null;
@@ -17,8 +18,8 @@ onAnterior,
 onSiguiente,
 planetaActualIndex,
 }: FichaPlanetaProps) {
-const textos = textosData.sistemaSolar.ficha;
-const planetas = planetasData.planetas;
+const textos = (textosData as TextosInterfaz).sistemaSolar.ficha;
+const planetas = (planetasData as PlanetasData).planetas;
 
 if (!planetaId) return null;
 
@@ -75,10 +76,30 @@ return (
         <div className="p-6 space-y-6">
         {/* Imagen */}
         <div className="flex justify-center">
-            <div className="w-64 h-64 bg-slate-200 dark:bg-slate-700 rounded-lg flex items-center justify-center">
-            <span className="text-slate-500 dark:text-slate-400 text-sm">
-                {planeta.imagen}
-            </span>
+            <div className="w-64 h-64 bg-slate-200 dark:bg-slate-700 rounded-lg flex items-center justify-center overflow-hidden">
+                {planeta.imagen && !planeta.imagen.startsWith("//") ? (
+                    <img 
+                        src={planeta.imagen} 
+                        alt={planeta.nombre}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                            // Si la imagen falla al cargar, mostrar mensaje
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const parent = target.parentElement;
+                            if (parent) {
+                                const span = document.createElement("span");
+                                span.className = "text-slate-500 dark:text-slate-400 text-sm text-center p-4";
+                                span.textContent = "Imagen no disponible";
+                                parent.appendChild(span);
+                            }
+                        }}
+                    />
+                ) : (
+                    <span className="text-slate-500 dark:text-slate-400 text-sm text-center p-4">
+                        {planeta.imagen || "Imagen no disponible"}
+                    </span>
+                )}
             </div>
         </div>
 

@@ -3,6 +3,7 @@ import SistemaSolar3D from "../components/SistemaSolar3D";
 import FichaPlaneta from "../components/FichaPlaneta";
 import planetasData from "../data/planetas.json";
 import textosData from "../data/textos-interfaz.json";
+import type { PlanetasData, TextosInterfaz } from "../types/planetas";
 
 export default function SistemaSolarView() {
 const [velocidadAnimacion, setVelocidadAnimacion] = useState(1);
@@ -12,8 +13,8 @@ const [resetVista, setResetVista] = useState(false);
 const [vistaGeneral, setVistaGeneral] = useState(false);
 const [mostrarLista, setMostrarLista] = useState(false);
 
-const textos = textosData.sistemaSolar;
-const planetas = planetasData.planetas;
+const textos = (textosData as TextosInterfaz).sistemaSolar;
+const planetas = (planetasData as PlanetasData).planetas;
 
 const planetaActualIndex = planetaSeleccionado
     ? planetas.findIndex((p) => p.id === planetaSeleccionado)
