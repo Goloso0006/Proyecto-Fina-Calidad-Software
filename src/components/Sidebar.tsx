@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaGlobe } from "react-icons/fa";
+import { FaGlobe, FaCube } from "react-icons/fa";
 
 interface SidebarItem {
   label: string;
@@ -8,15 +8,17 @@ interface SidebarItem {
   icon?: React.ReactNode;
 }
 
+const matematicasItems: SidebarItem[] = [
+  { label: "Geometría 3D", route: "/geometria", icon: <FaCube /> },
+];
 
 const cienciasItems: SidebarItem[] = [
   { label: "Sistema Solar Interactivo", route: "/sistema-solar", icon: <FaGlobe /> },
 ];
 
 export default function Sidebar() {
-  const [openMain, setOpenMain] = useState(false);
-  const [openExercises, setOpenExercises] = useState(false);
-  const [openCiencias, setOpenCiencias] = useState(false);
+  const [openMatematicas, setOpenMatematicas] = useState(true);  // Por defecto abierto
+  const [openCiencias, setOpenCiencias] = useState(false);      // Por defecto cerrado
 
   const renderNavItem = ({ label, route, icon }: SidebarItem) => (
     <NavLink
@@ -34,32 +36,22 @@ export default function Sidebar() {
     <aside className="hidden md:block w-full md:w-[240px] border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
       <div className="p-3 space-y-1">
 
-        {/* Acordeón Main Items */}
+        {/* Acordeón Matemáticas / Geometría */}
         <button
-          onClick={() => setOpenMain(!openMain)}
+          onClick={() => setOpenMatematicas(!openMatematicas)}
           className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
         >
-          Menú Principal
-          <span>{openMain ? "▲" : "▼"}</span>
+          📐 Matemáticas
+          <span>{openMatematicas ? "▲" : "▼"}</span>
         </button>
-        {openMain && <div className="pl-4 space-y-1">{cienciasItems.map(renderNavItem)}</div>}
-
-        {/* Acordeón Exercises */}
-        <button
-          onClick={() => setOpenExercises(!openExercises)}
-          className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
-        >
-          Ejercicios - Jtest
-          <span>{openExercises ? "▲" : "▼"}</span>
-        </button>
-        {openExercises && <div className="pl-4 space-y-1">{cienciasItems.map(renderNavItem)}</div>}
+        {openMatematicas && <div className="pl-4 space-y-1">{matematicasItems.map(renderNavItem)}</div>}
 
         {/* Acordeón Ciencias Naturales */}
         <button
           onClick={() => setOpenCiencias(!openCiencias)}
           className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
         >
-          Ciencias Naturales
+          🌍 Ciencias Naturales
           <span>{openCiencias ? "▲" : "▼"}</span>
         </button>
         {openCiencias && <div className="pl-4 space-y-1">{cienciasItems.map(renderNavItem)}</div>}

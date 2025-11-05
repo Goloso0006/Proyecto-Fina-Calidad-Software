@@ -1,0 +1,150 @@
+{
+  "figuras": [
+    {
+      "id": "cubo",
+      "nombre": "Cubo",
+      "descripcion": "El cubo es un poliedro regular formado por 6 caras cuadradas iguales. Es una de las figuras tridimensionales más simétricas y perfectas.",
+      "vertices": 8,
+      "aristas": 12,
+      "caras": 6,
+      "tipoCaras": "Cuadrados",
+      "color": "#3b82f6",
+      "audioDescripcion": "El cubo tiene 8 vértices, 12 aristas y 6 caras cuadradas",
+      "ejemplosVidaReal": [
+        "Dado de juego",
+        "Caja de regalo",
+        "Cubo de Rubik",
+        "Edificios modernos"
+      ],
+      "datosCuriosos": [
+        "Todas sus caras son cuadrados iguales",
+        "Tiene exactamente 8 esquinas o vértices",
+        "Cada vértice está conectado a exactamente 3 aristas",
+        "Es uno de los 5 sólidos platónicos"
+      ]
+    },
+    {
+      "id": "tetraedro",
+      "nombre": "Tetraedro",
+      "descripcion": "El tetraedro es la figura tridimensional más simple. Es una pirámide con base triangular, formada completamente por triángulos equiláteros.",
+      "vertices": 4,
+      "aristas": 6,
+      "caras": 4,
+      "tipoCaras": "Triángulos equiláteros",
+      "color": "#10b981",
+      "audioDescripcion": "El tetraedro tiene 4 vértices, 6 aristas y 4 caras triangulares",
+      "ejemplosVidaReal": [
+        "Pirámide egipcia (aproximado)",
+        "Envases de leche tetrapack",
+        "Dados de 4 caras",
+        "Estructuras moleculares (metano)"
+      ],
+      "datosCuriosos": [
+        "Es el poliedro regular con menos caras posibles",
+        "Todas sus caras son triángulos equiláteros iguales",
+        "No se puede llenar completamente un espacio solo con tetraedros",
+        "Es la forma básica de muchas moléculas en química"
+      ]
+    },
+    {
+      "id": "octaedro",
+      "nombre": "Octaedro",
+      "descripcion": "El octaedro es un poliedro de 8 caras triangulares. Parece dos pirámides unidas por sus bases cuadradas.",
+      "vertices": 6,
+      "aristas": 12,
+      "caras": 8,
+      "tipoCaras": "Triángulos equiláteros",
+      "color": "#8b5cf6",
+      "audioDescripcion": "El octaedro tiene 6 vértices, 12 aristas y 8 caras triangulares",
+      "ejemplosVidaReal": [
+        "Dados de 8 caras (D8)",
+        "Cristales de diamante",
+        "Fluorita mineral",
+        "Algunas cometas o barriletes"
+      ],
+      "datosCuriosos": [
+        "Tiene 8 caras triangulares iguales",
+        "Es como dos pirámides pegadas base con base",
+        "Es otro de los 5 sólidos platónicos",
+        "Los cristales de muchos minerales tienen esta forma"
+      ]
+    },
+    {
+      "id": "dodecaedro",
+      "nombre": "Dodecaedro",
+      "descripcion": "El dodecaedro es un poliedro de 12 caras pentagonales regulares. Es una figura muy simétrica y hermosa.",
+      "vertices": 20,
+      "aristas": 30,
+      "caras": 12,
+      "tipoCaras": "Pentágonos regulares",
+      "color": "#f59e0b",
+      "audioDescripcion": "El dodecaedro tiene 20 vértices, 30 aristas y 12 caras pentagonales",
+      "ejemplosVidaReal": [
+        "Dados de 12 caras (D12)",
+        "Balones de fútbol (combinado con hexágonos)",
+        "Virus icosaédricos",
+        "Decoraciones geométricas"
+      ],
+      "datosCuriosos": [
+        "Tiene 12 caras con forma de pentágono regular",
+        "Cada vértice está conectado a 3 aristas",
+        "Platón asociaba esta forma con el universo entero",
+        "Es uno de los sólidos platónicos más complejos"
+      ]
+    },
+    {
+      "id": "icosaedro",
+      "nombre": "Icosaedro",
+      "descripcion": "El icosaedro es un poliedro de 20 caras triangulares. Es la figura regular con más caras de todas.",
+      "vertices": 12,
+      "aristas": 30,
+      "caras": 20,
+      "tipoCaras": "Triángulos equiláteros",
+      "color": "#ef4444",
+      "audioDescripcion": "El icosaedro tiene 12 vértices, 30 aristas y 20 caras triangulares",
+      "ejemplosVidaReal": [
+        "Dados de 20 caras (D20)",
+        "Cápsides de virus",
+        "Domos geodésicos",
+        "Estructuras moleculares (fullerenos)"
+      ],
+      "datosCuriosos": [
+        "Tiene 20 caras triangulares iguales",
+        "Es el poliedro regular con más caras",
+        "Muchos virus tienen forma icosaédrica",
+        "Es muy cercano a una esfera"
+      ]
+    }
+  ],
+  "textos": {
+    "titulo": "Explorando Figuras Geométricas 3D",
+    "subtitulo": "Aprende sobre caras, aristas y vértices de forma interactiva",
+    "controles": {
+      "pausar": "Pausar Rotación",
+      "reanudar": "Reanudar Rotación",
+      "mostrarCaras": "Mostrar Caras",
+      "mostrarAristas": "Mostrar Aristas",
+      "mostrarVertices": "Mostrar Vértices",
+      "descomponer": "Descomponer Figura",
+      "armar": "Armar Figura",
+      "velocidad": "Velocidad de Rotación",
+      "reproducirAudio": "Escuchar Descripción"
+    },
+    "instrucciones": {
+      "rotar": "Arrastra para rotar la figura",
+      "zoom": "Usa la rueda del mouse para hacer zoom",
+      "seleccionar": "Haz clic en una figura para explorarla",
+      "descomponer": "Usa el botón descomponer para ver las caras separadas"
+    },
+    "formuraEuler": {
+      "titulo": "Fórmula de Euler",
+      "descripcion": "Para todos los poliedros convexos se cumple:",
+      "formula": "V - A + C = 2",
+      "leyenda": {
+        "v": "V = Vértices",
+        "a": "A = Aristas",
+        "c": "C = Caras"
+      }
+    }
+  }
+}
