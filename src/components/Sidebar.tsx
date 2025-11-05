@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaCube, FaColumns, FaMicrophone, FaShapes, FaCalculator, FaRuler, FaKey, FaMouse, FaList, FaGlobe } from "react-icons/fa";
+import { FaGlobe } from "react-icons/fa";
 
 interface SidebarItem {
   label: string;
@@ -8,21 +8,6 @@ interface SidebarItem {
   icon?: React.ReactNode;
 }
 
-const mainItems: SidebarItem[] = [
-  { label: "Inicio", route: "/", icon: <FaHome /> },
-  { label: "Three.js Demo", route: "/three", icon: <FaCube /> },
-  { label: "Responsive Layouts", route: "/layouts", icon: <FaColumns /> },
-  { label: "Text-to-Speech", route: "/tts", icon: <FaMicrophone /> },
-  { label: "Figuras Geometricas", route: "/three_2", icon: <FaShapes /> },
-];
-
-const exerciseItems: SidebarItem[] = [
-  { label: "Tablas de Multiplicar", route: "/tablasmul", icon: <FaCalculator /> },
-  { label: "Conversor de Unidades", route: "/conversorunid", icon: <FaRuler /> },
-  { label: "Validadador de Contraseñas", route: "/validcontrasena", icon: <FaKey /> },
-  { label: "Contador de Clics con Almacenamiento", route: "/contadorclics", icon: <FaMouse /> },
-  { label: "Lista de Tareas", route: "/listareas", icon: <FaList /> },
-];
 
 const cienciasItems: SidebarItem[] = [
   { label: "Sistema Solar Interactivo", route: "/sistema-solar", icon: <FaGlobe /> },
@@ -57,7 +42,7 @@ export default function Sidebar() {
           Menú Principal
           <span>{openMain ? "▲" : "▼"}</span>
         </button>
-        {openMain && <div className="pl-4 space-y-1">{mainItems.map(renderNavItem)}</div>}
+        {openMain && <div className="pl-4 space-y-1">{cienciasItems.map(renderNavItem)}</div>}
 
         {/* Acordeón Exercises */}
         <button
@@ -67,7 +52,7 @@ export default function Sidebar() {
           Ejercicios - Jtest
           <span>{openExercises ? "▲" : "▼"}</span>
         </button>
-        {openExercises && <div className="pl-4 space-y-1">{exerciseItems.map(renderNavItem)}</div>}
+        {openExercises && <div className="pl-4 space-y-1">{cienciasItems.map(renderNavItem)}</div>}
 
         {/* Acordeón Ciencias Naturales */}
         <button
