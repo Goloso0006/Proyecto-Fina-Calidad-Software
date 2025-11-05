@@ -5,7 +5,7 @@ import { FaGlobe } from "react-icons/fa";
 interface SidebarItem {
   label: string;
   route: string;
-  icon?: React.ReactNode;
+  icon?: React.ReactNode
 }
 
 const cienciasItems: SidebarItem[] = [
