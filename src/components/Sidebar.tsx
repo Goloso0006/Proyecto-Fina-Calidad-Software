@@ -8,17 +8,24 @@ interface SidebarItem {
   icon?: React.ReactNode;
 }
 
+<<<<<<< HEAD
 const matematicasItems: SidebarItem[] = [
   { label: "Geometría 3D", route: "/geometria", icon: <FaCube /> },
 ];
 
+=======
+>>>>>>> 6130c2b2b87b0d27aed69a6a117e7b75a8ae8eb6
 const cienciasItems: SidebarItem[] = [
   { label: "Sistema Solar Interactivo", route: "/sistema-solar", icon: <FaGlobe /> },
 ];
 
 export default function Sidebar() {
+<<<<<<< HEAD
   const [openMatematicas, setOpenMatematicas] = useState(true);  // Por defecto abierto
   const [openCiencias, setOpenCiencias] = useState(false);      // Por defecto cerrado
+=======
+  const [openCiencias, setOpenCiencias] = useState(false);
+>>>>>>> 6130c2b2b87b0d27aed69a6a117e7b75a8ae8eb6
 
   const renderNavItem = ({ label, route, icon }: SidebarItem) => (
     <NavLink
@@ -35,6 +42,7 @@ export default function Sidebar() {
   return (
     <aside className="hidden md:block w-full md:w-[240px] border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
       <div className="p-3 space-y-1">
+<<<<<<< HEAD
 
         {/* Acordeón Matemáticas / Geometría */}
         <button
@@ -46,6 +54,8 @@ export default function Sidebar() {
         </button>
         {openMatematicas && <div className="pl-4 space-y-1">{matematicasItems.map(renderNavItem)}</div>}
 
+=======
+>>>>>>> 6130c2b2b87b0d27aed69a6a117e7b75a8ae8eb6
         {/* Acordeón Ciencias Naturales */}
         <button
           onClick={() => setOpenCiencias(!openCiencias)}
@@ -55,7 +65,6 @@ export default function Sidebar() {
           <span>{openCiencias ? "▲" : "▼"}</span>
         </button>
         {openCiencias && <div className="pl-4 space-y-1">{cienciasItems.map(renderNavItem)}</div>}
-
       </div>
     </aside>
   );
