@@ -15,6 +15,7 @@ resetTick?: number;
 onFullscreenChange?: (isFullscreen: boolean) => void;
 // Controles para modo fullscreen
 onPauseToggle?: () => void;
+// eslint-disable-next-line no-unused-vars
 onVelocidadChange?: (velocidad: number) => void;
 onResetVista?: () => void;
 onVistaGeneral?: () => void;
@@ -29,7 +30,34 @@ textos?: {
         vistaGeneral: string;
         velocidad: string;
     };
+    ficha?: {
+        datos: {
+            diametro: string;
+            distanciaSol: string;
+            periodoRotacion: string;
+            periodoOrbital: string;
+            datosCuriosos: string;
+        };
+        anterior: string;
+        siguiente: string;
+    };
 };
+// Datos del planeta para ficha en fullscreen
+planetaData?: {
+    id: string;
+    nombre: string;
+    descripcion: string;
+    diametro: string;
+    distanciaSol: string;
+    periodoRotacion: string;
+    periodoOrbital: string;
+    datosCuriosos: string[];
+} | null;
+planetaActualIndex?: number;
+onCerrarFicha?: () => void;
+onAnteriorPlaneta?: () => void;
+onSiguientePlaneta?: () => void;
+autoLeerFicha?: boolean;
 }
 
 interface Planeta3D {
@@ -59,6 +87,12 @@ onRestablecer,
 onVozToggle,
 vozActiva = false,
 textos,
+planetaData,
+planetaActualIndex = -1,
+onCerrarFicha,
+onAnteriorPlaneta,
+onSiguientePlaneta,
+autoLeerFicha = false,
 }: SistemaSolar3DProps) {
 const outerRef = useRef<HTMLDivElement>(null);
 const containerRef = useRef<HTMLDivElement>(null);
@@ -74,6 +108,14 @@ const previousMousePositionRef = useRef({ x: 0, y: 0 });
 const [cursor, setCursor] = useState<"grab" | "grabbing">("grab");
 const [isFullscreen, setIsFullscreen] = useState(false);
 const [mostrarControles, setMostrarControles] = useState(true);
+const [mostrarFicha, setMostrarFicha] = useState(true);
+
+// Mostrar ficha automáticamente cuando se selecciona un planeta en fullscreen
+useEffect(() => {
+    if (isFullscreen && planetaData) {
+        setMostrarFicha(true);
+    }
+}, [isFullscreen, planetaData?.id]);
 const cameraControlsRef = useRef({
     rotationX: 0,
     rotationY: 0,
@@ -474,6 +516,45 @@ const textosControles = textos?.controles || {
     velocidad: "Velocidad",
 };
 
+const textosFicha = textos?.ficha || {
+    datos: {
+        diametro: "Diámetro",
+        distanciaSol: "Distancia al Sol",
+        periodoRotacion: "Período de Rotación",
+        periodoOrbital: "Período Orbital",
+        datosCuriosos: "Datos Curiosos",
+    },
+    anterior: "Anterior",
+    siguiente: "Siguiente",
+};
+
+// Lectura automática de la ficha en fullscreen
+useEffect(() => {
+    if (isFullscreen && planetaData && autoLeerFicha && vozActiva) {
+        const resumen = `${planetaData.nombre}. ${planetaData.descripcion}. ${textosFicha.datos.diametro}: ${planetaData.diametro}. ${textosFicha.datos.distanciaSol}: ${planetaData.distanciaSol}.`;
+        if ("speechSynthesis" in window) {
+            try {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(resumen);
+                u.lang = "es-ES";
+                u.rate = 1;
+                window.speechSynthesis.speak(u);
+            } catch {
+                // Ignorar errores
+            }
+        }
+    }
+    return () => {
+        if (isFullscreen && "speechSynthesis" in window) {
+            try {
+                window.speechSynthesis.cancel();
+            } catch {
+                // Ignorar errores
+            }
+        }
+    };
+}, [isFullscreen, planetaData?.id, autoLeerFicha, vozActiva, planetaData?.nombre, planetaData?.descripcion, planetaData?.diametro, planetaData?.distanciaSol, textosFicha]);
+
 return (
     <div ref={outerRef} className="relative w-full h-full" style={{ maxWidth: "100%", overflow: "hidden", width: "100%", height: "100%" }}>
     <div
@@ -482,10 +563,10 @@ return (
         style={{ cursor, maxWidth: "100%", maxHeight: "100%", boxSizing: "border-box", width: "100%", height: "100%" }}
     />
 
-    {/* Botón de pantalla completa */}
+    {/* Botón de pantalla completa - Movido abajo a la derecha */}
     <button
         onClick={toggleFullscreen}
-        className="absolute top-3 right-3 z-20 px-3 py-1.5 rounded-md text-xs font-medium bg-slate-800/70 text-white hover:bg-slate-700/80 focus:outline-none focus:ring-2 focus:ring-emerald-500 backdrop-blur-sm"
+        className="absolute bottom-3 right-3 z-20 px-3 py-1.5 rounded-md text-xs font-medium bg-slate-800/70 text-white hover:bg-slate-700/80 focus:outline-none focus:ring-2 focus:ring-emerald-500 backdrop-blur-sm"
         aria-pressed={isFullscreen}
         aria-label={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
         title={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
@@ -607,6 +688,118 @@ return (
                             </button>
                         )}
                     </div>
+                </div>
+            )}
+        </div>
+    )}
+
+    {/* Ficha del planeta en modo fullscreen - Movida arriba a la derecha */}
+    {isFullscreen && planetaData && (
+        <div className="absolute top-3 right-3 z-20">
+            {/* Botón para ocultar/mostrar ficha */}
+            <button
+                onClick={() => setMostrarFicha(!mostrarFicha)}
+                className="mb-1 px-2 py-1 text-xs bg-slate-900/80 backdrop-blur-sm text-white rounded-md hover:bg-slate-800/90 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                aria-label={mostrarFicha ? "Ocultar ficha" : "Mostrar ficha"}
+                title={mostrarFicha ? "Ocultar ficha" : "Mostrar ficha"}
+            >
+                {mostrarFicha ? "▼" : "▲"}
+            </button>
+
+            {/* Panel de ficha */}
+            {mostrarFicha && (
+                <div className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl p-5 max-w-[520px] max-h-[80vh] overflow-y-auto">
+                    {/* Header */}
+                    <div className="flex justify-between items-start mb-4 pb-4 border-b border-slate-700/50">
+                        <h3 className="text-lg font-bold text-white">{planetaData.nombre}</h3>
+                        {onCerrarFicha && (
+                            <button
+                                onClick={onCerrarFicha}
+                                className="text-white/70 hover:text-white text-lg leading-none transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded"
+                                aria-label="Cerrar ficha"
+                                title="Cerrar ficha"
+                            >
+                                ×
+                            </button>
+                        )}
+                    </div>
+
+                    {/* Descripción */}
+                    <p className="text-base text-white/90 mb-5 leading-relaxed">
+                        {planetaData.descripcion}
+                    </p>
+
+                    {/* Datos básicos - Grid compacto */}
+                    <div className="grid grid-cols-2 gap-4 mb-5">
+                        <div className="bg-slate-800/50 rounded-lg p-4">
+                            <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.diametro}</div>
+                            <div className="text-base font-semibold text-white">{planetaData.diametro}</div>
+                        </div>
+                        <div className="bg-slate-800/50 rounded-lg p-4">
+                            <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.distanciaSol}</div>
+                            <div className="text-base font-semibold text-white">{planetaData.distanciaSol}</div>
+                        </div>
+                        <div className="bg-slate-800/50 rounded-lg p-4">
+                            <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.periodoRotacion}</div>
+                            <div className="text-base font-semibold text-white">{planetaData.periodoRotacion}</div>
+                        </div>
+                        <div className="bg-slate-800/50 rounded-lg p-4">
+                            <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.periodoOrbital}</div>
+                            <div className="text-base font-semibold text-white">{planetaData.periodoOrbital}</div>
+                        </div>
+                    </div>
+
+                    {/* Datos curiosos - Compacto */}
+                    {planetaData.datosCuriosos && planetaData.datosCuriosos.length > 0 && (
+                        <div className="mb-5">
+                            <h4 className="text-base font-semibold text-white/90 mb-3">{textosFicha.datos.datosCuriosos}</h4>
+                            <ul className="space-y-2.5">
+                                {planetaData.datosCuriosos.slice(0, 3).map((dato, index) => (
+                                    <li key={index} className="flex items-start gap-2.5 text-sm text-white/80">
+                                        <span className="text-emerald-400 mt-0.5 shrink-0">•</span>
+                                        <span>{dato}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {/* Navegación */}
+                    {(onAnteriorPlaneta || onSiguientePlaneta) && (
+                        <div className="flex items-center justify-between gap-2 pt-4 border-t border-slate-700/50">
+                            {onAnteriorPlaneta && (
+                                <button
+                                    onClick={onAnteriorPlaneta}
+                                    disabled={planetaActualIndex <= 0}
+                                    className={`px-4 py-2 text-sm rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                                        planetaActualIndex <= 0
+                                            ? "bg-slate-700/50 text-white/40 cursor-not-allowed"
+                                            : "bg-emerald-500/90 hover:bg-emerald-500 text-white"
+                                    }`}
+                                    aria-label={textosFicha.anterior}
+                                >
+                                    ← {textosFicha.anterior}
+                                </button>
+                            )}
+                            <span className="text-sm text-white/60">
+                                {planetaActualIndex >= 0 ? `${planetaActualIndex + 1} / 8` : ""}
+                            </span>
+                            {onSiguientePlaneta && (
+                                <button
+                                    onClick={onSiguientePlaneta}
+                                    disabled={planetaActualIndex >= 7}
+                                    className={`px-4 py-2 text-sm rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                                        planetaActualIndex >= 7
+                                            ? "bg-slate-700/50 text-white/40 cursor-not-allowed"
+                                            : "bg-emerald-500/90 hover:bg-emerald-500 text-white"
+                                    }`}
+                                    aria-label={textosFicha.siguiente}
+                                >
+                                    {textosFicha.siguiente} →
+                                </button>
+                            )}
+                        </div>
+                    )}
                 </div>
             )}
         </div>

@@ -53,9 +53,17 @@ const handlePlanetaClick = (planetaId: string) => {
 const handleCerrarFicha = () => {
     // Mantener selección y reenfocar, pero cerrar ficha
     setFichaAbierta(false);
+    // En modo fullscreen, también limpiar la selección para ocultar la ficha
+    if (isFullscreen) {
+        setPlanetaSeleccionado(null);
+    }
     setFocusTick((t) => t + 1);
     if (vozActiva) voz.speak(anunciarCerrarFicha);
 };
+
+const planetaSeleccionadoData = planetaSeleccionado
+    ? planetas.find((p) => p.id === planetaSeleccionado)
+    : null;
 
 const handleAnterior = () => {
     if (planetaActualIndex > 0) {
@@ -109,14 +117,21 @@ const handleFullscreenChange = (isFullscreenNow: boolean) => {
     setIsFullscreen(isFullscreenNow);
     if (vozActiva) {
         if (isFullscreenNow) {
-            // Entrar en modo pantalla completa
-            voz.speak(modoPantallaCompleta);
+            // Entrar en modo pantalla completa - pequeño delay para asegurar que el navegador procese el cambio
+            setTimeout(() => {
+                voz.speak(modoPantallaCompleta);
+            }, 100);
         } else {
             // Salir de modo pantalla completa
             voz.stop(); // Detener el narrador si está describiendo un planeta
-            voz.speak(salirPantallaCompleta);
             // Cerrar la ficha al salir de fullscreen
             setFichaAbierta(false);
+            // Delay para asegurar que el navegador procese el cambio de fullscreen antes de hablar
+            setTimeout(() => {
+                if (vozActiva) {
+                    voz.speak(salirPantallaCompleta);
+                }
+            }, 200);
         }
     } else {
         // Aunque el narrador no esté activo, cerrar la ficha al salir de fullscreen
@@ -256,8 +271,8 @@ return (
     {!mostrarLista && (
         <div className="w-full relative overflow-hidden" style={{ 
             minHeight: "300px",
-            height: "calc(100vh - 180px)",
-            maxHeight: "900px", 
+            height: "calc(100vh - 280px)",
+            maxHeight: "600px", 
             maxWidth: "100%",
             aspectRatio: "16/9"
         }}>
@@ -290,6 +305,12 @@ return (
             onVozToggle={() => { const nuevo = !vozActiva; setVozActiva(nuevo); voz.setEnabled(nuevo); if (nuevo) voz.speak("Narración activada"); else voz.stop(); }}
             vozActiva={vozActiva}
             textos={textos}
+            planetaData={isFullscreen && planetaSeleccionadoData ? planetaSeleccionadoData : null}
+            planetaActualIndex={planetaActualIndex}
+            onCerrarFicha={handleCerrarFicha}
+            onAnteriorPlaneta={handleAnterior}
+            onSiguientePlaneta={handleSiguiente}
+            autoLeerFicha={vozActiva && isFullscreen}
         />
         </div>
     )}
