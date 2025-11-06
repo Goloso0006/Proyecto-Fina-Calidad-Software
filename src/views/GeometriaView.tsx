@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import GeometriaFiguras3D from "../components/GeometriaFiguras3D";
 import figurasData from "../data/figuras-geometricas.json";
 import type { FigurasData, Figura } from "../types/figuras";
@@ -13,7 +13,6 @@ export default function GeometriaView() {
   const [mostrarAristas, setMostrarAristas] = useState(false);
   const [mostrarVertices, setMostrarVertices] = useState(false);
   const [isDescompuesta, setIsDescompuesta] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const data = figurasData as FigurasData;
   const { figuras, textos } = data;

@@ -1,51 +1,79 @@
-// src/components/Navbar.tsx
-import React, { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaHome, FaMoon, FaSun } from "react-icons/fa";
 
-const Navbar: React.FC = () => {
-  // Inicializa el tema al cargar
+export default function Navbar() {
+  const [isDark, setIsDark] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
-    const root = document.documentElement;
-    const saved = localStorage.getItem("theme");
-
-    if (saved) {
-      root.classList.toggle("dark", saved === "dark");
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      root.classList.add("dark");
-    }
+    // Verificar tema del sistema
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setIsDark(prefersDark);
+    document.documentElement.classList.toggle("dark", prefersDark);
   }, []);
 
   const toggleTheme = () => {
-    const root = document.documentElement;
-    const next = root.classList.toggle("dark") ? "dark" : "light";
-    localStorage.setItem("theme", next);
-    // Notifica a la app para que vistas activas reaccionen en vivo
-    document.dispatchEvent(new CustomEvent("theme:changed", { detail: { theme: next } }));
+    const newTheme = !isDark;
+    setIsDark(newTheme);
+    document.documentElement.classList.toggle("dark", newTheme);
   };
 
+  const isHome = location.pathname === "/";
+
   return (
-    <header className="h-14 sticky top-0 z-10 bg-white/70 dark:bg-slate-900/60 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+    <motion.header
+      className="h-16 sticky top-0 z-20 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b-2 border-purple-200 dark:border-purple-800 shadow-lg"
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 100, damping: 15 }}
+    >
       <div className="container mx-auto px-4 h-full flex items-center justify-between">
-        {/* Lado izquierdo: logo + marca */}
-        <div className="flex items-center gap-2 font-semibold text-slate-800 dark:text-slate-100">
-          <div className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-500 text-white">
+        {/* Logo y título */}
+        <motion.div
+          className="flex items-center gap-3 cursor-pointer"
+          onClick={() => navigate("/")}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xl font-bold shadow-lg">
             U
           </div>
-          <span>UCC : Prácticas Desarrollo</span>
-        </div>
+          <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            UCC : Prácticas Desarrollo
+          </span>
+        </motion.div>
 
-        {/* Lado derecho: botón de tema */}
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
+        {/* Botones de acción */}
+        <div className="flex items-center gap-3">
+          {/* Botón Home (solo si no estamos en home) */}
+          {!isHome && (
+            <motion.button
+              onClick={() => navigate("/")}
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <FaHome />
+              <span className="hidden sm:inline">Inicio</span>
+            </motion.button>
+          )}
+
+          {/* Botón Tema */}
+          <motion.button
             onClick={toggleTheme}
-            className="px-3 py-1.5 rounded-lg bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 hover:opacity-90 transition"
+            className="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center gap-2"
+            whileHover={{ scale: 1.05, rotate: 15 }}
+            whileTap={{ scale: 0.95 }}
           >
-            Tema
-          </button>
+            {isDark ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-blue-600" />}
+            <span className="hidden sm:inline">Tema</span>
+          </motion.button>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
-};
+}
 
-export default Navbar;
