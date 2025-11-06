@@ -26,6 +26,8 @@ export interface TextosInterfaz {
       velocidad: string;
       acercar: string;
       cerrarFicha: string;
+      modoPantallaCompleta: string;
+      salirPantallaCompleta: string;
     };
     instrucciones: {
       clicPlaneta: string;

@@ -11,6 +11,8 @@ resetVista: boolean;
 vistaGeneral: boolean;
 focusTick?: number;
 resetTick?: number;
+// eslint-disable-next-line no-unused-vars
+onFullscreenChange?: (isFullscreen: boolean) => void;
 }
 
 interface Planeta3D {
@@ -31,6 +33,7 @@ resetVista,
 vistaGeneral,
 focusTick = 0,
 resetTick = 0,
+onFullscreenChange,
 }: SistemaSolar3DProps) {
 const outerRef = useRef<HTMLDivElement>(null);
 const containerRef = useRef<HTMLDivElement>(null);
@@ -81,6 +84,7 @@ useEffect(() => {
     if (!containerRef.current) return;
 
     const container = containerRef.current;
+    // Usar el tamaño real del contenedor (se adapta con flexbox)
     const width = container.clientWidth;
     const height = container.clientHeight;
 
@@ -294,20 +298,68 @@ useEffect(() => {
     animate();
 
     const onResize = () => {
-    if (!containerRef.current) return;
-    const newWidth = containerRef.current.clientWidth;
-    const newHeight = containerRef.current.clientHeight;
+    if (!containerRef.current || !cameraRef.current || !rendererRef.current) return;
+    // Usar siempre el tamaño real del contenedor (se adapta con flexbox)
+    // Usar requestAnimationFrame para asegurar que el DOM se haya actualizado
+    requestAnimationFrame(() => {
+        if (!containerRef.current || !cameraRef.current || !rendererRef.current) return;
+        // Obtener el tamaño del contenedor, pero limitarlo al tamaño máximo disponible
+        const container = containerRef.current;
+        const parent = container.parentElement;
+        const maxWidth = parent ? Math.min(parent.clientWidth, window.innerWidth) : window.innerWidth;
+        const maxHeight = parent ? Math.min(parent.clientHeight, window.innerHeight) : window.innerHeight;
+        
+        const newWidth = Math.min(container.clientWidth, maxWidth);
+        const newHeight = Math.min(container.clientHeight, maxHeight);
 
-    camera.aspect = newWidth / newHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(newWidth, newHeight);
+        if (newWidth > 0 && newHeight > 0) {
+            cameraRef.current.aspect = newWidth / newHeight;
+            cameraRef.current.updateProjectionMatrix();
+            rendererRef.current.setSize(newWidth, newHeight);
+        }
+    });
     };
 
     const resizeObserver = new ResizeObserver(onResize);
     resizeObserver.observe(container);
 
+    // También escuchar cambios de tamaño de la ventana (para detectar zoom)
+    const onWindowResize = () => {
+        // Pequeño delay para asegurar que el DOM se haya actualizado después del zoom
+        setTimeout(() => {
+            onResize();
+        }, 100);
+    };
+    window.addEventListener("resize", onWindowResize);
+
     const onFsChange = () => {
-    setIsFullscreen(!!document.fullscreenElement);
+    const isFullscreenNow = !!document.fullscreenElement;
+    setIsFullscreen(isFullscreenNow);
+    // Actualizar el tamaño cuando cambia el modo fullscreen
+    // Usar múltiples requestAnimationFrame para asegurar que el DOM se haya actualizado completamente
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            if (containerRef.current && cameraRef.current && rendererRef.current) {
+                // Usar siempre el tamaño real del contenedor, limitado al tamaño máximo disponible
+                const container = containerRef.current;
+                const parent = container.parentElement;
+                const maxWidth = parent ? Math.min(parent.clientWidth, window.innerWidth) : window.innerWidth;
+                const maxHeight = parent ? Math.min(parent.clientHeight, window.innerHeight) : window.innerHeight;
+                
+                const newWidth = Math.min(container.clientWidth, maxWidth);
+                const newHeight = Math.min(container.clientHeight, maxHeight);
+                
+                if (newWidth > 0 && newHeight > 0) {
+                    cameraRef.current.aspect = newWidth / newHeight;
+                    cameraRef.current.updateProjectionMatrix();
+                    rendererRef.current.setSize(newWidth, newHeight);
+                }
+            }
+        });
+    });
+    if (onFullscreenChange) {
+        onFullscreenChange(isFullscreenNow);
+    }
     };
     document.addEventListener("fullscreenchange", onFsChange);
 
@@ -319,6 +371,7 @@ useEffect(() => {
     container.removeEventListener("wheel", onWheel as unknown as EventListener);
     container.removeEventListener("click", onMouseClick);
     resizeObserver.disconnect();
+    window.removeEventListener("resize", onWindowResize);
     document.removeEventListener("fullscreenchange", onFsChange);
     renderer.dispose();
     container.removeChild(renderer.domElement);
@@ -388,11 +441,11 @@ const toggleFullscreen = () => {
 };
 
 return (
-    <div ref={outerRef} className="relative w-full h-full">
+    <div ref={outerRef} className="relative w-full h-full" style={{ maxWidth: "100%", overflow: "hidden", width: "100%", height: "100%" }}>
     <div
         ref={containerRef}
         className="w-full h-full rounded-lg border border-slate-200 dark:border-slate-800 bg-black"
-        style={{ minHeight: "600px", cursor }}
+        style={{ cursor, maxWidth: "100%", maxHeight: "100%", boxSizing: "border-box", width: "100%", height: "100%" }}
     />
 
     <button

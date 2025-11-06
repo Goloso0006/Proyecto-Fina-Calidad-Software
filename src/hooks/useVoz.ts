@@ -25,10 +25,10 @@ export function useVoz(defaultEnabled: boolean = false, options: VozOptions = {}
 			u.rate = base.rate;
 			u.pitch = base.pitch;
 			u.volume = base.volume;
-			synth.speak(u);
-		} catch (_) {
-			/* ignore */
-		}
+        synth.speak(u);
+    } catch {
+        /* ignore */
+    }
 	};
 
 	const stop = () => {

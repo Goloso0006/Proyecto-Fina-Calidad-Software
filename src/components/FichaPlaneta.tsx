@@ -41,13 +41,19 @@ const leerContenido = () => {
     u.lang = "es-ES";
     u.rate = 1;
     window.speechSynthesis.speak(u);
-    } catch (_) {}
+    } catch {
+        // Ignorar errores de síntesis de voz
+    }
 };
 
 // Cancelar TTS al desmontar
 useEffect(() => {
     return () => {
-    try { if ("speechSynthesis" in window) window.speechSynthesis.cancel(); } catch (_) {}
+    try { 
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel(); 
+    } catch {
+        // Ignorar errores al cancelar síntesis de voz
+    }
     };
 }, []);
 
@@ -72,7 +78,6 @@ useEffect(() => {
     if (autoLeer) {
     leerContenido();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [planetaId, autoLeer]);
 
 return (

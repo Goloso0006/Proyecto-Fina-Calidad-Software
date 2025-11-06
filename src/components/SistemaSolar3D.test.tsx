@@ -30,14 +30,25 @@ return {
     SphereGeometry: jest.fn(),
     MeshBasicMaterial: jest.fn(),
     MeshStandardMaterial: jest.fn(),
-    Mesh: jest.fn(() => ({
-    position: { x: 0, y: 0, z: 0 },
-    rotation: { y: 0 },
-    userData: {},
-    })),
+    Mesh: jest.fn(() => {
+        const mesh: any = {
+            position: { x: 0, y: 0, z: 0, set: jest.fn() },
+            rotation: { x: 0, y: 0, z: 0, set: jest.fn() },
+            userData: {},
+            getWorldPosition: jest.fn((vec: any) => {
+                if (vec) {
+                    vec.x = 0;
+                    vec.y = 0;
+                    vec.z = 0;
+                }
+                return mesh;
+            }),
+        };
+        return mesh;
+    }),
     Group: jest.fn(() => ({
     add: jest.fn(),
-    rotation: { y: 0 },
+    rotation: { x: 0, y: 0, z: 0, set: jest.fn() },
     })),
     RingGeometry: jest.fn(),
     Raycaster: jest.fn(() => ({
@@ -45,8 +56,22 @@ return {
     intersectObjects: jest.fn(() => []),
     })),
     Vector2: jest.fn(() => ({ x: 0, y: 0 })),
-    Vector3: jest.fn(() => ({ x: 0, y: 0, z: 0, copy: jest.fn() })),
-    Spherical: jest.fn(() => ({})),
+    Vector3: jest.fn(() => ({ 
+        x: 0, 
+        y: 0, 
+        z: 0, 
+        copy: jest.fn(),
+        lerp: jest.fn(),
+        setFromSpherical: jest.fn(),
+    })),
+    Spherical: jest.fn(() => ({
+        radius: 0,
+        phi: 0,
+        theta: 0,
+    })),
+    MathUtils: {
+        lerp: jest.fn((a, b, t) => a + (b - a) * t),
+    },
     DoubleSide: 2,
 };
 });
@@ -65,6 +90,16 @@ observe: jest.fn(),
 disconnect: jest.fn(),
 }));
 
+// Mock de document.fullscreenElement
+Object.defineProperty(document, 'fullscreenElement', {
+    writable: true,
+    value: null,
+});
+
+// Mock de requestFullscreen y exitFullscreen
+Element.prototype.requestFullscreen = jest.fn().mockResolvedValue(undefined);
+document.exitFullscreen = jest.fn().mockResolvedValue(undefined);
+
 // Limpia los mocks antes de cada prueba
 beforeEach(() => {
 jest.clearAllMocks();
@@ -77,20 +112,24 @@ onPlanetaClick: jest.fn(),
 planetaSeleccionado: null,
 resetVista: false,
 vistaGeneral: false,
+onFullscreenChange: jest.fn(),
 };
 
 describe("SistemaSolar3D - Renderizado", () => {
 test("renderiza el contenedor del sistema solar", () => {
     const { container } = render(<SistemaSolar3D {...mockProps} />);
-    const div = container.querySelector("div.w-full.h-full");
-    expect(div).toBeInTheDocument();
-    expect(div).toHaveClass("w-full", "h-full", "rounded-lg");
+    const outerDiv = container.querySelector("div.relative.w-full.h-full");
+    expect(outerDiv).toBeInTheDocument();
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
+    expect(innerDiv).toHaveClass("w-full", "h-full", "rounded-lg");
 });
 
 test("aplica el cursor 'grab' por defecto", () => {
     const { container } = render(<SistemaSolar3D {...mockProps} />);
-    const div = container.querySelector("div.w-full.h-full");
-    expect(div).toHaveStyle({ cursor: "grab" });
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
+    expect(innerDiv).toHaveStyle({ cursor: "grab" });
 });
 });
 
@@ -99,40 +138,40 @@ test("acepta velocidadAnimacion como prop", () => {
     const { container } = render(
     <SistemaSolar3D {...mockProps} velocidadAnimacion={2} />
     );
-    const div = container.querySelector("div.w-full.h-full");
-    expect(div).toBeInTheDocument();
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
 });
 
 test("acepta isPaused como prop", () => {
     const { container } = render(
     <SistemaSolar3D {...mockProps} isPaused={true} />
     );
-    const div = container.querySelector("div.w-full.h-full");
-    expect(div).toBeInTheDocument();
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
 });
 
 test("acepta planetaSeleccionado como prop", () => {
     const { container } = render(
     <SistemaSolar3D {...mockProps} planetaSeleccionado="tierra" />
     );
-    const div = container.querySelector("div.w-full.h-full");
-    expect(div).toBeInTheDocument();
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
 });
 
 test("acepta resetVista como prop", () => {
     const { container } = render(
     <SistemaSolar3D {...mockProps} resetVista={true} />
     );
-    const div = container.querySelector("div.w-full.h-full");
-    expect(div).toBeInTheDocument();
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
 });
 
 test("acepta vistaGeneral como prop", () => {
     const { container } = render(
     <SistemaSolar3D {...mockProps} vistaGeneral={true} />
     );
-    const div = container.querySelector("div.w-full.h-full");
-    expect(div).toBeInTheDocument();
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
 });
 });
 
@@ -146,6 +185,30 @@ test("llama a onPlanetaClick cuando se proporciona", () => {
     // Aquí solo verificamos que el componente acepta la prop
     expect(mockOnPlanetaClick).toBeDefined();
 });
+
+test("acepta onFullscreenChange como prop opcional", () => {
+    const mockOnFullscreenChange = jest.fn();
+    const { container } = render(
+    <SistemaSolar3D {...mockProps} onFullscreenChange={mockOnFullscreenChange} />
+    );
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
+    expect(mockOnFullscreenChange).toBeDefined();
+});
+
+test("se renderiza correctamente sin onFullscreenChange", () => {
+    const propsWithoutFullscreen = {
+        velocidadAnimacion: mockProps.velocidadAnimacion,
+        isPaused: mockProps.isPaused,
+        onPlanetaClick: mockProps.onPlanetaClick,
+        planetaSeleccionado: mockProps.planetaSeleccionado,
+        resetVista: mockProps.resetVista,
+        vistaGeneral: mockProps.vistaGeneral,
+    };
+    const { container } = render(<SistemaSolar3D {...propsWithoutFullscreen} />);
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
+});
 });
 
 describe("SistemaSolar3D - Estados", () => {
@@ -153,15 +216,15 @@ test("se renderiza correctamente cuando está pausado", () => {
     const { container } = render(
     <SistemaSolar3D {...mockProps} isPaused={true} />
     );
-    const div = container.querySelector("div.w-full.h-full");
-    expect(div).toBeInTheDocument();
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
 });
 
 test("se renderiza correctamente cuando no está pausado", () => {
     const { container } = render(
     <SistemaSolar3D {...mockProps} isPaused={false} />
     );
-    const div = container.querySelector("div.w-full.h-full");
-    expect(div).toBeInTheDocument();
+    const innerDiv = container.querySelector("div.rounded-lg");
+    expect(innerDiv).toBeInTheDocument();
 });
 });

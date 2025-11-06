@@ -9,7 +9,9 @@
     "vistaGeneral": "Vista General",
     "velocidad": "Velocidad de Animación",
     "acercar": "Acercar al Planeta",
-    "cerrarFicha": "Cerrar"
+    "cerrarFicha": "Cerrar",
+    "modoPantallaCompleta": "Modo pantalla completa",
+    "salirPantallaCompleta": "Salir de pantalla completa"
     },
     "instrucciones": {
     "clicPlaneta": "Haz clic en un planeta para ver su información",

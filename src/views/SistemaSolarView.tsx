@@ -20,6 +20,7 @@ const [ayudaActiva, setAyudaActiva] = useState(false);
 const [vozActiva, setVozActiva] = useState(false);
 const [focusTick, setFocusTick] = useState(0);
 const [resetTick, setResetTick] = useState(0);
+const [isFullscreen, setIsFullscreen] = useState(false);
 
 const textos = (textosData as TextosInterfaz).sistemaSolar;
 const planetas = (planetasData as PlanetasData).planetas;
@@ -29,6 +30,8 @@ const voz = useMemo(() => useVoz(false, { lang: "es-ES", rate: 1 }), []);
 // Frases de anuncio con fallback para evitar errores de tipado
 const anunciarSeleccion = (textos as any)?.anunciarSeleccion ?? "Planeta seleccionado";
 const anunciarCerrarFicha = (textos as any)?.anunciarCerrarFicha ?? "Ficha cerrada";
+const modoPantallaCompleta = (textos.controles as any)?.modoPantallaCompleta ?? "Modo pantalla completa";
+const salirPantallaCompleta = (textos.controles as any)?.salirPantallaCompleta ?? "Salir de pantalla completa";
 
 const planetaActualIndex = planetaSeleccionado
     ? planetas.findIndex((p) => p.id === planetaSeleccionado)
@@ -37,6 +40,7 @@ const planetaActualIndex = planetaSeleccionado
 const handlePlanetaClick = (planetaId: string) => {
     setPlanetaSeleccionado(planetaId);
     setMostrarLista(false);
+    // Siempre abrir la ficha para que el narrador funcione (pero solo se mostrará si no estamos en fullscreen)
     setFichaAbierta(true);
     if (vozActiva) {
         const p = planetas.find((pl) => pl.id === planetaId);
@@ -101,25 +105,46 @@ const handleRestablecerSistema = () => {
     if (vozActiva) voz.speak(`Sistema restablecido, ${isPaused ? "en pausa" : "en movimiento"}`);
 };
 
+const handleFullscreenChange = (isFullscreenNow: boolean) => {
+    setIsFullscreen(isFullscreenNow);
+    if (vozActiva) {
+        if (isFullscreenNow) {
+            // Entrar en modo pantalla completa
+            voz.speak(modoPantallaCompleta);
+        } else {
+            // Salir de modo pantalla completa
+            voz.stop(); // Detener el narrador si está describiendo un planeta
+            voz.speak(salirPantallaCompleta);
+            // Cerrar la ficha al salir de fullscreen
+            setFichaAbierta(false);
+        }
+    } else {
+        // Aunque el narrador no esté activo, cerrar la ficha al salir de fullscreen
+        if (!isFullscreenNow) {
+            setFichaAbierta(false);
+        }
+    }
+};
+
 const labelVerLista = mostrarLista ? textos.menu.volverVisualizacion : textos.menu.verPlanetas;
 const labelAyuda = ayudaActiva ? "Ocultar ayuda" : "Mostrar ayuda";
 
 return (
-    <div className="space-y-4">
+    <div className="space-y-2 sm:space-y-4 px-2 sm:px-4">
     {/* Header */}
-    <div className="mb-6">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+    <div className="mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
         {textos.titulo}
         </h1>
-        <p className="text-slate-600 dark:text-slate-400">{textos.subtitulo}</p>
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">{textos.subtitulo}</p>
     </div>
 
     {/* Controles principales (barra superior) */}
-    <div className="flex flex-wrap items-center gap-4 p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div className="flex flex-wrap items-center gap-2 sm:gap-4 p-2 sm:p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
         {/* Botón Pausar/Reanudar */}
         <button
         onClick={() => { setIsPaused(!isPaused); if (vozActiva) voz.speak(isPaused ? textos.controles.reanudar : textos.controles.pausar); }}
-        className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
         aria-label={
             isPaused ? textos.controles.reanudar : textos.controles.pausar
         }
@@ -128,10 +153,10 @@ return (
         </button>
 
         {/* Control de velocidad */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
         <label
             htmlFor="velocidad"
-            className="text-sm font-medium text-slate-700 dark:text-slate-300"
+            className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline"
         >
             {textos.controles.velocidad}:
         </label>
@@ -143,10 +168,10 @@ return (
             step="0.1"
             value={velocidadAnimacion}
             onChange={(e) => { setVelocidadAnimacion(parseFloat(e.target.value)); if (vozActiva) voz.speak(`${textos.controles.velocidad} ${parseFloat(e.target.value).toFixed(1)} x`); }}
-            className="w-32"
+            className="w-20 sm:w-32"
             aria-label={`${textos.controles.velocidad}: ${velocidadAnimacion.toFixed(1)}x`}
         />
-        <span className="text-sm text-slate-600 dark:text-slate-400 w-12">
+        <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 w-8 sm:w-12">
             {velocidadAnimacion.toFixed(1)}x
         </span>
         </div>
@@ -154,75 +179,88 @@ return (
         {/* Botón Reset Vista */}
         <button
         onClick={handleResetVista}
-        className="px-4 py-2 bg-slate-500 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-500 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
         aria-label={textos.controles.resetVista}
         >
-        {textos.controles.resetVista}
+        <span className="hidden sm:inline">{textos.controles.resetVista}</span>
+        <span className="sm:hidden">Reset</span>
         </button>
 
         {/* Botón Vista General */}
         <button
         onClick={handleVistaGeneral}
-        className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         aria-label={textos.controles.vistaGeneral}
         >
-        {textos.controles.vistaGeneral}
+        <span className="hidden sm:inline">{textos.controles.vistaGeneral}</span>
+        <span className="sm:hidden">Vista</span>
         </button>
 
         {/* Botón Acercar al Planeta */}
         {planetaSeleccionado && (
         <button
             onClick={handleAcercarPlaneta}
-            className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
             aria-label={`${textos.controles.acercar} - ${planetas.find((p) => p.id === planetaSeleccionado)?.nombre}`}
         >
-            {textos.controles.acercar}
+            <span className="hidden sm:inline">{textos.controles.acercar}</span>
+            <span className="sm:hidden">Acercar</span>
         </button>
         )}
 
         {/* Botón Restablecer Sistema */}
         <button
         onClick={handleRestablecerSistema}
-        className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500"
+        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500"
         aria-label="Restablecer sistema"
         >
-        Restablecer
+        <span className="hidden sm:inline">Restablecer</span>
+        <span className="sm:hidden">Reset</span>
         </button>
 
         {/* Botón Ver Lista de Planetas */}
         <button
         onFocus={() => { if (vozActiva) voz.speak(labelVerLista); }}
         onClick={() => { if (vozActiva) voz.speak(labelVerLista); setMostrarLista((prev) => !prev); }}
-        className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-auto"
+        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-auto"
         >
-        {labelVerLista}
+        <span className="hidden sm:inline">{labelVerLista}</span>
+        <span className="sm:hidden">Lista</span>
         </button>
 
         {/* Ayuda interactiva */}
         <button
         onFocus={() => { if (vozActiva) voz.speak(labelAyuda); }}
         onClick={() => { if (vozActiva) voz.speak(labelAyuda); setAyudaActiva((prev) => !prev); }}
-        className="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500"
+        className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500"
         aria-pressed={ayudaActiva}
         aria-label="Alternar ayuda interactiva"
         >
-        {labelAyuda}
+        <span className="hidden sm:inline">{labelAyuda}</span>
+        <span className="sm:hidden">Ayuda</span>
         </button>
 
         {/* Accesibilidad: Voz */}
         <button
         onClick={() => { const nuevo = !vozActiva; setVozActiva(nuevo); voz.setEnabled(nuevo); if (nuevo) voz.speak("Narración activada"); else voz.stop(); }}
-        className="px-3 py-2 bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500"
+        className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500"
         aria-pressed={vozActiva}
         aria-label="Alternar narración por voz"
         >
-        {vozActiva ? "Voz: ON" : "Voz: OFF"}
+        {vozActiva ? <span className="hidden sm:inline">Voz: ON</span> : <span className="hidden sm:inline">Voz: OFF</span>}
+        <span className="sm:hidden">{vozActiva ? "ON" : "OFF"}</span>
         </button>
     </div>
 
     {/* Visualización 3D inmediatamente después de la barra */}
     {!mostrarLista && (
-        <div className="w-full relative" style={{ minHeight: "600px" }}>
+        <div className="w-full relative overflow-hidden" style={{ 
+            minHeight: "300px",
+            height: "calc(100vh - 180px)",
+            maxHeight: "900px", 
+            maxWidth: "100%",
+            aspectRatio: "16/9"
+        }}>
         {/* coach marks simples */}
         {ayudaActiva && (
             <div className="absolute z-10 top-3 left-3 bg-white/90 dark:bg-slate-800/90 border border-amber-300 dark:border-amber-700 rounded-lg p-3 text-sm text-slate-800 dark:text-slate-200 max-w-xs shadow">
@@ -243,6 +281,7 @@ return (
             vistaGeneral={vistaGeneral}
             focusTick={focusTick}
             resetTick={resetTick}
+            onFullscreenChange={handleFullscreenChange}
         />
         </div>
     )}
@@ -267,16 +306,18 @@ return (
         </div>
     )}
 
-    {/* Ficha del planeta */}
+    {/* Ficha del planeta - renderizar siempre para que el narrador funcione, pero ocultar visualmente en fullscreen */}
     {fichaAbierta && planetaSeleccionado && (
-        <FichaPlaneta
-        planetaId={planetaSeleccionado}
-        onCerrar={handleCerrarFicha}
-        onAnterior={handleAnterior}
-        onSiguiente={handleSiguiente}
-        planetaActualIndex={planetaActualIndex}
-        autoLeer={vozActiva}
-        />
+        <div style={{ display: isFullscreen ? 'none' : 'block' }}>
+            <FichaPlaneta
+            planetaId={planetaSeleccionado}
+            onCerrar={handleCerrarFicha}
+            onAnterior={handleAnterior}
+            onSiguiente={handleSiguiente}
+            planetaActualIndex={planetaActualIndex}
+            autoLeer={vozActiva}
+            />
+        </div>
     )}
     </div>
 );
