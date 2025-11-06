@@ -78,7 +78,7 @@ describe("FichaPlaneta - Renderizado", () => {
 
     test("renderiza el contador de planetas", () => {
         render(<FichaPlaneta {...mockProps} />);
-        expect(screen.getByText(/3 de 8/i)).toBeInTheDocument();
+        expect(screen.getByText(/3 de 9/i)).toBeInTheDocument();
     });
 });
 

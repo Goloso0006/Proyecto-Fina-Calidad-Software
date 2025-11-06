@@ -1,25 +1,10 @@
-import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaHome, FaMoon, FaSun } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
 
 export default function Navbar() {
-  const [isDark, setIsDark] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    // Verificar tema del sistema
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setIsDark(prefersDark);
-    document.documentElement.classList.toggle("dark", prefersDark);
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = !isDark;
-    setIsDark(newTheme);
-    document.documentElement.classList.toggle("dark", newTheme);
-  };
 
   const isHome = location.pathname === "/";
 
@@ -61,16 +46,6 @@ export default function Navbar() {
             </motion.button>
           )}
 
-          {/* Botón Tema */}
-          <motion.button
-            onClick={toggleTheme}
-            className="px-4 py-2 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold shadow-md hover:shadow-lg transition-shadow flex items-center gap-2"
-            whileHover={{ scale: 1.05, rotate: 15 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {isDark ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-blue-600" />}
-            <span className="hidden sm:inline">Tema</span>
-          </motion.button>
         </div>
       </div>
     </motion.header>
