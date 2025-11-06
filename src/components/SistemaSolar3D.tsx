@@ -4,6 +4,7 @@ import * as THREE from "three";
 interface SistemaSolar3DProps {
 velocidadAnimacion: number;
 isPaused: boolean;
+// eslint-disable-next-line no-unused-vars
 onPlanetaClick: (planetaId: string) => void;
 planetaSeleccionado: string | null;
 resetVista: boolean;
