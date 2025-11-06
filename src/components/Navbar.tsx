@@ -38,11 +38,11 @@ export default function Navbar() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xl font-bold shadow-lg">
-            U
+          <div className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xl font-bold shadow-lg">
+            🕹️
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            UCC : Prácticas Desarrollo
+            Panel principal
           </span>
         </motion.div>
 

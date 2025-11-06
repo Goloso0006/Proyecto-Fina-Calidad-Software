@@ -113,7 +113,10 @@ export default function GeometriaFiguras3D({
 
     // Aristas (wireframe)
     const edgesGeometry = new THREE.EdgesGeometry(geometry);
-    const edgesMaterial = new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 2 });
+    const edgesMaterial = new THREE.LineBasicMaterial({
+      color: 0x000000,
+      linewidth: 2,
+    });
     const edges = new THREE.LineSegments(edgesGeometry, edgesMaterial);
     edges.visible = false;
     aristasRef.current = edges;
@@ -177,11 +180,20 @@ export default function GeometriaFiguras3D({
 
         const faceGeometry = new THREE.BufferGeometry();
         const vertices = new Float32Array([
-          v1.x, v1.y, v1.z,
-          v2.x, v2.y, v2.z,
-          v3.x, v3.y, v3.z,
+          v1.x,
+          v1.y,
+          v1.z,
+          v2.x,
+          v2.y,
+          v2.z,
+          v3.x,
+          v3.y,
+          v3.z,
         ]);
-        faceGeometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
+        faceGeometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(vertices, 3)
+        );
 
         const faceMaterial = new THREE.MeshStandardMaterial({
           color: color,
@@ -309,25 +321,25 @@ export default function GeometriaFiguras3D({
       // Mostrar y animar caras individuales
       caras.forEach((cara, index) => {
         cara.visible = true;
-        
+
         // Calcular normal de la cara para moverla hacia afuera
         const geometry = cara.geometry;
         const positions = geometry.attributes.position.array;
-        
+
         const v1 = new THREE.Vector3(positions[0], positions[1], positions[2]);
         const v2 = new THREE.Vector3(positions[3], positions[4], positions[5]);
         const v3 = new THREE.Vector3(positions[6], positions[7], positions[8]);
-        
+
         // Calcular centro de la cara
         const center = new THREE.Vector3()
           .add(v1)
           .add(v2)
           .add(v3)
           .divideScalar(3);
-        
+
         // Normalizar para obtener dirección
         const direction = center.clone().normalize();
-        
+
         // Mover la cara hacia afuera
         const distance = 1.5;
         cara.position.set(
@@ -335,7 +347,7 @@ export default function GeometriaFiguras3D({
           direction.y * distance,
           direction.z * distance
         );
-        
+
         // Agregar rotación ligera a cada cara
         cara.rotation.x = index * 0.1;
         cara.rotation.y = index * 0.15;
@@ -343,7 +355,7 @@ export default function GeometriaFiguras3D({
     } else {
       // Mostrar figura principal
       mainMesh.visible = mostrarCaras;
-      
+
       // Ocultar caras individuales y resetear posiciones
       caras.forEach((cara) => {
         cara.visible = false;

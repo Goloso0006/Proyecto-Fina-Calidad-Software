@@ -8,7 +8,9 @@ import type { PlanetasData, TextosInterfaz } from "../types/planetas";
 export default function SistemaSolarView() {
 const [velocidadAnimacion, setVelocidadAnimacion] = useState(1);
 const [isPaused, setIsPaused] = useState(false);
-const [planetaSeleccionado, setPlanetaSeleccionado] = useState<string | null>(null);
+const [planetaSeleccionado, setPlanetaSeleccionado] = useState<string | null>(
+    null
+);
 const [resetVista, setResetVista] = useState(false);
 const [vistaGeneral, setVistaGeneral] = useState(false);
 const [mostrarLista, setMostrarLista] = useState(false);
@@ -74,14 +76,19 @@ return (
         <button
         onClick={() => setIsPaused(!isPaused)}
         className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
-        aria-label={isPaused ? textos.controles.reanudar : textos.controles.pausar}
+        aria-label={
+            isPaused ? textos.controles.reanudar : textos.controles.pausar
+        }
         >
         {isPaused ? textos.controles.reanudar : textos.controles.pausar}
         </button>
 
         {/* Control de velocidad */}
         <div className="flex items-center gap-2">
-        <label htmlFor="velocidad" className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <label
+            htmlFor="velocidad"
+            className="text-sm font-medium text-slate-700 dark:text-slate-300"
+        >
             {textos.controles.velocidad}:
         </label>
         <input
@@ -134,7 +141,9 @@ return (
         onClick={() => setMostrarLista(!mostrarLista)}
         className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-auto"
         >
-        {mostrarLista ? textos.menu.volverVisualizacion : textos.menu.verPlanetas}
+        {mostrarLista
+            ? textos.menu.volverVisualizacion
+            : textos.menu.verPlanetas}
         </button>
     </div>
 
@@ -198,4 +207,3 @@ return (
     </div>
 );
 }
-

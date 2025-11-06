@@ -47,14 +47,70 @@ const cameraControlsRef = useRef({
 
 // Configuración de planetas con datos reales aproximados (proporciones educativas)
 const configPlanetas = [
-    { id: "mercurio", distancia: 8, velocidadOrbital: 4.15, velocidadRotacion: 0.02, tamaño: 0.4, color: 0x8c7853 },
-    { id: "venus", distancia: 11, velocidadOrbital: 1.6, velocidadRotacion: 0.01, tamaño: 0.6, color: 0xffc649 },
-    { id: "tierra", distancia: 14, velocidadOrbital: 1.0, velocidadRotacion: 0.03, tamaño: 0.6, color: 0x4a90e2 },
-    { id: "marte", distancia: 18, velocidadOrbital: 0.53, velocidadRotacion: 0.03, tamaño: 0.5, color: 0xcd5c5c },
-    { id: "jupiter", distancia: 28, velocidadOrbital: 0.08, velocidadRotacion: 0.04, tamaño: 1.2, color: 0xd8ca9d },
-    { id: "saturno", distancia: 38, velocidadOrbital: 0.03, velocidadRotacion: 0.035, tamaño: 1.0, color: 0xfad5a5 },
-    { id: "urano", distancia: 48, velocidadOrbital: 0.01, velocidadRotacion: 0.025, tamaño: 0.8, color: 0x4fd0e7 },
-    { id: "neptuno", distancia: 58, velocidadOrbital: 0.006, velocidadRotacion: 0.025, tamaño: 0.8, color: 0x4b70dd },
+    {
+    id: "mercurio",
+    distancia: 8,
+    velocidadOrbital: 4.15,
+    velocidadRotacion: 0.02,
+    tamaño: 0.4,
+    color: 0x8c7853,
+    },
+    {
+    id: "venus",
+    distancia: 11,
+    velocidadOrbital: 1.6,
+    velocidadRotacion: 0.01,
+    tamaño: 0.6,
+    color: 0xffc649,
+    },
+    {
+    id: "tierra",
+    distancia: 14,
+    velocidadOrbital: 1.0,
+    velocidadRotacion: 0.03,
+    tamaño: 0.6,
+    color: 0x4a90e2,
+    },
+    {
+    id: "marte",
+    distancia: 18,
+    velocidadOrbital: 0.53,
+    velocidadRotacion: 0.03,
+    tamaño: 0.5,
+    color: 0xcd5c5c,
+    },
+    {
+    id: "jupiter",
+    distancia: 28,
+    velocidadOrbital: 0.08,
+    velocidadRotacion: 0.04,
+    tamaño: 1.2,
+    color: 0xd8ca9d,
+    },
+    {
+    id: "saturno",
+    distancia: 38,
+    velocidadOrbital: 0.03,
+    velocidadRotacion: 0.035,
+    tamaño: 1.0,
+    color: 0xfad5a5,
+    },
+    {
+    id: "urano",
+    distancia: 48,
+    velocidadOrbital: 0.01,
+    velocidadRotacion: 0.025,
+    tamaño: 0.8,
+    color: 0x4fd0e7,
+    },
+    {
+    id: "neptuno",
+    distancia: 58,
+    velocidadOrbital: 0.006,
+    velocidadRotacion: 0.025,
+    tamaño: 0.8,
+    color: 0x4b70dd,
+    },
 ];
 
 useEffect(() => {
@@ -122,7 +178,11 @@ useEffect(() => {
     orbitaGroup.add(planetaMesh);
 
     // Línea de órbita (opcional, para visualización)
-    const orbitaGeometry = new THREE.RingGeometry(config.distancia - 0.1, config.distancia + 0.1, 64);
+    const orbitaGeometry = new THREE.RingGeometry(
+        config.distancia - 0.1,
+        config.distancia + 0.1,
+        64
+    );
     const orbitaMaterial = new THREE.MeshBasicMaterial({
         color: 0x444444,
         side: THREE.DoubleSide,
@@ -237,9 +297,11 @@ useEffect(() => {
         // Animar planetas
         planetas.forEach((planeta) => {
         // Rotación alrededor del sol (traslación)
-        planeta.orbita.rotation.y += planeta.velocidadOrbital * velocidadAnimacion * 0.01;
+        planeta.orbita.rotation.y +=
+            planeta.velocidadOrbital * velocidadAnimacion * 0.01;
         // Rotación sobre su propio eje
-        planeta.mesh.rotation.y += planeta.velocidadRotacion * velocidadAnimacion;
+        planeta.mesh.rotation.y +=
+            planeta.velocidadRotacion * velocidadAnimacion;
         });
 
         // Rotar el sol
@@ -290,9 +352,16 @@ useEffect(() => {
 
 // Efecto para enfocar planeta seleccionado
 useEffect(() => {
-    if (!planetaSeleccionado || !cameraRef.current || !planetasRef.current.length) return;
+    if (
+    !planetaSeleccionado ||
+    !cameraRef.current ||
+    !planetasRef.current.length
+    )
+    return;
 
-    const planeta = planetasRef.current.find((p) => p.id === planetaSeleccionado);
+    const planeta = planetasRef.current.find(
+    (p) => p.id === planetaSeleccionado
+    );
     if (!planeta) return;
 
     // Obtener posición del planeta en la órbita
@@ -303,7 +372,10 @@ useEffect(() => {
 
     cameraControlsRef.current.target.copy(posicionPlaneta);
     cameraControlsRef.current.distance = planeta.distancia + 5;
-    cameraControlsRef.current.rotationY = Math.atan2(posicionPlaneta.x, posicionPlaneta.z);
+    cameraControlsRef.current.rotationY = Math.atan2(
+    posicionPlaneta.x,
+    posicionPlaneta.z
+    );
     cameraControlsRef.current.rotationX = 0.3;
 }, [planetaSeleccionado]);
 
@@ -339,4 +411,3 @@ return (
     />
 );
 }
-

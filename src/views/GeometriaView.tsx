@@ -31,15 +31,17 @@ export default function GeometriaView() {
 
   // Reproducir audio descriptivo (simulado con síntesis de voz)
   const reproducirAudio = () => {
-    if ('speechSynthesis' in window) {
+    if ("speechSynthesis" in window) {
       // Cancelar cualquier síntesis previa
       window.speechSynthesis.cancel();
-      
-      const utterance = new SpeechSynthesisUtterance(figuraSeleccionada.audioDescripcion);
-      utterance.lang = 'es-ES';
+
+      const utterance = new SpeechSynthesisUtterance(
+        figuraSeleccionada.audioDescripcion
+      );
+      utterance.lang = "es-ES";
       utterance.rate = 0.9;
       utterance.pitch = 1;
-      
+
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -127,7 +129,9 @@ export default function GeometriaView() {
                   max="3"
                   step="0.1"
                   value={velocidadRotacion}
-                  onChange={(e) => setVelocidadRotacion(parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    setVelocidadRotacion(parseFloat(e.target.value))
+                  }
                   className="flex-1"
                   disabled={isPaused}
                 />
@@ -183,7 +187,9 @@ export default function GeometriaView() {
                 onClick={() => setIsDescompuesta(!isDescompuesta)}
                 className="px-4 py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors"
               >
-                {isDescompuesta ? textos.controles.armar : textos.controles.descomponer}
+                {isDescompuesta
+                  ? textos.controles.armar
+                  : textos.controles.descomponer}
               </button>
 
               <button
@@ -268,7 +274,7 @@ export default function GeometriaView() {
             <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">
               {textos.formuraEuler.descripcion}
             </p>
-            
+
             <div className="bg-white dark:bg-slate-800 rounded-lg p-4 mb-3">
               <div className="text-center text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                 {textos.formuraEuler.formula}
@@ -280,20 +286,20 @@ export default function GeometriaView() {
               </div>
             </div>
 
-            <div className={`rounded-lg p-3 ${
-              euler.cumple 
-                ? "bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700" 
-                : "bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700"
-            }`}>
+            <div
+              className={`rounded-lg p-3 ${
+                euler.cumple
+                  ? "bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700"
+                  : "bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700"
+              }`}
+            >
               <div className="text-sm font-semibold mb-1">
                 Para {figuraSeleccionada.nombre}:
               </div>
-              <div className="text-lg font-bold">
-                {euler.formula}
-              </div>
+              <div className="text-lg font-bold">{euler.formula}</div>
               <div className="text-sm mt-1">
-                {euler.cumple 
-                  ? "✓ ¡Cumple la fórmula de Euler!" 
+                {euler.cumple
+                  ? "✓ ¡Cumple la fórmula de Euler!"
                   : "✗ No cumple (podría ser un error)"}
               </div>
             </div>

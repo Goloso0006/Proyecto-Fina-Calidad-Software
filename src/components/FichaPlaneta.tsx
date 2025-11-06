@@ -60,7 +60,10 @@ return (
     >
         {/* Header */}
         <div className="sticky top-0 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 flex justify-between items-center">
-        <h2 id="ficha-titulo" className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+        <h2
+            id="ficha-titulo"
+            className="text-2xl font-bold text-slate-900 dark:text-slate-100"
+        >
             {planeta.nombre}
         </h2>
         <button
@@ -77,29 +80,30 @@ return (
         {/* Imagen */}
         <div className="flex justify-center">
             <div className="w-64 h-64 bg-slate-200 dark:bg-slate-700 rounded-lg flex items-center justify-center overflow-hidden">
-                {planeta.imagen && !planeta.imagen.startsWith("//") ? (
-                    <img 
-                        src={planeta.imagen} 
-                        alt={planeta.nombre}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                            // Si la imagen falla al cargar, mostrar mensaje
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                            const parent = target.parentElement;
-                            if (parent) {
-                                const span = document.createElement("span");
-                                span.className = "text-slate-500 dark:text-slate-400 text-sm text-center p-4";
-                                span.textContent = "Imagen no disponible";
-                                parent.appendChild(span);
-                            }
-                        }}
-                    />
-                ) : (
-                    <span className="text-slate-500 dark:text-slate-400 text-sm text-center p-4">
-                        {planeta.imagen || "Imagen no disponible"}
-                    </span>
-                )}
+            {planeta.imagen && !planeta.imagen.startsWith("//") ? (
+                <img
+                src={planeta.imagen}
+                alt={planeta.nombre}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                    // Si la imagen falla al cargar, mostrar mensaje
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = "none";
+                    const parent = target.parentElement;
+                    if (parent) {
+                    const span = document.createElement("span");
+                    span.className =
+                        "text-slate-500 dark:text-slate-400 text-sm text-center p-4";
+                    span.textContent = "Imagen no disponible";
+                    parent.appendChild(span);
+                    }
+                }}
+                />
+            ) : (
+                <span className="text-slate-500 dark:text-slate-400 text-sm text-center p-4">
+                {planeta.imagen || "Imagen no disponible"}
+                </span>
+            )}
             </div>
         </div>
 
@@ -108,7 +112,9 @@ return (
             <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">
             Descripción
             </h3>
-            <p className="text-slate-700 dark:text-slate-300 leading-relaxed">{planeta.descripcion}</p>
+            <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
+            {planeta.descripcion}
+            </p>
         </div>
 
         {/* Datos básicos */}
@@ -205,4 +211,3 @@ return (
     </div>
 );
 }
-

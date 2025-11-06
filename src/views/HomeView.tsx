@@ -17,7 +17,8 @@ const modulos: ModuloCard[] = [
   {
     id: "geometria",
     titulo: "Geometría 3D",
-    descripcion: "Explora figuras geométricas en 3D y aprende sobre sus propiedades",
+    descripcion:
+      "Explora figuras geométricas en 3D y aprende sobre sus propiedades",
     ruta: "/geometria",
     icono: <FaCube />,
     colorGradiente: "from-purple-500 via-pink-500 to-red-500",
@@ -27,7 +28,8 @@ const modulos: ModuloCard[] = [
   {
     id: "sistema-solar",
     titulo: "Sistema Solar",
-    descripcion: "Viaja por el espacio y descubre los planetas del sistema solar",
+    descripcion:
+      "Viaja por el espacio y descubre los planetas del sistema solar",
     ruta: "/sistema-solar",
     icono: <FaGlobe />,
     colorGradiente: "from-blue-500 via-cyan-500 to-teal-500",
@@ -91,7 +93,8 @@ export default function HomeView() {
   const handleModuloClick = (ruta: string) => {
     // Efecto de sonido (opcional - usando Web Audio API para un sonido suave)
     if (typeof window !== "undefined" && window.AudioContext) {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
 
@@ -101,7 +104,10 @@ export default function HomeView() {
       oscillator.frequency.value = 800;
       oscillator.type = "sine";
       gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.01,
+        audioContext.currentTime + 0.2
+      );
 
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.2);
@@ -118,8 +124,14 @@ export default function HomeView() {
       {/* Estrellas animadas de fondo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => {
-          const randomX = typeof window !== "undefined" ? Math.random() * window.innerWidth : Math.random() * 1000;
-          const randomY = typeof window !== "undefined" ? Math.random() * window.innerHeight : Math.random() * 1000;
+          const randomX =
+            typeof window !== "undefined"
+              ? Math.random() * window.innerWidth
+              : Math.random() * 1000;
+          const randomY =
+            typeof window !== "undefined"
+              ? Math.random() * window.innerHeight
+              : Math.random() * 1000;
           return (
             <motion.div
               key={i}
@@ -130,7 +142,12 @@ export default function HomeView() {
                 opacity: 0.3,
               }}
               animate={{
-                y: [null, typeof window !== "undefined" ? Math.random() * window.innerHeight : randomY + 100],
+                y: [
+                  null,
+                  typeof window !== "undefined"
+                    ? Math.random() * window.innerHeight
+                    : randomY + 100,
+                ],
                 opacity: [0.3, 0.8, 0.3],
                 scale: [1, 1.5, 1],
               }}
@@ -154,10 +171,7 @@ export default function HomeView() {
         animate="visible"
       >
         {/* Header con animación */}
-        <motion.div
-          className="text-center mb-12"
-          variants={itemVariants}
-        >
+        <motion.div className="text-center mb-12" variants={itemVariants}>
           <motion.div
             className="inline-block mb-4"
             animate={{
@@ -172,26 +186,29 @@ export default function HomeView() {
           >
             <FaRocket className="text-6xl text-orange-500" />
           </motion.div>
-          
+
           <motion.h1
             className="text-6xl md:text-7xl font-extrabold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent"
             variants={itemVariants}
           >
-            ¡Bienvenido!
-          </motion.h1>
-          
+            ¡Bienvenido A Formas del Universo!
+          <br /><br /></motion.h1>
+
           <motion.p
             className="text-2xl md:text-3xl text-slate-700 dark:text-slate-200 font-semibold mb-2"
             variants={itemVariants}
           >
-            🎓 Aprende Divirtiéndote
-          </motion.p>
-          
+            🪐 ¡Prepárate para una aventura donde las matemáticas y el universo se unen!
+          <br /><br /></motion.p>
+
           <motion.p
             className="text-lg md:text-xl text-slate-600 dark:text-slate-300"
             variants={itemVariants}
           >
-            Explora y descubre el mundo de las matemáticas y las ciencias
+
+            Aquí podrás viajar por el espacio y descubrir las formas que se esconden en los planetas<br/>
+            Juega, aprende y diviértete mientras exploras el sistema solar y las figuras geométricas<br /> con actividades llenas de color y sorpresas
+          
           </motion.p>
         </motion.div>
 
@@ -273,10 +290,7 @@ export default function HomeView() {
         </motion.div>
 
         {/* Mensaje motivacional en la parte inferior */}
-        <motion.div
-          className="text-center mt-12"
-          variants={itemVariants}
-        >
+        <motion.div className="text-center mt-12" variants={itemVariants}>
           <motion.p
             className="text-xl md:text-2xl font-bold text-slate-700 dark:text-slate-200"
             animate={{
@@ -294,4 +308,3 @@ export default function HomeView() {
     </div>
   );
 }
-

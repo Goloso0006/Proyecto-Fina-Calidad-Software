@@ -1,54 +1,53 @@
 export interface Planeta {
-id: string;
-nombre: string;
-descripcion: string;
-imagen: string;
-diametro: string;
-distanciaSol: string;
-periodoRotacion: string;
-periodoOrbital: string;
-datosCuriosos: string[];
+  id: string;
+  nombre: string;
+  descripcion: string;
+  imagen: string;
+  diametro: string;
+  distanciaSol: string;
+  periodoRotacion: string;
+  periodoOrbital: string;
+  datosCuriosos: string[];
 }
 
 export interface PlanetasData {
-planetas: Planeta[];
+  planetas: Planeta[];
 }
 
 export interface TextosInterfaz {
-sistemaSolar: {
+  sistemaSolar: {
     titulo: string;
     subtitulo: string;
     controles: {
-    pausar: string;
-    reanudar: string;
-    resetVista: string;
-    vistaGeneral: string;
-    velocidad: string;
-    acercar: string;
-    cerrarFicha: string;
+      pausar: string;
+      reanudar: string;
+      resetVista: string;
+      vistaGeneral: string;
+      velocidad: string;
+      acercar: string;
+      cerrarFicha: string;
     };
     instrucciones: {
-    clicPlaneta: string;
-    zoom: string;
-    rotar: string;
-    velocidad: string;
+      clicPlaneta: string;
+      zoom: string;
+      rotar: string;
+      velocidad: string;
     };
     ficha: {
-    titulo: string;
-    anterior: string;
-    siguiente: string;
-    datos: {
+      titulo: string;
+      anterior: string;
+      siguiente: string;
+      datos: {
         diametro: string;
         distanciaSol: string;
         periodoRotacion: string;
         periodoOrbital: string;
         datosCuriosos: string;
-    };
+      };
     };
     menu: {
-    verPlanetas: string;
-    volverVisualizacion: string;
+      verPlanetas: string;
+      volverVisualizacion: string;
     };
-};
+  };
 }
-

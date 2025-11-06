@@ -1,21 +1,21 @@
 {
-    "sistemaSolar": {
-        "titulo": "Sistema Solar Interactivo",
-        "subtitulo": "Explora los planetas del sistema solar",
-        "controles": {
-        "pausar": "Pausar",
-        "reanudar": "Reanudar",
-        "resetVista": "Restablecer Vista",
-        "vistaGeneral": "Vista General",
-        "velocidad": "Velocidad de Animación",
-        "acercar": "Acercar al Planeta",
-        "cerrarFicha": "Cerrar"
+"sistemaSolar": {
+    "titulo": "Sistema Solar Interactivo",
+    "subtitulo": "Explora los planetas del sistema solar",
+    "controles": {
+    "pausar": "Pausar",
+    "reanudar": "Reanudar",
+    "resetVista": "Restablecer Vista",
+    "vistaGeneral": "Vista General",
+    "velocidad": "Velocidad de Animación",
+    "acercar": "Acercar al Planeta",
+    "cerrarFicha": "Cerrar"
     },
     "instrucciones": {
-        "clicPlaneta": "Haz clic en un planeta para ver su información",
-        "zoom": "Usa la rueda del mouse para hacer zoom",
-        "rotar": "Arrastra para rotar la vista",
-        "velocidad": "Ajusta la velocidad de la animación"
+    "clicPlaneta": "Haz clic en un planeta para ver su información",
+    "zoom": "Usa la rueda del mouse para hacer zoom",
+    "rotar": "Arrastra para rotar la vista",
+    "velocidad": "Ajusta la velocidad de la animación"
     },
     "ficha": {
     "titulo": "Información del Planeta",
@@ -35,4 +35,3 @@
     }
 }
 }
-
