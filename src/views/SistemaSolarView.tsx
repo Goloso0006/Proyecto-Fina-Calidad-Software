@@ -282,6 +282,14 @@ return (
             focusTick={focusTick}
             resetTick={resetTick}
             onFullscreenChange={handleFullscreenChange}
+            onPauseToggle={() => { setIsPaused(!isPaused); if (vozActiva) voz.speak(isPaused ? textos.controles.reanudar : textos.controles.pausar); }}
+            onVelocidadChange={(vel) => { setVelocidadAnimacion(vel); if (vozActiva) voz.speak(`${textos.controles.velocidad} ${vel.toFixed(1)} x`); }}
+            onResetVista={handleResetVista}
+            onVistaGeneral={handleVistaGeneral}
+            onRestablecer={handleRestablecerSistema}
+            onVozToggle={() => { const nuevo = !vozActiva; setVozActiva(nuevo); voz.setEnabled(nuevo); if (nuevo) voz.speak("Narración activada"); else voz.stop(); }}
+            vozActiva={vozActiva}
+            textos={textos}
         />
         </div>
     )}
