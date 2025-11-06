@@ -13,6 +13,7 @@ export default function GeometriaView() {
   const [mostrarAristas, setMostrarAristas] = useState(false);
   const [mostrarVertices, setMostrarVertices] = useState(false);
   const [isDescompuesta, setIsDescompuesta] = useState(false);
+  const [ayudaActiva, setAyudaActiva] = useState(false);
 
   const data = figurasData as FigurasData;
   const { figuras, textos } = data;
@@ -66,7 +67,7 @@ export default function GeometriaView() {
 
       {/* Layout principal: 2 columnas en desktop */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Columna izquierda: Visualización 3D y controles */}
+        {/* Columna izquierda: Controles y Visualización 3D */}
         <div className="lg:col-span-2 space-y-4">
           {/* Selector de figuras */}
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-4">
@@ -90,25 +91,21 @@ export default function GeometriaView() {
             </div>
           </div>
 
-          {/* Visualización 3D */}
-          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-            <GeometriaFiguras3D
-              figuraId={figuraSeleccionada.id}
-              velocidadRotacion={velocidadRotacion}
-              isPaused={isPaused}
-              mostrarCaras={mostrarCaras}
-              mostrarAristas={mostrarAristas}
-              mostrarVertices={mostrarVertices}
-              isDescompuesta={isDescompuesta}
-              color={figuraSeleccionada.color}
-            />
-          </div>
-
-          {/* Controles */}
-          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-4 space-y-4">
+          {/* Controles (ahora antes de la simulación) */}
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm p-4 space-y-4 relative">
             <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
               Controles
             </h3>
+
+            {/* Ayuda interactiva toggle */}
+            <button
+              onClick={() => setAyudaActiva((v) => !v)}
+              className="absolute top-4 right-4 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+              aria-pressed={ayudaActiva}
+              aria-label="Alternar ayuda interactiva"
+            >
+              {ayudaActiva ? "Ocultar ayuda" : "Mostrar ayuda"}
+            </button>
 
             {/* Fila 1: Pausar y Velocidad */}
             <div className="flex flex-wrap items-center gap-4">
@@ -134,6 +131,7 @@ export default function GeometriaView() {
                   }
                   className="flex-1"
                   disabled={isPaused}
+                  aria-label={`${textos.controles.velocidad}: ${velocidadRotacion.toFixed(1)}x`}
                 />
                 <span className="text-sm text-slate-600 dark:text-slate-400 w-12">
                   {velocidadRotacion.toFixed(1)}x
@@ -195,23 +193,37 @@ export default function GeometriaView() {
               <button
                 onClick={reproducirAudio}
                 className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors"
+                aria-label="Escuchar descripción de la figura"
               >
                 🔊 {textos.controles.reproducirAudio}
               </button>
             </div>
+
+            {/* Ayuda contextual */}
+            {ayudaActiva && (
+              <div className="mt-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded p-3 text-sm text-amber-900 dark:text-amber-100">
+                <ul className="list-disc list-inside space-y-1">
+                  <li>{textos.instrucciones.seleccionar}</li>
+                  <li>{textos.instrucciones.rotar}</li>
+                  <li>{textos.instrucciones.zoom}</li>
+                  <li>{textos.instrucciones.descomponer}</li>
+                </ul>
+              </div>
+            )}
           </div>
 
-          {/* Instrucciones */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-            <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
-              💡 Instrucciones:
-            </h3>
-            <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1 list-disc list-inside">
-              <li>{textos.instrucciones.seleccionar}</li>
-              <li>{textos.instrucciones.rotar}</li>
-              <li>{textos.instrucciones.zoom}</li>
-              <li>{textos.instrucciones.descomponer}</li>
-            </ul>
+          {/* Visualización 3D (después de la barra de controles) */}
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+            <GeometriaFiguras3D
+              figuraId={figuraSeleccionada.id}
+              velocidadRotacion={velocidadRotacion}
+              isPaused={isPaused}
+              mostrarCaras={mostrarCaras}
+              mostrarAristas={mostrarAristas}
+              mostrarVertices={mostrarVertices}
+              isDescompuesta={isDescompuesta}
+              color={figuraSeleccionada.color}
+            />
           </div>
         </div>
 

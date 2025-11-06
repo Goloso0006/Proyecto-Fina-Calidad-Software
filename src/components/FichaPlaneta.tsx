@@ -9,6 +9,7 @@ onCerrar: () => void;
 onAnterior: () => void;
 onSiguiente: () => void;
 planetaActualIndex: number;
+autoLeer?: boolean;
 }
 
 export default function FichaPlaneta({
@@ -17,6 +18,7 @@ onCerrar,
 onAnterior,
 onSiguiente,
 planetaActualIndex,
+autoLeer = false,
 }: FichaPlanetaProps) {
 const textos = (textosData as TextosInterfaz).sistemaSolar.ficha;
 const planetas = (planetasData as PlanetasData).planetas;
@@ -29,6 +31,25 @@ if (!planeta) return null;
 const totalPlanetas = planetas.length;
 const esPrimerPlaneta = planetaActualIndex === 0;
 const esUltimoPlaneta = planetaActualIndex === totalPlanetas - 1;
+
+const leerContenido = () => {
+    if (!("speechSynthesis" in window)) return;
+    try {
+    window.speechSynthesis.cancel();
+    const resumen = `${planeta.nombre}. ${planeta.descripcion}. ${textos.datos.diametro}: ${planeta.diametro}. ${textos.datos.distanciaSol}: ${planeta.distanciaSol}.`;
+    const u = new SpeechSynthesisUtterance(resumen);
+    u.lang = "es-ES";
+    u.rate = 1;
+    window.speechSynthesis.speak(u);
+    } catch (_) {}
+};
+
+// Cancelar TTS al desmontar
+useEffect(() => {
+    return () => {
+    try { if ("speechSynthesis" in window) window.speechSynthesis.cancel(); } catch (_) {}
+    };
+}, []);
 
 // Navegación por teclado (accesibilidad)
 useEffect(() => {
@@ -45,6 +66,14 @@ useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
 }, [onCerrar, onAnterior, onSiguiente, esPrimerPlaneta, esUltimoPlaneta]);
+
+// Lectura automática al abrir, solo si autoLeer está activo
+useEffect(() => {
+    if (autoLeer) {
+    leerContenido();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [planetaId, autoLeer]);
 
 return (
     <div
@@ -66,17 +95,26 @@ return (
         >
             {planeta.nombre}
         </h2>
-        <button
+        <div className="flex items-center gap-2">
+            <button
+            onClick={leerContenido}
+            className="px-3 py-1 bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500"
+            aria-label="Escuchar descripción"
+            >
+            🔊 Escuchar
+            </button>
+            <button
             onClick={onCerrar}
             className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 text-2xl font-bold rounded-lg px-3 py-1 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
             aria-label={textosData.sistemaSolar.controles.cerrarFicha}
-        >
+            >
             ×
-        </button>
+            </button>
+        </div>
         </div>
 
         {/* Contenido */}
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6" aria-live="polite">
         {/* Imagen */}
         <div className="flex justify-center">
             <div className="w-64 h-64 bg-slate-200 dark:bg-slate-700 rounded-lg flex items-center justify-center overflow-hidden">
