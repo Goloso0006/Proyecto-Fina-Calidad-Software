@@ -36,7 +36,13 @@ const leerContenido = () => {
     if (!("speechSynthesis" in window)) return;
     try {
     window.speechSynthesis.cancel();
-    const resumen = `${planeta.nombre}. ${planeta.descripcion}. ${textos.datos.diametro}: ${planeta.diametro}. ${textos.datos.distanciaSol}: ${planeta.distanciaSol}.`;
+    let resumen = `${planeta.nombre}. ${planeta.descripcion}. ${textos.datos.diametro}: ${planeta.diametro}.`;
+    if (planeta.distanciaSol) {
+        resumen += ` ${textos.datos.distanciaSol}: ${planeta.distanciaSol}.`;
+    }
+    if (planeta.periodoRotacion) {
+        resumen += ` ${textos.datos.periodoRotacion}: ${planeta.periodoRotacion}.`;
+    }
     const u = new SpeechSynthesisUtterance(resumen);
     u.lang = "es-ES";
     u.rate = 1;
@@ -171,14 +177,16 @@ return (
             </dd>
             </div>
 
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
-            <dt className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">
-                {textos.datos.distanciaSol}
-            </dt>
-            <dd className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-                {planeta.distanciaSol}
-            </dd>
-            </div>
+            {planeta.distanciaSol && (
+                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
+                <dt className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">
+                    {textos.datos.distanciaSol}
+                </dt>
+                <dd className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                    {planeta.distanciaSol}
+                </dd>
+                </div>
+            )}
 
             <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
             <dt className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">
@@ -189,14 +197,16 @@ return (
             </dd>
             </div>
 
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
-            <dt className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">
-                {textos.datos.periodoOrbital}
-            </dt>
-            <dd className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-                {planeta.periodoOrbital}
-            </dd>
-            </div>
+            {planeta.periodoOrbital && (
+                <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
+                <dt className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">
+                    {textos.datos.periodoOrbital}
+                </dt>
+                <dd className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                    {planeta.periodoOrbital}
+                </dd>
+                </div>
+            )}
         </div>
 
         {/* Datos curiosos */}

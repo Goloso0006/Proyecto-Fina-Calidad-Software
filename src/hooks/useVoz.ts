@@ -17,22 +17,40 @@ export function useVoz(defaultEnabled: boolean = false, options: VozOptions = {}
 	};
 
 	const speak = (texto: string) => {
-		if (!enabled || !synth) return;
+		if (!enabled || !synth || !texto) return;
 		try {
-			synth.cancel();
-			const u = new SpeechSynthesisUtterance(texto);
-			u.lang = base.lang;
-			u.rate = base.rate;
-			u.pitch = base.pitch;
-			u.volume = base.volume;
-        synth.speak(u);
-    } catch {
-        /* ignore */
-    }
+			// Cancelar solo si hay algo hablando actualmente
+			if (synth.speaking || synth.pending) {
+				synth.cancel();
+			}
+			
+			// Usar requestAnimationFrame para asegurar que el navegador esté listo
+			requestAnimationFrame(() => {
+				if (!enabled || !synth) return;
+				try {
+					const u = new SpeechSynthesisUtterance(texto);
+					u.lang = base.lang;
+					u.rate = base.rate;
+					u.pitch = base.pitch;
+					u.volume = base.volume;
+					synth.speak(u);
+				} catch {
+					/* ignore */
+				}
+			});
+		} catch {
+			/* ignore */
+		}
 	};
 
 	const stop = () => {
-		if (synth) synth.cancel();
+		if (synth) {
+			try {
+				synth.cancel();
+			} catch {
+				/* ignore */
+			}
+		}
 	};
 
 	const setEnabled = (v: boolean) => {

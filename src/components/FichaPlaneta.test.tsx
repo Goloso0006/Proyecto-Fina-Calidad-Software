@@ -52,14 +52,18 @@ describe("FichaPlaneta - Renderizado", () => {
         expect(screen.getByText(textos.datos.diametro)).toBeInTheDocument();
         expect(screen.getByText(planeta!.diametro)).toBeInTheDocument();
 
-        expect(screen.getByText(textos.datos.distanciaSol)).toBeInTheDocument();
-        expect(screen.getByText(planeta!.distanciaSol)).toBeInTheDocument();
+        if (planeta!.distanciaSol) {
+            expect(screen.getByText(textos.datos.distanciaSol)).toBeInTheDocument();
+            expect(screen.getByText(planeta!.distanciaSol)).toBeInTheDocument();
+        }
 
         expect(screen.getByText(textos.datos.periodoRotacion)).toBeInTheDocument();
         expect(screen.getByText(planeta!.periodoRotacion)).toBeInTheDocument();
 
-        expect(screen.getByText(textos.datos.periodoOrbital)).toBeInTheDocument();
-        expect(screen.getByText(planeta!.periodoOrbital)).toBeInTheDocument();
+        if (planeta!.periodoOrbital) {
+            expect(screen.getByText(textos.datos.periodoOrbital)).toBeInTheDocument();
+            expect(screen.getByText(planeta!.periodoOrbital)).toBeInTheDocument();
+        }
     });
 
     test("renderiza los datos curiosos del planeta", () => {

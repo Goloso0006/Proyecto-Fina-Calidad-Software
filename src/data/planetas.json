@@ -1,6 +1,19 @@
 {
   "planetas": [
     {
+      "id": "sol",
+      "nombre": "Sol",
+      "descripcion": "El Sol es la estrella central del sistema solar. Es una esfera casi perfecta de plasma caliente que genera energía mediante fusión nuclear en su núcleo.",
+      "imagen": "/sol.webp",
+      "diametro": "1,392,700 km",
+      "periodoRotacion": "25.4 días (ecuador), 34 días (polos)",
+      "datosCuriosos": [
+        "El Sol contiene el 99.86% de toda la masa del sistema solar.",
+        "La temperatura en el núcleo del Sol alcanza aproximadamente 15 millones de grados Celsius.",
+        "El Sol convierte aproximadamente 600 millones de toneladas de hidrógeno en helio cada segundo."
+      ]
+    },
+    {
       "id": "mercurio",
       "nombre": "Mercurio",
       "descripcion": "Mercurio es el planeta más cercano al Sol y el más pequeño del sistema solar. Tiene una superficie rocosa cubierta de cráteres, similar a la Luna.",

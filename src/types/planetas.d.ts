@@ -4,9 +4,9 @@ export interface Planeta {
   descripcion: string;
   imagen: string;
   diametro: string;
-  distanciaSol: string;
+  distanciaSol?: string; // Opcional para el Sol
   periodoRotacion: string;
-  periodoOrbital: string;
+  periodoOrbital?: string; // Opcional para el Sol
   datosCuriosos: string[];
 }
 

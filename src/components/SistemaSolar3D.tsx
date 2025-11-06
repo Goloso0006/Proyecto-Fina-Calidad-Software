@@ -48,9 +48,9 @@ planetaData?: {
     nombre: string;
     descripcion: string;
     diametro: string;
-    distanciaSol: string;
+    distanciaSol?: string;
     periodoRotacion: string;
-    periodoOrbital: string;
+    periodoOrbital?: string;
     datosCuriosos: string[];
 } | null;
 planetaActualIndex?: number;
@@ -58,6 +58,7 @@ onCerrarFicha?: () => void;
 onAnteriorPlaneta?: () => void;
 onSiguientePlaneta?: () => void;
 autoLeerFicha?: boolean;
+fichaAbierta?: boolean; // Estado de si la ficha está abierta en el componente padre
 }
 
 interface Planeta3D {
@@ -93,6 +94,7 @@ onCerrarFicha,
 onAnteriorPlaneta,
 onSiguientePlaneta,
 autoLeerFicha = false,
+fichaAbierta = false,
 }: SistemaSolar3DProps) {
 const outerRef = useRef<HTMLDivElement>(null);
 const containerRef = useRef<HTMLDivElement>(null);
@@ -113,9 +115,19 @@ const [mostrarFicha, setMostrarFicha] = useState(true);
 // Mostrar ficha automáticamente cuando se selecciona un planeta en fullscreen
 useEffect(() => {
     if (isFullscreen && planetaData) {
+        // Si la ficha está abierta en el componente padre, mostrarla
+        // Si no está abierta, mantenerla oculta (no forzar su apertura)
+        if (fichaAbierta) {
+            setMostrarFicha(true);
+        } else {
+            // Si se selecciona un nuevo planeta y la ficha no estaba abierta, mantenerla oculta
+            setMostrarFicha(false);
+        }
+    } else if (!isFullscreen) {
+        // Al salir de fullscreen, resetear el estado
         setMostrarFicha(true);
     }
-}, [isFullscreen, planetaData?.id]);
+}, [isFullscreen, planetaData?.id, fichaAbierta]);
 const cameraControlsRef = useRef({
     rotationX: 0,
     rotationY: 0,
@@ -190,6 +202,8 @@ useEffect(() => {
     const sunGeometry = new THREE.SphereGeometry(1.5, 32, 32);
     const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+    sun.userData.planetaId = "sol";
+    sun.userData.esPlaneta = true;
     scene.add(sun);
     sunRef.current = sun;
 
@@ -338,16 +352,28 @@ useEffect(() => {
 
     // Seguir al planeta seleccionado por varios frames usando su posición mundial
     if (selectedIdRef.current && followFramesRef.current > 0) {
-        const p = planetasRef.current.find((x) => x.id === selectedIdRef.current);
-        if (p) {
-        p.mesh.getWorldPosition(tempVec.current);
-        cameraControlsRef.current.target.lerp(tempVec.current, 0.25);
-        const desiredDist = p.distancia + 5;
-        cameraControlsRef.current.distance = THREE.MathUtils.lerp(
-            cameraControlsRef.current.distance,
-            desiredDist,
-            0.2
-        );
+        // Manejar el Sol de manera especial
+        if (selectedIdRef.current === "sol" && sunRef.current) {
+            sunRef.current.getWorldPosition(tempVec.current);
+            cameraControlsRef.current.target.lerp(tempVec.current, 0.25);
+            const desiredDist = 5; // Distancia fija para el Sol
+            cameraControlsRef.current.distance = THREE.MathUtils.lerp(
+                cameraControlsRef.current.distance,
+                desiredDist,
+                0.2
+            );
+        } else {
+            const p = planetasRef.current.find((x) => x.id === selectedIdRef.current);
+            if (p) {
+                p.mesh.getWorldPosition(tempVec.current);
+                cameraControlsRef.current.target.lerp(tempVec.current, 0.25);
+                const desiredDist = p.distancia + 5;
+                cameraControlsRef.current.distance = THREE.MathUtils.lerp(
+                    cameraControlsRef.current.distance,
+                    desiredDist,
+                    0.2
+                );
+            }
         }
         followFramesRef.current -= 1;
     }
@@ -448,8 +474,23 @@ useEffect(() => {
 
 // Enfocar cuando cambia selección o focusTick
 useEffect(() => {
-    if (!planetaSeleccionado || !planetasRef.current.length) return;
+    if (!planetaSeleccionado) return;
 
+    // Manejar el Sol de manera especial
+    if (planetaSeleccionado === "sol") {
+        if (!sunRef.current) return;
+        // Usar posición del Sol (está en el origen)
+        sunRef.current.getWorldPosition(tempVec.current);
+        cameraControlsRef.current.target.copy(tempVec.current);
+        cameraControlsRef.current.distance = 5; // Distancia fija para el Sol
+        cameraControlsRef.current.rotationX = 0.3;
+        cameraControlsRef.current.rotationY = 0;
+        followFramesRef.current = 180;
+        return;
+    }
+
+    // Para los demás planetas, buscar en planetasRef
+    if (!planetasRef.current.length) return;
     const planeta = planetasRef.current.find((p) => p.id === planetaSeleccionado);
     if (!planeta) return;
 
@@ -528,10 +569,13 @@ const textosFicha = textos?.ficha || {
     siguiente: "Siguiente",
 };
 
-// Lectura automática de la ficha en fullscreen
+// Lectura automática de la ficha en fullscreen - solo si la ficha está abierta
 useEffect(() => {
-    if (isFullscreen && planetaData && autoLeerFicha && vozActiva) {
-        const resumen = `${planetaData.nombre}. ${planetaData.descripcion}. ${textosFicha.datos.diametro}: ${planetaData.diametro}. ${textosFicha.datos.distanciaSol}: ${planetaData.distanciaSol}.`;
+    if (isFullscreen && planetaData && autoLeerFicha && vozActiva && fichaAbierta) {
+        let resumen = `${planetaData.nombre}. ${planetaData.descripcion}. ${textosFicha.datos.diametro}: ${planetaData.diametro}.`;
+        if (planetaData.distanciaSol) {
+            resumen += ` ${textosFicha.datos.distanciaSol}: ${planetaData.distanciaSol}.`;
+        }
         if ("speechSynthesis" in window) {
             try {
                 window.speechSynthesis.cancel();
@@ -553,7 +597,7 @@ useEffect(() => {
             }
         }
     };
-}, [isFullscreen, planetaData?.id, autoLeerFicha, vozActiva, planetaData?.nombre, planetaData?.descripcion, planetaData?.diametro, planetaData?.distanciaSol, textosFicha]);
+}, [isFullscreen, planetaData?.id, autoLeerFicha, vozActiva, fichaAbierta, planetaData?.nombre, planetaData?.descripcion, planetaData?.diametro, planetaData?.distanciaSol, textosFicha]);
 
 return (
     <div ref={outerRef} className="relative w-full h-full" style={{ maxWidth: "100%", overflow: "hidden", width: "100%", height: "100%" }}>
@@ -735,18 +779,22 @@ return (
                             <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.diametro}</div>
                             <div className="text-base font-semibold text-white">{planetaData.diametro}</div>
                         </div>
-                        <div className="bg-slate-800/50 rounded-lg p-4">
-                            <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.distanciaSol}</div>
-                            <div className="text-base font-semibold text-white">{planetaData.distanciaSol}</div>
-                        </div>
+                        {planetaData.distanciaSol && (
+                            <div className="bg-slate-800/50 rounded-lg p-4">
+                                <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.distanciaSol}</div>
+                                <div className="text-base font-semibold text-white">{planetaData.distanciaSol}</div>
+                            </div>
+                        )}
                         <div className="bg-slate-800/50 rounded-lg p-4">
                             <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.periodoRotacion}</div>
                             <div className="text-base font-semibold text-white">{planetaData.periodoRotacion}</div>
                         </div>
-                        <div className="bg-slate-800/50 rounded-lg p-4">
-                            <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.periodoOrbital}</div>
-                            <div className="text-base font-semibold text-white">{planetaData.periodoOrbital}</div>
-                        </div>
+                        {planetaData.periodoOrbital && (
+                            <div className="bg-slate-800/50 rounded-lg p-4">
+                                <div className="text-sm text-white/70 mb-1.5">{textosFicha.datos.periodoOrbital}</div>
+                                <div className="text-base font-semibold text-white">{planetaData.periodoOrbital}</div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Datos curiosos - Compacto */}
@@ -782,14 +830,14 @@ return (
                                 </button>
                             )}
                             <span className="text-sm text-white/60">
-                                {planetaActualIndex >= 0 ? `${planetaActualIndex + 1} / 8` : ""}
+                                {planetaActualIndex >= 0 ? `${planetaActualIndex + 1} / 9` : ""}
                             </span>
                             {onSiguientePlaneta && (
                                 <button
                                     onClick={onSiguientePlaneta}
-                                    disabled={planetaActualIndex >= 7}
+                                    disabled={planetaActualIndex >= 8}
                                     className={`px-4 py-2 text-sm rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
-                                        planetaActualIndex >= 7
+                                        planetaActualIndex >= 8
                                             ? "bg-slate-700/50 text-white/40 cursor-not-allowed"
                                             : "bg-emerald-500/90 hover:bg-emerald-500 text-white"
                                     }`}

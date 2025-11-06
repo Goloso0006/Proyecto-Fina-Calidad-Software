@@ -16,6 +16,7 @@ const [fichaAbierta, setFichaAbierta] = useState(false);
 const [resetVista, setResetVista] = useState(false);
 const [vistaGeneral, setVistaGeneral] = useState(false);
 const [mostrarLista, setMostrarLista] = useState(false);
+const [veniaDeLista, setVeniaDeLista] = useState(false); // Para recordar si veníamos de la lista
 const [ayudaActiva, setAyudaActiva] = useState(false);
 const [vozActiva, setVozActiva] = useState(false);
 const [focusTick, setFocusTick] = useState(0);
@@ -38,6 +39,10 @@ const planetaActualIndex = planetaSeleccionado
     : -1;
 
 const handlePlanetaClick = (planetaId: string) => {
+    // Guardar si veníamos de la lista antes de ocultarla
+    const estabaEnLista = mostrarLista;
+    setVeniaDeLista(estabaEnLista);
+    
     setPlanetaSeleccionado(planetaId);
     setMostrarLista(false);
     // Siempre abrir la ficha para que el narrador funcione (pero solo se mostrará si no estamos en fullscreen)
@@ -56,6 +61,12 @@ const handleCerrarFicha = () => {
     // En modo fullscreen, también limpiar la selección para ocultar la ficha
     if (isFullscreen) {
         setPlanetaSeleccionado(null);
+    } else {
+        // Si veníamos de la lista, restaurar la vista de lista
+        if (veniaDeLista) {
+            setMostrarLista(true);
+            setVeniaDeLista(false);
+        }
     }
     setFocusTick((t) => t + 1);
     if (vozActiva) voz.speak(anunciarCerrarFicha);
@@ -117,21 +128,23 @@ const handleFullscreenChange = (isFullscreenNow: boolean) => {
     setIsFullscreen(isFullscreenNow);
     if (vozActiva) {
         if (isFullscreenNow) {
-            // Entrar en modo pantalla completa - pequeño delay para asegurar que el navegador procese el cambio
-            setTimeout(() => {
+            // Entrar en modo pantalla completa - usar requestAnimationFrame para mejor rendimiento
+            requestAnimationFrame(() => {
                 voz.speak(modoPantallaCompleta);
-            }, 100);
+            });
         } else {
             // Salir de modo pantalla completa
             voz.stop(); // Detener el narrador si está describiendo un planeta
             // Cerrar la ficha al salir de fullscreen
             setFichaAbierta(false);
-            // Delay para asegurar que el navegador procese el cambio de fullscreen antes de hablar
-            setTimeout(() => {
-                if (vozActiva) {
-                    voz.speak(salirPantallaCompleta);
-                }
-            }, 200);
+            // Usar requestAnimationFrame doble para asegurar que el navegador procese el cambio
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    if (vozActiva) {
+                        voz.speak(salirPantallaCompleta);
+                    }
+                });
+            });
         }
     } else {
         // Aunque el narrador no esté activo, cerrar la ficha al salir de fullscreen
@@ -236,7 +249,17 @@ return (
         {/* Botón Ver Lista de Planetas */}
         <button
         onFocus={() => { if (vozActiva) voz.speak(labelVerLista); }}
-        onClick={() => { if (vozActiva) voz.speak(labelVerLista); setMostrarLista((prev) => !prev); }}
+        onClick={() => { 
+            if (vozActiva) voz.speak(labelVerLista); 
+            setMostrarLista((prev) => {
+                const nuevoEstado = !prev;
+                // Si estamos cerrando la lista, limpiar el flag
+                if (!nuevoEstado) {
+                    setVeniaDeLista(false);
+                }
+                return nuevoEstado;
+            }); 
+        }}
         className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-auto"
         >
         <span className="hidden sm:inline">{labelVerLista}</span>
@@ -311,25 +334,47 @@ return (
             onAnteriorPlaneta={handleAnterior}
             onSiguientePlaneta={handleSiguiente}
             autoLeerFicha={vozActiva && isFullscreen}
+            fichaAbierta={fichaAbierta}
         />
         </div>
     )}
 
-    {/* Lista de planetas (alterna con la simulación) */}
+    {/* Lista de planetas (alterna con la simulación) - Excluir el Sol */}
     {mostrarLista && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {planetas.map((planeta) => (
+        {planetas.filter((planeta) => planeta.id !== "sol").map((planeta) => (
             <button
             key={planeta.id}
             onClick={() => handlePlanetaClick(planeta.id)}
-            className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-md transition-all text-left focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+            className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 flex flex-col items-center"
             >
-            <h3 className="font-semibold text-lg text-slate-900 dark:text-slate-100 mb-2">
+            <div className="w-32 h-32 mb-3 bg-slate-200 dark:bg-slate-700 rounded-lg flex items-center justify-center overflow-hidden">
+                {planeta.imagen ? (
+                    <img
+                        src={planeta.imagen}
+                        alt={planeta.nombre}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = "none";
+                            const parent = target.parentElement;
+                            if (parent && !parent.querySelector("span")) {
+                                const span = document.createElement("span");
+                                span.className = "text-slate-500 dark:text-slate-400 text-xs text-center p-2";
+                                span.textContent = "Imagen no disponible";
+                                parent.appendChild(span);
+                            }
+                        }}
+                    />
+                ) : (
+                    <span className="text-slate-500 dark:text-slate-400 text-xs text-center p-2">
+                        Imagen no disponible
+                    </span>
+                )}
+            </div>
+            <h3 className="font-semibold text-lg text-slate-900 dark:text-slate-100 text-center">
                 {planeta.nombre}
             </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">
-                {planeta.descripcion}
-            </p>
             </button>
         ))}
         </div>
