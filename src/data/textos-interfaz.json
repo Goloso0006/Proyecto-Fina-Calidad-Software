@@ -34,6 +34,8 @@
     "menu": {
     "verPlanetas": "Ver Lista de Planetas",
     "volverVisualizacion": "Volver a Visualización 3D"
-    }
+    },
+    "anunciarSeleccion": "Planeta seleccionado",
+    "anunciarCerrarFicha": "Ficha cerrada"
 }
 }

@@ -4,76 +4,86 @@ import SistemaSolar3D from "./SistemaSolar3D";
 
 // Mock de Three.js
 jest.mock("three", () => {
-return {
-    Scene: jest.fn(() => ({
-    add: jest.fn(),
-    background: null,
-    children: [],
-    })),
-    PerspectiveCamera: jest.fn(() => ({
-    position: { set: jest.fn(), setFromSpherical: jest.fn() },
-    lookAt: jest.fn(),
-    aspect: 1,
-    updateProjectionMatrix: jest.fn(),
-    })),
-    WebGLRenderer: jest.fn(() => ({
-    setSize: jest.fn(),
-    setPixelRatio: jest.fn(),
-    render: jest.fn(),
-    domElement: document.createElement("canvas"),
-    dispose: jest.fn(),
-    })),
-    Color: jest.fn(),
-    AmbientLight: jest.fn(() => ({})),
-    PointLight: jest.fn(() => ({ position: { set: jest.fn() } })),
-    DirectionalLight: jest.fn(() => ({ position: { set: jest.fn() } })),
-    SphereGeometry: jest.fn(),
-    MeshBasicMaterial: jest.fn(),
-    MeshStandardMaterial: jest.fn(),
-    Mesh: jest.fn(() => {
-        const mesh: any = {
-            position: { x: 0, y: 0, z: 0, set: jest.fn() },
-            rotation: { x: 0, y: 0, z: 0, set: jest.fn() },
-            userData: {},
-            getWorldPosition: jest.fn((vec: any) => {
-                if (vec) {
-                    vec.x = 0;
-                    vec.y = 0;
-                    vec.z = 0;
-                }
-                return mesh;
-            }),
-        };
-        return mesh;
-    }),
-    Group: jest.fn(() => ({
-    add: jest.fn(),
-    rotation: { x: 0, y: 0, z: 0, set: jest.fn() },
-    })),
-    RingGeometry: jest.fn(),
-    Raycaster: jest.fn(() => ({
-    setFromCamera: jest.fn(),
-    intersectObjects: jest.fn(() => []),
-    })),
-    Vector2: jest.fn(() => ({ x: 0, y: 0 })),
-    Vector3: jest.fn(() => ({ 
-        x: 0, 
-        y: 0, 
-        z: 0, 
+    // Función helper para crear un Vector3 mockeado
+    const createMockVector3 = (): any => ({
+        x: 0,
+        y: 0,
+        z: 0,
         copy: jest.fn(),
+        clone: jest.fn(() => createMockVector3()),
         lerp: jest.fn(),
         setFromSpherical: jest.fn(),
-    })),
-    Spherical: jest.fn(() => ({
-        radius: 0,
-        phi: 0,
-        theta: 0,
-    })),
-    MathUtils: {
-        lerp: jest.fn((a, b, t) => a + (b - a) * t),
-    },
-    DoubleSide: 2,
-};
+    });
+
+    const MockVector3 = jest.fn(() => createMockVector3());
+    
+    return {
+        Scene: jest.fn(() => ({
+            add: jest.fn(),
+            background: null,
+            children: [],
+        })),
+        PerspectiveCamera: jest.fn(() => ({
+            position: { set: jest.fn(), setFromSpherical: jest.fn() },
+            lookAt: jest.fn(),
+            aspect: 1,
+            updateProjectionMatrix: jest.fn(),
+        })),
+        WebGLRenderer: jest.fn(() => ({
+            setSize: jest.fn(),
+            setPixelRatio: jest.fn(),
+            render: jest.fn(),
+            domElement: document.createElement("canvas"),
+            dispose: jest.fn(),
+        })),
+        Color: jest.fn(),
+        AmbientLight: jest.fn(() => ({})),
+        PointLight: jest.fn(() => ({ position: { set: jest.fn() } })),
+        DirectionalLight: jest.fn(() => ({ position: { set: jest.fn() } })),
+        SphereGeometry: jest.fn(),
+        MeshBasicMaterial: jest.fn(),
+        MeshStandardMaterial: jest.fn(),
+        Mesh: jest.fn(() => {
+            const mesh: any = {
+                position: { x: 0, y: 0, z: 0, set: jest.fn() },
+                rotation: { x: 0, y: 0, z: 0, set: jest.fn() },
+                userData: {},
+                getWorldPosition: jest.fn((vec: any) => {
+                    if (vec) {
+                        vec.x = 0;
+                        vec.y = 0;
+                        vec.z = 0;
+                        // Asegurar que el Vector3 tenga el método clone
+                        if (!vec.clone) {
+                            vec.clone = jest.fn(() => createMockVector3());
+                        }
+                    }
+                    return mesh;
+                }),
+            };
+            return mesh;
+        }),
+        Group: jest.fn(() => ({
+            add: jest.fn(),
+            rotation: { x: 0, y: 0, z: 0, set: jest.fn() },
+        })),
+        RingGeometry: jest.fn(),
+        Raycaster: jest.fn(() => ({
+            setFromCamera: jest.fn(),
+            intersectObjects: jest.fn(() => []),
+        })),
+        Vector2: jest.fn(() => ({ x: 0, y: 0 })),
+        Vector3: MockVector3,
+        Spherical: jest.fn(() => ({
+            radius: 0,
+            phi: 0,
+            theta: 0,
+        })),
+        MathUtils: {
+            lerp: jest.fn((a, b, t) => a + (b - a) * t),
+        },
+        DoubleSide: 2,
+    };
 });
 
 // Mock de requestAnimationFrame
