@@ -6,6 +6,14 @@ import textosData from "../data/textos-interfaz.json";
 import type { PlanetasData, TextosInterfaz } from "../types/planetas";
 import { useVoz } from "../hooks/useVoz";
 
+/**
+ * Vista principal del módulo del Sistema Solar
+ * 
+ * Gestiona el estado de la aplicación, controles de animación, selección de planetas,
+ * modo fullscreen y la integración con el componente 3D y las fichas informativas.
+ * 
+ * @returns Componente de la vista del sistema solar
+ */
 export default function SistemaSolarView() {
 const [velocidadAnimacion, setVelocidadAnimacion] = useState(1);
 const [isPaused, setIsPaused] = useState(false);
@@ -38,7 +46,7 @@ const planetaActualIndex = planetaSeleccionado
     ? planetas.findIndex((p) => p.id === planetaSeleccionado)
     : -1;
 
-const handlePlanetaClick = (planetaId: string) => {
+const handlePlanetaClick = (planetaId: string, isDoubleClick: boolean = false) => {
     // Guardar si veníamos de la lista antes de ocultarla
     const estabaEnLista = mostrarLista;
     setVeniaDeLista(estabaEnLista);
@@ -47,7 +55,10 @@ const handlePlanetaClick = (planetaId: string) => {
     setMostrarLista(false);
     // Siempre abrir la ficha para que el narrador funcione (pero solo se mostrará si no estamos en fullscreen)
     setFichaAbierta(true);
-    if (vozActiva) {
+    
+    // Solo decir "Planeta seleccionado" en doble clic o más
+    // En clic simple, solo se abrirá la ficha y se leerá su contenido automáticamente
+    if (vozActiva && isDoubleClick) {
         const p = planetas.find((pl) => pl.id === planetaId);
         if (p) {
             voz.speak(`${p.nombre}. ${anunciarSeleccion}.`);
@@ -112,15 +123,15 @@ const handleAcercarPlaneta = () => {
 };
 
 const handleRestablecerSistema = () => {
-    // Mantener el estado de pausa actual
+    // Mantener el estado de pausa actual y la posición de la cámara
     setVelocidadAnimacion(1);
     setVistaGeneral(false);
     setAyudaActiva(false);
     setMostrarLista(false);
     setFichaAbierta(false);
     setPlanetaSeleccionado(null);
-    setResetVista((prev) => !prev);
-    setResetTick((t) => t + 1);
+    // NO resetear la cámara (setResetVista) - mantener la posición actual
+    setResetTick((t) => t + 1); // Solo resetear las rotaciones de los planetas
     if (vozActiva) voz.speak(`Sistema restablecido, ${isPaused ? "en pausa" : "en movimiento"}`);
 };
 
@@ -171,7 +182,11 @@ return (
     <div className="flex flex-wrap items-center gap-2 sm:gap-4 p-2 sm:p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
         {/* Botón Pausar/Reanudar */}
         <button
-        onClick={() => { setIsPaused(!isPaused); if (vozActiva) voz.speak(isPaused ? textos.controles.reanudar : textos.controles.pausar); }}
+        onClick={(e) => {
+            e.stopPropagation();
+            setIsPaused(!isPaused);
+            if (vozActiva) voz.speak(isPaused ? textos.controles.reanudar : textos.controles.pausar);
+        }}
         className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
         aria-label={
             isPaused ? textos.controles.reanudar : textos.controles.pausar
@@ -195,7 +210,11 @@ return (
             max="5"
             step="0.1"
             value={velocidadAnimacion}
-            onChange={(e) => { setVelocidadAnimacion(parseFloat(e.target.value)); if (vozActiva) voz.speak(`${textos.controles.velocidad} ${parseFloat(e.target.value).toFixed(1)} x`); }}
+            onChange={(e) => {
+                e.stopPropagation();
+                setVelocidadAnimacion(parseFloat(e.target.value));
+                if (vozActiva) voz.speak(`${textos.controles.velocidad} ${parseFloat(e.target.value).toFixed(1)} x`);
+            }}
             className="w-20 sm:w-32"
             aria-label={`${textos.controles.velocidad}: ${velocidadAnimacion.toFixed(1)}x`}
         />
@@ -206,7 +225,10 @@ return (
 
         {/* Botón Reset Vista */}
         <button
-        onClick={handleResetVista}
+        onClick={(e) => {
+            e.stopPropagation();
+            handleResetVista();
+        }}
         className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-500 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
         aria-label={textos.controles.resetVista}
         >
@@ -216,7 +238,10 @@ return (
 
         {/* Botón Vista General */}
         <button
-        onClick={handleVistaGeneral}
+        onClick={(e) => {
+            e.stopPropagation();
+            handleVistaGeneral();
+        }}
         className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
         aria-label={textos.controles.vistaGeneral}
         >
@@ -227,7 +252,10 @@ return (
         {/* Botón Acercar al Planeta */}
         {planetaSeleccionado && (
         <button
-            onClick={handleAcercarPlaneta}
+            onClick={(e) => {
+                e.stopPropagation();
+                handleAcercarPlaneta();
+            }}
             className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
             aria-label={`${textos.controles.acercar} - ${planetas.find((p) => p.id === planetaSeleccionado)?.nombre}`}
         >
@@ -238,7 +266,10 @@ return (
 
         {/* Botón Restablecer Sistema */}
         <button
-        onClick={handleRestablecerSistema}
+        onClick={(e) => {
+            e.stopPropagation();
+            handleRestablecerSistema();
+        }}
         className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500"
         aria-label="Restablecer sistema"
         >

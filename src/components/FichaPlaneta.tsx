@@ -43,6 +43,12 @@ const leerContenido = () => {
     if (planeta.periodoRotacion) {
         resumen += ` ${textos.datos.periodoRotacion}: ${planeta.periodoRotacion}.`;
     }
+    if (planeta.periodoOrbital) {
+        resumen += ` ${textos.datos.periodoOrbital}: ${planeta.periodoOrbital}.`;
+    }
+    if (planeta.datosCuriosos.length > 0) {
+        resumen += ` ${textos.datos.datosCuriosos}: ${planeta.datosCuriosos.join(", ")}.`;
+    }
     const u = new SpeechSynthesisUtterance(resumen);
     u.lang = "es-ES";
     u.rate = 1;
