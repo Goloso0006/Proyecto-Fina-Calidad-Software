@@ -67,6 +67,7 @@ interface ControlPanelProps {
   isPaused: boolean;
   onPauseToggle: () => void;
   velocidadRotacion: number;
+  // eslint-disable-next-line no-unused-vars
   onVelocidadChange: (velocidad: number) => void;
   onResetVista: () => void;
   onVistaGeneral: () => void;

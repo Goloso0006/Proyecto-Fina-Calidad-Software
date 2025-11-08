@@ -29,6 +29,8 @@ export default function FiguraCard({
   onClick,
   emoji,
 }: FiguraCardProps) {
+  // Use provided emoji or fall back to the mapping by figura id, then a generic one
+  const displayEmoji = emoji ?? figuraEmojis[figura.id] ?? "🔷";
   return (
     <motion.button
       onClick={onClick}
@@ -84,7 +86,7 @@ export default function FiguraCard({
           animate={isSelected ? { rotate: [0, 10, -10, 0], scale: [1, 1.2, 1] } : {}}
           transition={{ duration: 0.6 }}
         >
-          {emoji}
+            {displayEmoji}
         </motion.div>
 
         {/* Nombre */}
