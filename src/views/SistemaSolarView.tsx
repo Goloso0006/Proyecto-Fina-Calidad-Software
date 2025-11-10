@@ -192,7 +192,8 @@ return (
             isPaused ? textos.controles.reanudar : textos.controles.pausar
         }
         >
-        {isPaused ? textos.controles.reanudar : textos.controles.pausar}
+        <span className="hidden sm:inline">{isPaused ? textos.controles.reanudar : textos.controles.pausar}</span>
+        <span className="sm:hidden">{isPaused ? "▶" : "⏸"}</span>
         </button>
 
         {/* Control de velocidad */}
@@ -324,9 +325,9 @@ return (
     {/* Visualización 3D inmediatamente después de la barra */}
     {!mostrarLista && (
         <div className="w-full relative overflow-hidden" style={{ 
-            minHeight: "300px",
-            height: "calc(100vh - 280px)",
-            maxHeight: "600px", 
+            minHeight: "40vh",
+            height: "65vh",
+            maxHeight: "90vh", 
             maxWidth: "100%",
             aspectRatio: "16/9"
         }}>

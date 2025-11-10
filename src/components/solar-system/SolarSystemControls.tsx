@@ -59,7 +59,7 @@ export function SolarSystemControls({
 
       {/* Panel de controles */}
       {mostrarControles && (
-        <div className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl p-2.5 flex flex-col gap-1.5 min-w-[180px]">
+        <div className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl p-2.5 flex flex-col gap-1.5 min-w-44">
           {/* Botón Pausar/Reanudar */}
           <button
             onClick={(e) => {
@@ -69,8 +69,8 @@ export function SolarSystemControls({
             className="px-2.5 py-1.5 text-xs bg-emerald-500/90 hover:bg-emerald-500 text-white rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 flex items-center justify-center gap-1.5"
             aria-label={isPaused ? textos.controles.reanudar : textos.controles.pausar}
           >
-            <span>{isPaused ? "▶" : "⏸"}</span>
-            <span>{isPaused ? textos.controles.reanudar : textos.controles.pausar}</span>
+            <span className="sm:hidden">{isPaused ? "▶" : "⏸"}</span>
+            <span className="hidden sm:inline">{isPaused ? textos.controles.reanudar : textos.controles.pausar}</span>
           </button>
 
           {/* Control de velocidad */}

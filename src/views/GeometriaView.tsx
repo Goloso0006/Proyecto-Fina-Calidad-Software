@@ -219,7 +219,7 @@ export default function GeometriaView() {
               {/* Visualización 3D */}
               <motion.div
                 className="bg-white/95 dark:bg-slate-800/95 rounded-3xl overflow-hidden border-4 border-white shadow-xl backdrop-blur-sm"
-                style={{ minHeight: "400px" }}
+                style={{ minHeight: "50vh" }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}

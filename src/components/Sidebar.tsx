@@ -33,7 +33,7 @@ export default function Sidebar() {
   );
 
   return (
-    <aside className="hidden md:block w-full md:w-[240px] border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+    <aside className="hidden md:block w-full md:w-60 lg:w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
       <div className="p-3 space-y-1">
 
         {/* Acordeón Matemáticas / Geometría */}

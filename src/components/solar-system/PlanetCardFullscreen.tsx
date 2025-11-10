@@ -60,7 +60,7 @@ export function PlanetCardFullscreen({
 
       {/* Panel de ficha */}
       {mostrarFicha && (
-        <div className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl p-5 max-w-[520px] max-h-[80vh] overflow-y-auto">
+        <div className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl p-5 max-w-lg max-h-[80vh] overflow-y-auto">
           {/* Header */}
           <div className="flex justify-between items-start mb-4 pb-4 border-b border-slate-700/50">
             <h3 className="text-lg font-bold text-white">{planetaData.nombre}</h3>

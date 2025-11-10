@@ -33,7 +33,7 @@ export function ControlButton({
       onClick={onClick}
       disabled={disabled}
       className={`
-        relative px-6 py-3 rounded-2xl font-bold text-white text-lg
+        relative w-full px-6 py-3 rounded-2xl font-bold text-white text-lg
         shadow-lg border-4 border-white
         transition-all duration-300
         focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-white
@@ -46,9 +46,9 @@ export function ControlButton({
       whileTap={!disabled ? { scale: 0.95 } : {}}
       title={tooltip}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-w-0">
         <span className="text-2xl">{emoji}</span>
-        <span className="hidden sm:inline">{label}</span>
+        <span className="hidden sm:inline flex-1 truncate text-sm sm:text-base md:text-lg">{label}</span>
       </div>
 
       {/* Efecto de brillo */}
@@ -106,7 +106,7 @@ export function ControlPanel({
   return (
     <div className="bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-3xl p-6 shadow-lg border-4 border-white dark:border-slate-600">
       {/* Grid de botones principales */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
         <ControlButton
           onClick={onPauseToggle}
           label={isPaused ? "Reanudar" : "Pausar"}
