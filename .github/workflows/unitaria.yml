@@ -15,24 +15,21 @@ concurrency:
 
 jobs:
   build-and-test:
-    name: 🔨 Build & 🧪 Test (Node ${{ matrix.node-version }})
+    name: 🔨 Build & 🧪 Test (Node from .nvmrc)
     runs-on: ubuntu-latest
     permissions:
       contents: read
     env:
       CI: true
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
 
     steps:
       - name: 📥 Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🧰 Setup Node.js ${{ matrix.node-version }}
+      - name: 🧰 Setup Node.js (from .nvmrc)
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: .nvmrc
           cache: npm
           # 💾 Cache de dependencias para acelerar ejecuciones
 
@@ -56,6 +53,6 @@ jobs:
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: dist-node-${{ matrix.node-version }}
+          name: dist
           path: dist
 
