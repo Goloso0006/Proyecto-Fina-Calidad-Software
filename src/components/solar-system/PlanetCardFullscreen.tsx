@@ -47,7 +47,7 @@ export function PlanetCardFullscreen({
   onSiguientePlaneta,
 }: PlanetCardFullscreenProps) {
   return (
-    <div className="absolute top-3 right-3 z-20">
+    <div className="absolute top-3 right-3 left-3 md:left-auto z-20">
       {/* Botón para ocultar/mostrar ficha */}
       <button
         onClick={onToggleFicha}
@@ -60,7 +60,7 @@ export function PlanetCardFullscreen({
 
       {/* Panel de ficha */}
       {mostrarFicha && (
-        <div className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl p-5 max-w-lg max-h-[80vh] overflow-y-auto">
+        <div className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl p-4 sm:p-5 w-full max-w-full sm:max-w-md md:max-w-lg max-h-[80vh] overflow-y-auto">
           {/* Header */}
           <div className="flex justify-between items-start mb-4 pb-4 border-b border-slate-700/50">
             <h3 className="text-lg font-bold text-white">{planetaData.nombre}</h3>
@@ -77,30 +77,30 @@ export function PlanetCardFullscreen({
           </div>
 
           {/* Descripción */}
-          <p className="text-base text-white/90 mb-5 leading-relaxed">
+          <p className="text-sm sm:text-base text-white/90 mb-5 leading-relaxed">
             {planetaData.descripcion}
           </p>
 
           {/* Datos básicos - Grid compacto */}
           <div className="grid grid-cols-2 gap-4 mb-5">
             <div className="bg-slate-800/50 rounded-lg p-4">
-              <div className="text-sm text-white/70 mb-1.5">{textos.ficha.datos.diametro}</div>
-              <div className="text-base font-semibold text-white">{planetaData.diametro}</div>
+              <div className="text-xs sm:text-sm text-white/70 mb-1.5">{textos.ficha.datos.diametro}</div>
+              <div className="text-sm sm:text-base font-semibold text-white">{planetaData.diametro}</div>
             </div>
             {planetaData.distanciaSol && (
               <div className="bg-slate-800/50 rounded-lg p-4">
-                <div className="text-sm text-white/70 mb-1.5">{textos.ficha.datos.distanciaSol}</div>
-                <div className="text-base font-semibold text-white">{planetaData.distanciaSol}</div>
+                <div className="text-xs sm:text-sm text-white/70 mb-1.5">{textos.ficha.datos.distanciaSol}</div>
+                <div className="text-sm sm:text-base font-semibold text-white">{planetaData.distanciaSol}</div>
               </div>
             )}
             <div className="bg-slate-800/50 rounded-lg p-4">
-              <div className="text-sm text-white/70 mb-1.5">{textos.ficha.datos.periodoRotacion}</div>
-              <div className="text-base font-semibold text-white">{planetaData.periodoRotacion}</div>
+              <div className="text-xs sm:text-sm text-white/70 mb-1.5">{textos.ficha.datos.periodoRotacion}</div>
+              <div className="text-sm sm:text-base font-semibold text-white">{planetaData.periodoRotacion}</div>
             </div>
             {planetaData.periodoOrbital && (
               <div className="bg-slate-800/50 rounded-lg p-4">
-                <div className="text-sm text-white/70 mb-1.5">{textos.ficha.datos.periodoOrbital}</div>
-                <div className="text-base font-semibold text-white">{planetaData.periodoOrbital}</div>
+                <div className="text-xs sm:text-sm text-white/70 mb-1.5">{textos.ficha.datos.periodoOrbital}</div>
+                <div className="text-sm sm:text-base font-semibold text-white">{planetaData.periodoOrbital}</div>
               </div>
             )}
           </div>
@@ -108,12 +108,12 @@ export function PlanetCardFullscreen({
           {/* Datos curiosos - Compacto */}
           {planetaData.datosCuriosos && planetaData.datosCuriosos.length > 0 && (
             <div className="mb-5">
-              <h4 className="text-base font-semibold text-white/90 mb-3">
+              <h4 className="text-sm sm:text-base font-semibold text-white/90 mb-3">
                 {textos.ficha.datos.datosCuriosos}
               </h4>
               <ul className="space-y-2.5">
                 {planetaData.datosCuriosos.slice(0, 3).map((dato, index) => (
-                  <li key={index} className="flex items-start gap-2.5 text-sm text-white/80">
+                  <li key={index} className="flex items-start gap-2.5 text-xs sm:text-sm text-white/80">
                     <span className="text-emerald-400 mt-0.5 shrink-0">•</span>
                     <span>{dato}</span>
                   </li>
@@ -139,7 +139,7 @@ export function PlanetCardFullscreen({
                   ← {textos.ficha.anterior}
                 </button>
               )}
-              <span className="text-sm text-white/60">
+              <span className="text-xs sm:text-sm text-white/60">
                 {planetaActualIndex >= 0 ? `${planetaActualIndex + 1} / 9` : ""}
               </span>
               {onSiguientePlaneta && (
