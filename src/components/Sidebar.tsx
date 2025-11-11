@@ -1,11 +1,16 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaGlobe, FaCube } from "react-icons/fa";
+import { FaGlobe, FaCube, FaTimes } from "react-icons/fa";
 
 interface SidebarItem {
   label: string;
   route: string;
   icon?: React.ReactNode;
+}
+
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 const matematicasItems: SidebarItem[] = [
@@ -16,7 +21,7 @@ const cienciasItems: SidebarItem[] = [
   { label: "Sistema Solar Interactivo", route: "/sistema-solar", icon: <FaGlobe /> },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const [openMatematicas, setOpenMatematicas] = useState(true);  // Por defecto abierto
   const [openCiencias, setOpenCiencias] = useState(false);      // Por defecto cerrado
 
@@ -24,6 +29,7 @@ export default function Sidebar() {
     <NavLink
       key={route}
       to={route}
+      onClick={onClose} // Cerrar sidebar al hacer clic en un enlace (móvil)
       className={({ isActive }) =>
   `w-full text-left flex items-center gap-2 justify-between rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 ${isActive ? "bg-emerald-50 text-emerald-700" : ""}`
       }
@@ -33,8 +39,43 @@ export default function Sidebar() {
   );
 
   return (
-  <aside className="hidden md:block w-full md:w-60 lg:w-64 border-r-2 border-black bg-cover bg-center" style={{ backgroundImage: 'url("/sidebar.jpg")' }}> 
-      <div className="p-3 space-y-1">
+    <>
+      {/* Overlay para cuando está abierto */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-30 animate-fade-in"
+          onClick={onClose}
+          aria-label="Cerrar menú"
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside 
+        className={`
+          fixed
+          top-0 left-0 h-full
+          w-64
+          border-r-2 border-black
+          bg-cover bg-center
+          transform transition-transform duration-300 ease-in-out
+          z-40
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}
+        style={{ backgroundImage: 'url("/sidebar.jpg")' }}
+      > 
+        {/* Botón cerrar en la parte superior */}
+        <div className="flex justify-end p-3">
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg bg-white/90 hover:bg-white text-slate-700 shadow-lg transition-all border border-slate-300"
+            aria-label="Cerrar menú"
+            title="Cerrar menú"
+          >
+            <FaTimes size={20} />
+          </button>
+        </div>
+
+        <div className="p-3 space-y-1">
 
         {/* Acordeón Matemáticas / Geometría */}
         <button
@@ -58,5 +99,6 @@ export default function Sidebar() {
 
       </div>
     </aside>
+    </>
   );
 }

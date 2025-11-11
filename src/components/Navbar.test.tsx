@@ -3,10 +3,12 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./Navbar";
 
+const mockToggleSidebar = jest.fn();
+
 const AppWithNavbar = () => (
   <Routes>
-    <Route path="/" element={<Navbar />} />
-    <Route path="/geometria" element={<Navbar />} />
+    <Route path="/" element={<Navbar onToggleSidebar={mockToggleSidebar} />} />
+    <Route path="/geometria" element={<Navbar onToggleSidebar={mockToggleSidebar} />} />
   </Routes>
 );
 
@@ -21,6 +23,16 @@ describe("Navbar - render básico", () => {
     // El logo se representa como un emoji, verificamos el contenedor clicable por texto
     const clickable = screen.getByText("GeoNova").closest("div");
     expect(clickable).not.toBeNull();
+  });
+
+  test("muestra el botón de menú hamburguesa", () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <AppWithNavbar />
+      </MemoryRouter>
+    );
+    const menuButton = screen.getByLabelText("Abrir menú");
+    expect(menuButton).toBeInTheDocument();
   });
 });
 

@@ -298,11 +298,46 @@ export default function SistemaSolar3D({
       }
     };
 
+    // Manejadores de eventos táctiles para soporte móvil
+    const handleTouchStart = (e: TouchEvent) => {
+      if (planetInteractionRef.current) {
+        planetInteractionRef.current.handleTouchStart(e);
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (planetInteractionRef.current) {
+        planetInteractionRef.current.handleTouchEnd();
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (planetInteractionRef.current && cameraControlsRef.current) {
+        planetInteractionRef.current.handleTouchMove(e, (deltaX: number, deltaY: number) => {
+          cameraControlsRef.current?.rotateCamera(deltaX, deltaY);
+        });
+      }
+    };
+
+    const handleTap = (e: TouchEvent) => {
+      if (planetInteractionRef.current) {
+        planetInteractionRef.current.handleTap(e);
+      }
+    };
+
+    // Registrar eventos del mouse
     container.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("wheel", handleWheel, { passive: false as unknown as boolean });
     container.addEventListener("click", handleClick);
+
+    // Registrar eventos táctiles para soporte móvil
+    container.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchend", handleTouchEnd);
+    // passive: false permite llamar preventDefault() para evitar el scroll
+    container.addEventListener("touchmove", handleTouchMove, { passive: false as unknown as boolean });
+    container.addEventListener("touchend", handleTap);
 
     // Loop de animación
     let animationId: number;
@@ -353,11 +388,19 @@ export default function SistemaSolar3D({
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
+      // Remover eventos del mouse
       container.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("mousemove", handleMouseMove);
       container.removeEventListener("wheel", handleWheel as unknown as EventListener);
       container.removeEventListener("click", handleClick);
+      
+      // Remover eventos táctiles
+      container.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+      container.removeEventListener("touchmove", handleTouchMove as unknown as EventListener);
+      container.removeEventListener("touchend", handleTap);
+      
       if (renderer) {
         renderer.dispose();
       }

@@ -3,10 +3,12 @@ import { render, screen, fireEvent, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
-const renderWithRouter = (initialEntries: string[] = ["/"]) =>
+const mockOnClose = jest.fn();
+
+const renderWithRouter = (initialEntries: string[] = ["/"], isOpen: boolean = true) =>
   render(
     <MemoryRouter initialEntries={initialEntries}>
-      <Sidebar />
+      <Sidebar isOpen={isOpen} onClose={mockOnClose} />
     </MemoryRouter>
   );
 
