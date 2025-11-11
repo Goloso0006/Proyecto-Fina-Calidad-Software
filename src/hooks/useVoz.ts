@@ -7,6 +7,10 @@ export interface VozOptions {
 
 export function useVoz(defaultEnabled: boolean = false, options: VozOptions = {}) {
 	let enabled = defaultEnabled;
+	let lastSpokenText = '';
+	let lastSpokenTime = 0;
+	const DEBOUNCE_MS = 300; // Evitar repetir el mismo texto en 300ms
+	
 	const synth: SpeechSynthesis | null = typeof window !== "undefined" && "speechSynthesis" in window ? window.speechSynthesis : null;
 
 	const base: Required<VozOptions> = {
@@ -18,6 +22,16 @@ export function useVoz(defaultEnabled: boolean = false, options: VozOptions = {}
 
 	const speak = (texto: string) => {
 		if (!enabled || !synth || !texto) return;
+		
+		// Evitar repetir el mismo texto muy rápido (debounce)
+		const now = Date.now();
+		if (texto === lastSpokenText && (now - lastSpokenTime) < DEBOUNCE_MS) {
+			return; // Ignorar si es el mismo texto en menos de 300ms
+		}
+		
+		lastSpokenText = texto;
+		lastSpokenTime = now;
+		
 		try {
 			// Cancelar solo si hay algo hablando actualmente
 			if (synth.speaking || synth.pending) {
@@ -47,6 +61,9 @@ export function useVoz(defaultEnabled: boolean = false, options: VozOptions = {}
 		if (synth) {
 			try {
 				synth.cancel();
+				// Limpiar el historial de texto hablado al detener
+				lastSpokenText = '';
+				lastSpokenTime = 0;
 			} catch {
 				/* ignore */
 			}

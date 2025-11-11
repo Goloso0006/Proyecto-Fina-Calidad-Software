@@ -280,7 +280,6 @@ return (
 
         {/* Botón Ver Lista de Planetas */}
         <button
-        onFocus={() => { if (vozActiva) voz.speak(labelVerLista); }}
         onClick={() => { 
             if (vozActiva) voz.speak(labelVerLista); 
             setMostrarLista((prev) => {
@@ -293,6 +292,7 @@ return (
             }); 
         }}
         className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-auto"
+        aria-label={labelVerLista}
         >
         <span className="hidden sm:inline">{labelVerLista}</span>
         <span className="sm:hidden">Lista</span>
@@ -300,11 +300,10 @@ return (
 
         {/* Ayuda interactiva */}
         <button
-        onFocus={() => { if (vozActiva) voz.speak(labelAyuda); }}
         onClick={() => { if (vozActiva) voz.speak(labelAyuda); setAyudaActiva((prev) => !prev); }}
         className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500"
         aria-pressed={ayudaActiva}
-        aria-label="Alternar ayuda interactiva"
+        aria-label={labelAyuda}
         >
         <span className="hidden sm:inline">{labelAyuda}</span>
         <span className="sm:hidden">Ayuda</span>
