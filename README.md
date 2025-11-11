@@ -1,8 +1,11 @@
-# GeoNova - Plataforma Educativa Interactiva# Clase UCC - Aplicativo React con Vite
+# GeoNova - Plataforma Educativa Interactiva
 
+[![CI - GeoNova](https://github.com/Goloso0006/Proyecto-Fina-Calidad-Software/workflows/🚀%20CI%20-%20GeoNova/badge.svg)](https://github.com/Goloso0006/Proyecto-Fina-Calidad-Software/actions)
+[![Node.js Version](https://img.shields.io/badge/node-20.x-brightgreen.svg)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19.1-61dafb.svg)](https://react.dev/)
 
-
-## Descripción## Descripción
+## Descripción
 
 
 

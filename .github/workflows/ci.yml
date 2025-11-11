@@ -1,0 +1,207 @@
+name: 🚀 CI - GeoNova
+# Pipeline de Integración Continua para GeoNova
+# Validación automática de calidad, tests y build
+
+on:
+  push:
+    branches: [main]
+    # Se ejecuta en cada push a main
+  pull_request:
+    branches: [main]
+    # Se ejecuta en Pull Requests hacia main
+  workflow_dispatch:
+    # Permite ejecución manual desde GitHub Actions UI
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+  # Cancela ejecuciones duplicadas en la misma rama para ahorrar recursos
+
+jobs:
+  # ============================================
+  # JOB 1: VERIFICACIÓN DE CALIDAD DE CÓDIGO
+  # ============================================
+  quality-checks:
+    name: 🔍 Calidad de Código
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: 📥 Checkout del código
+        uses: actions/checkout@v4
+        # Descarga el código del repositorio
+
+      - name: 🔧 Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          # Lee la versión de Node desde .nvmrc (actualmente Node 20)
+          cache: npm
+          # Cache de node_modules para acelerar instalaciones
+
+      - name: 📦 Instalar dependencias
+        run: npm ci
+        # npm ci instala desde package-lock.json (más rápido y reproducible que npm install)
+
+      - name: 🧠 Verificar tipos con TypeScript
+        run: npm run type-check
+        # Ejecuta tsc --noEmit para validar tipos sin generar archivos
+
+      - name: 🧹 Analizar código con ESLint
+        run: npm run lint
+        # Verifica que el código siga las reglas de ESLint (máximo 0 warnings)
+
+  # ============================================
+  # JOB 2: PRUEBAS UNITARIAS
+  # ============================================
+  tests:
+    name: 🧪 Pruebas Unitarias
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    # Este job solo se ejecuta si quality-checks es exitoso
+    permissions:
+      contents: read
+    
+    steps:
+      - name: 📥 Checkout del código
+        uses: actions/checkout@v4
+
+      - name: 🔧 Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: 📦 Instalar dependencias
+        run: npm ci
+
+      - name: 🧪 Ejecutar tests con Jest
+        run: npm test -- --ci --coverage
+        # --ci: modo CI (sin interactividad)
+        # --coverage: genera reporte de cobertura de código
+
+      - name: 📊 Subir reporte de cobertura
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+          retention-days: 30
+          # El reporte se guarda por 30 días y luego se borra automáticamente
+
+  # ============================================
+  # JOB 3: BUILD DE PRODUCCIÓN
+  # ============================================
+  build:
+    name: 🏗️ Build de Producción
+    runs-on: ubuntu-latest
+    needs: [quality-checks, tests]
+    # Solo se ejecuta si AMBOS jobs anteriores son exitosos
+    permissions:
+      contents: read
+    
+    steps:
+      - name: 📥 Checkout del código
+        uses: actions/checkout@v4
+
+      - name: 🔧 Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: 📦 Instalar dependencias
+        run: npm ci
+
+      - name: 🏗️ Compilar proyecto con Vite
+        run: npm run build
+        # Genera la carpeta dist/ optimizada para producción
+
+      - name: ✅ Verificar integridad del build
+        run: |
+          echo "🔍 Verificando que el build se generó correctamente..."
+          
+          if [ ! -d "dist" ]; then
+            echo "❌ ERROR: La carpeta dist no fue generada"
+            exit 1
+          fi
+          
+          if [ ! -f "dist/index.html" ]; then
+            echo "❌ ERROR: index.html no encontrado en dist"
+            exit 1
+          fi
+          
+          echo "✅ Build generado correctamente"
+          echo "📊 Tamaño total del build:"
+          du -sh dist
+          
+          echo "📁 Archivos principales generados:"
+          ls -lh dist/ | grep -E '\.(html|js|css)$' || echo "No se encontraron archivos principales"
+        # Verifica que la carpeta dist existe y contiene los archivos esperados
+
+      - name: 📤 Subir build de producción
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: geonova-production-build
+          # Nombre descriptivo del artifact
+          path: dist
+          retention-days: 30
+          # Se guarda por 30 días (útil para rollbacks o debugging)
+
+  # ============================================
+  # JOB 4: PREVIEW DEL BUILD (solo en PRs)
+  # ============================================
+  deploy-preview:
+    name: 🚀 Preview del Build
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+    # Este job SOLO se ejecuta en Pull Requests, no en push a main
+    permissions:
+      contents: read
+    
+    steps:
+      - name: 📥 Descargar build de producción
+        uses: actions/download-artifact@v4
+        with:
+          name: geonova-production-build
+          path: dist
+        # Descarga el artifact generado en el job anterior
+
+      - name: 📋 Generar resumen del build
+        run: |
+          echo "### 🎉 Build de GeoNova completado exitosamente" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**📦 Tamaño total del build:**" >> $GITHUB_STEP_SUMMARY
+          du -sh dist >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**📁 Archivos principales generados:**" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          ls -lh dist/ | head -20 >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**✅ El build está listo para desplegar**" >> $GITHUB_STEP_SUMMARY
+        # Genera un resumen visual en la pestaña "Summary" de GitHub Actions
+        # Esto facilita revisar el estado del build sin entrar a los logs
+
+# ============================================
+# NOTAS IMPORTANTES
+# ============================================
+# 
+# 1. Este workflow ejecuta 4 jobs en orden:
+#    - quality-checks: TypeScript + ESLint
+#    - tests: Jest + Cobertura
+#    - build: Vite build + Validación
+#    - deploy-preview: Resumen (solo PRs)
+#
+# 2. Si algún job falla, los siguientes no se ejecutan (ahorra tiempo y recursos)
+#
+# 3. Los artifacts (build + coverage) se guardan por 30 días
+#
+# 4. El job "deploy-preview" solo se ejecuta en Pull Requests
+#    para no saturar con información en cada push a main
+#
+# 5. Puedes ejecutar este workflow manualmente desde:
+#    GitHub → Actions → CI - GeoNova → Run workflow

@@ -36,3 +36,21 @@
     animation: fadePulse 2s infinite;
   }
 }
+
+@layer utilities {
+  
+  /* color comienzo */
+  .bg-color-start {
+    background-color: #7B9C25;
+  }
+  
+  /* color final */
+  .hover\:bg-color-end:hover {
+    background-color: #67851B;
+  }
+
+  /* color texto */
+  .text-color {
+    color: #ffffff;
+  }
+}
