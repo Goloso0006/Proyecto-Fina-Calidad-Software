@@ -172,14 +172,14 @@ return (
     <div className="space-y-2 sm:space-y-4 px-2 sm:px-4">
     {/* Header */}
     <div className="mb-4 sm:mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
         {textos.titulo}
         </h1>
-        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400">{textos.subtitulo}</p>
+                <p className="text-sm sm:text-base text-slate-600">{textos.subtitulo}</p>
     </div>
 
     {/* Controles principales (barra superior) */}
-    <div className="flex flex-wrap items-center gap-2 sm:gap-4 p-2 sm:p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div className="flex flex-wrap items-center gap-2 sm:gap-4 p-2 sm:p-4 bg-white rounded-lg border border-slate-200 shadow-sm">
         {/* Botón Pausar/Reanudar */}
         <button
         onClick={(e) => {
@@ -200,7 +200,7 @@ return (
         <div className="flex items-center gap-1 sm:gap-2">
         <label
             htmlFor="velocidad"
-            className="text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 hidden sm:inline"
+            className="text-xs sm:text-sm font-medium text-slate-700 hidden sm:inline"
         >
             {textos.controles.velocidad}:
         </label>
@@ -219,7 +219,7 @@ return (
             className="w-20 sm:w-32"
             aria-label={`${textos.controles.velocidad}: ${velocidadAnimacion.toFixed(1)}x`}
         />
-        <span className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 w-8 sm:w-12">
+                <span className="text-xs sm:text-sm text-slate-600 w-8 sm:w-12">
             {velocidadAnimacion.toFixed(1)}x
         </span>
         </div>
@@ -333,7 +333,7 @@ return (
         }}>
         {/* coach marks simples */}
         {ayudaActiva && (
-            <div className="absolute z-10 top-3 left-3 bg-white/90 dark:bg-slate-800/90 border border-amber-300 dark:border-amber-700 rounded-lg p-3 text-sm text-slate-800 dark:text-slate-200 max-w-xs shadow">
+            <div className="absolute z-10 top-3 left-3 bg-white/90 border border-amber-300 rounded-lg p-3 text-sm text-slate-800 max-w-xs shadow">
             <div className="font-semibold mb-1">Consejos</div>
             <ul className="list-disc list-inside space-y-1">
                 <li>{textos.instrucciones.clicPlaneta}</li>
@@ -378,9 +378,9 @@ return (
             <button
             key={planeta.id}
             onClick={() => handlePlanetaClick(planeta.id)}
-            className="p-4 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-emerald-500 dark:hover:border-emerald-500 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 flex flex-col items-center"
+                        className="p-4 bg-white rounded-lg border border-slate-200 hover:border-emerald-500 hover:shadow-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 flex flex-col items-center"
             >
-            <div className="w-32 h-32 mb-3 bg-slate-200 dark:bg-slate-700 rounded-lg flex items-center justify-center overflow-hidden">
+                        <div className="w-32 h-32 mb-3 bg-slate-200 rounded-lg flex items-center justify-center overflow-hidden">
                 {planeta.imagen ? (
                     <img
                         src={planeta.imagen}
@@ -392,19 +392,19 @@ return (
                             const parent = target.parentElement;
                             if (parent && !parent.querySelector("span")) {
                                 const span = document.createElement("span");
-                                span.className = "text-slate-500 dark:text-slate-400 text-xs text-center p-2";
+                                span.className = "text-slate-500 text-xs text-center p-2";
                                 span.textContent = "Imagen no disponible";
                                 parent.appendChild(span);
                             }
                         }}
                     />
                 ) : (
-                    <span className="text-slate-500 dark:text-slate-400 text-xs text-center p-2">
+                    <span className="text-slate-500 text-xs text-center p-2">
                         Imagen no disponible
                     </span>
                 )}
             </div>
-            <h3 className="font-semibold text-lg text-slate-900 dark:text-slate-100 text-center">
+            <h3 className="font-semibold text-lg text-slate-900 text-center">
                 {planeta.nombre}
             </h3>
             </button>

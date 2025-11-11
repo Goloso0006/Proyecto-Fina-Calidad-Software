@@ -373,7 +373,7 @@ export default function GeometriaFiguras3D({
   return (
     <div
       ref={containerRef}
-      className="w-full h-full rounded-lg border-2 border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
+  className="w-full h-full rounded-lg border-2 border-slate-300 bg-slate-50"
       style={{ minHeight: "50vh", cursor }}
     />
   );

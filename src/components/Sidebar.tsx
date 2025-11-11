@@ -25,7 +25,7 @@ export default function Sidebar() {
       key={route}
       to={route}
       className={({ isActive }) =>
-        `w-full text-left flex items-center gap-2 justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 ${isActive ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300" : ""}`
+  `w-full text-left flex items-center gap-2 justify-between rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 ${isActive ? "bg-emerald-50 text-emerald-700" : ""}`
       }
     >
       <div className="flex items-center gap-2">{icon} {label}</div>
@@ -33,13 +33,13 @@ export default function Sidebar() {
   );
 
   return (
-    <aside className="hidden md:block w-full md:w-60 lg:w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+  <aside className="hidden md:block w-full md:w-60 lg:w-64 border-r-2 border-black bg-cover bg-center" style={{ backgroundImage: 'url("/sidebar.jpg")' }}> 
       <div className="p-3 space-y-1">
 
         {/* Acordeón Matemáticas / Geometría */}
         <button
           onClick={() => setOpenMatematicas(!openMatematicas)}
-          className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+          className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 font-medium"
         >
           📐 Matemáticas
           <span>{openMatematicas ? "▲" : "▼"}</span>
@@ -49,7 +49,7 @@ export default function Sidebar() {
         {/* Acordeón Ciencias Naturales */}
         <button
           onClick={() => setOpenCiencias(!openCiencias)}
-          className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 font-medium"
+          className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 font-medium"
         >
           🌍 Ciencias Naturales
           <span>{openCiencias ? "▲" : "▼"}</span>

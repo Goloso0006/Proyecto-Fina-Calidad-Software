@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { FaGlobe, FaCube, FaRocket, FaStar } from "react-icons/fa";
+import { FaGlobe, FaCube, FaStar } from "react-icons/fa";
 
 interface ModuloCard {
   id: string;
@@ -21,8 +21,8 @@ const modulos: ModuloCard[] = [
       "Explora figuras geométricas en 3D y aprende sobre sus propiedades",
     ruta: "/geometria",
     icono: <FaCube />,
-    colorGradiente: "from-purple-500 via-pink-500 to-red-500",
-    colorHover: "hover:from-purple-600 hover:via-pink-600 hover:to-red-600",
+    colorGradiente: "bg-[linear-gradient(135deg,#2672b8,#00adac)]",
+    colorHover: "hover:bg-[linear-gradient(135deg,#065ba0,#908D9E)]",
     emoji: "🔷",
   },
   {
@@ -32,8 +32,8 @@ const modulos: ModuloCard[] = [
       "Viaja por el espacio y descubre los planetas del sistema solar",
     ruta: "/sistema-solar",
     icono: <FaGlobe />,
-    colorGradiente: "from-blue-500 via-cyan-500 to-teal-500",
-    colorHover: "hover:from-blue-600 hover:via-cyan-600 hover:to-teal-600",
+    colorGradiente: "bg-[linear-gradient(135deg,#2672b8,#00adac)]",
+    colorHover: "hover:bg-[linear-gradient(135deg,#065ba0,#908D9E)]",
     emoji: "🌍",
   },
 ];
@@ -120,7 +120,12 @@ export default function HomeView() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-orange-100 to-pink-100 dark:from-indigo-900 dark:via-purple-900 dark:to-pink-900 relative overflow-hidden">
+    <div 
+      className="min-h-screen relative overflow-hidden bg-cover bg-center" style={{ backgroundImage: "url('/fondohome.jpg')" }}
+    > 
+      {/* Capa semitransparente encima del fondo */}
+      <div className="absolute inset-0 bg-black/30"></div>
+
       {/* Estrellas animadas de fondo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => {
@@ -184,25 +189,29 @@ export default function HomeView() {
               repeatType: "reverse",
             }}
           >
-            <FaRocket className="text-6xl text-orange-500" />
+            <img 
+              src="/iconox2.png" 
+              alt="imagen marciano con un casco espacial" 
+              className="w-24 h-24 md:w-32 md:h-32 object-contain"
+            />
           </motion.div>
 
           <motion.h1
-            className="text-6xl md:text-7xl font-extrabold mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent"
+            className="text-6xl md:text-7xl font-extrabold mb-4 bg-gradient-to-r from-green-400 to-sky-400 bg-clip-text text-transparent"
             variants={itemVariants}
           >
-            ¡Bienvenido A Formas del Universo!
+            ¡Bienvenido A GeoNova!
           <br /><br /></motion.h1>
 
           <motion.p
-            className="text-2xl md:text-3xl text-slate-700 dark:text-slate-200 font-semibold mb-2"
+              className="text-2xl md:text-3xl font-semibold mb-2 text-[#E5F0DF] text-outline-blue animate-fade-pulse"
             variants={itemVariants}
           >
-            🪐 ¡Prepárate para una aventura donde las matemáticas y el universo se unen!
+            ¡Prepárate para una aventura donde las matemáticas y el universo se unen!
           <br /><br /></motion.p>
 
           <motion.p
-            className="text-lg md:text-xl text-slate-600 dark:text-slate-300"
+          className="text-lg md:text-xl  text-[#FAFCF7] text-outline-blue"
             variants={itemVariants}
           >
 
@@ -227,7 +236,7 @@ export default function HomeView() {
               onClick={() => handleModuloClick(modulo.ruta)}
             >
               <div
-                className={`bg-gradient-to-br ${modulo.colorGradiente} ${modulo.colorHover} rounded-3xl p-8 shadow-2xl transform transition-all duration-300 border-4 border-white dark:border-slate-800`}
+                  className={`bg-gradient-to-br ${modulo.colorGradiente} ${modulo.colorHover} rounded-3xl p-8 shadow-2xl transform transition-all duration-300 border-4 border-white`}
               >
                 {/* Icono animado */}
                 <motion.div
@@ -256,8 +265,13 @@ export default function HomeView() {
                   className="flex justify-center"
                   whileTap={{ scale: 0.95 }}
                 >
-                  <div className="bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 font-bold text-white text-lg border-2 border-white/50">
-                    🚀 ¡Explorar!
+                  <div className="bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 font-bold text-white text-lg border-2 border-white/50 flex items-center gap-3">
+                    <img 
+                      src="iconoSeleccion.ico" 
+                      alt="Icono de un marciano" 
+                      className="w-6 h-6 md:w-8 md:h-8 object-contain"
+                    />
+                    ¡Explorar!
                   </div>
                 </motion.div>
 
@@ -292,16 +306,9 @@ export default function HomeView() {
         {/* Mensaje motivacional en la parte inferior */}
         <motion.div className="text-center mt-12" variants={itemVariants}>
           <motion.p
-            className="text-xl md:text-2xl font-bold text-slate-700 dark:text-slate-200"
-            animate={{
-              opacity: [0.7, 1, 0.7],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-            }}
+              className="text-xl md:text-2xl font-bold text-[#E5F0DF] text-outline-blue animate-fade-pulse"
           >
-            ✨ ¡Elige un módulo y comienza tu aventura de aprendizaje! ✨
+            👾 ¡Elige un módulo y comienza tu aventura de aprendizaje! 👾
           </motion.p>
         </motion.div>
       </motion.div>

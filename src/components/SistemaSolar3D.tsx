@@ -526,7 +526,7 @@ export default function SistemaSolar3D({
     >
       <div
         ref={containerRef}
-        className="w-full h-full rounded-lg border border-slate-200 dark:border-slate-800 bg-black"
+  className="w-full h-full rounded-lg border border-slate-200 bg-black"
         style={{
           cursor,
           maxWidth: "100%",

@@ -62,9 +62,9 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
       {/* Descripción */}
       <motion.div
         variants={itemVariants}
-        className="bg-white dark:bg-slate-700 rounded-2xl p-5 border-3 border-slate-300 dark:border-slate-600 shadow-md"
+  className="bg-white rounded-2xl p-5 border-3 border-slate-300 shadow-md"
       >
-        <p className="text-slate-900 dark:text-white text-lg leading-relaxed">
+  <p className="text-slate-900 text-lg leading-relaxed">
           {figura.descripcion}
         </p>
       </motion.div>
@@ -117,15 +117,15 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
       {/* Tipo de caras */}
       <motion.div
         variants={itemVariants}
-        className="bg-white dark:bg-slate-700 rounded-2xl p-5 border-3 border-purple-400 dark:border-purple-600 shadow-md"
+  className="bg-white rounded-2xl p-5 border-3 border-purple-400 shadow-md"
       >
         <div className="flex items-center gap-3">
           <span className="text-3xl">🔷</span>
           <div>
-            <div className="text-slate-600 dark:text-slate-300 font-semibold">
+            <div className="text-slate-600 font-semibold">
               Tipo de caras:
             </div>
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">
+            <div className="text-2xl font-bold text-slate-900">
               {figura.tipoCaras}
             </div>
           </div>
@@ -135,32 +135,32 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
       {/* Fórmula de Euler - Panel especial */}
       <motion.div
         variants={itemVariants}
-        className="bg-gradient-to-br from-purple-300 to-pink-300 dark:from-purple-800 dark:to-pink-800 rounded-3xl p-6 border-4 border-white shadow-lg"
+  className="bg-gradient-to-br from-purple-300 to-pink-300 rounded-3xl p-6 border-4 border-white shadow-lg"
       >
         <div className="flex items-center gap-2 mb-4">
           <span className="text-4xl">📐</span>
-          <h3 className="text-2xl font-black text-slate-900 dark:text-white">
+          <h3 className="text-2xl font-black text-slate-900">
             Fórmula de Euler
           </h3>
         </div>
 
-        <p className="text-slate-800 dark:text-slate-100 font-semibold mb-4 text-base">
+  <p className="text-slate-800 font-semibold mb-4 text-base">
           Todos los poliedros convexos cumplen con:
         </p>
 
         {/* Fórmula grande */}
-        <div className="bg-white dark:bg-slate-700 rounded-2xl p-5 mb-4 text-center border-3 border-purple-400">
-          <div className="text-4xl font-black text-slate-900 dark:text-white mb-3">
+  <div className="bg-white rounded-2xl p-5 mb-4 text-center border-3 border-purple-400">
+          <div className="text-4xl font-black text-slate-900 mb-3">
             V - A + C = 2
           </div>
           <div className="grid grid-cols-3 gap-2 text-sm">
-            <div className="text-slate-700 dark:text-slate-300">
+            <div className="text-slate-700">
               <span className="font-bold">V</span> = Vértices
             </div>
-            <div className="text-slate-700 dark:text-slate-300">
+            <div className="text-slate-700">
               <span className="font-bold">A</span> = Aristas
             </div>
-            <div className="text-slate-700 dark:text-slate-300">
+            <div className="text-slate-700">
               <span className="font-bold">C</span> = Caras
             </div>
           </div>
@@ -194,11 +194,11 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
       {/* Datos curiosos */}
       <motion.div
         variants={itemVariants}
-        className="bg-white dark:bg-slate-700 rounded-3xl p-6 border-4 border-amber-400 shadow-lg"
+  className="bg-white rounded-3xl p-6 border-4 border-amber-400 shadow-lg"
       >
         <div className="flex items-center gap-2 mb-4">
           <span className="text-4xl">🌟</span>
-          <h3 className="text-2xl font-black text-slate-900 dark:text-white">
+          <h3 className="text-2xl font-black text-slate-900">
             Datos Curiosos
           </h3>
         </div>
@@ -209,10 +209,10 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="flex items-start gap-3 bg-amber-50 dark:bg-slate-600 p-3 rounded-xl border-2 border-amber-200 dark:border-amber-700"
+              className="flex items-start gap-3 bg-amber-50 p-3 rounded-xl border-2 border-amber-200"
             >
               <span className="text-2xl flex-shrink-0">💡</span>
-              <p className="text-slate-800 dark:text-slate-100 font-medium">
+              <p className="text-slate-800 font-medium">
                 {dato}
               </p>
             </motion.div>
@@ -223,11 +223,11 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
       {/* Ejemplos en la vida real */}
       <motion.div
         variants={itemVariants}
-        className="bg-white dark:bg-slate-700 rounded-3xl p-6 border-4 border-cyan-400 shadow-lg"
+  className="bg-white rounded-3xl p-6 border-4 border-cyan-400 shadow-lg"
       >
         <div className="flex items-center gap-2 mb-4">
           <span className="text-4xl">🌍</span>
-          <h3 className="text-2xl font-black text-slate-900 dark:text-white">
+          <h3 className="text-2xl font-black text-slate-900">
             En la Vida Real
           </h3>
         </div>

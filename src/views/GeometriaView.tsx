@@ -79,7 +79,7 @@ export default function GeometriaView() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 dark:from-slate-900 dark:via-blue-900 dark:to-purple-900 p-4 sm:p-6 lg:p-8">
+  <div className="min-h-screen bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 p-4 sm:p-6 lg:p-8">
       {/* Decoración de fondo */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         {[...Array(15)].map((_, i) => (
@@ -137,7 +137,7 @@ export default function GeometriaView() {
               🔷
             </motion.span>
           </div>
-          <p className="text-2xl font-bold text-slate-700 dark:text-slate-300 mb-4">
+          <p className="text-2xl font-bold text-slate-700 mb-4">
             {textos.subtitulo}
           </p>
 
@@ -151,7 +151,7 @@ export default function GeometriaView() {
                 ${
                   vistaActual === "3d"
                     ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-xl scale-110"
-                    : "bg-white/80 dark:bg-slate-700 text-slate-900 dark:text-white hover:scale-105"
+                    : "bg-white/80 text-slate-900 hover:scale-105"
                 }
               `}
               whileHover={{ scale: 1.05 }}
@@ -167,7 +167,7 @@ export default function GeometriaView() {
                 ${
                   vistaActual === "galeria"
                     ? "bg-gradient-to-r from-purple-500 to-purple-700 text-white shadow-xl scale-110"
-                    : "bg-white/80 dark:bg-slate-700 text-slate-900 dark:text-white hover:scale-105"
+                    : "bg-white/80 text-slate-900 hover:scale-105"
                 }
               `}
               whileHover={{ scale: 1.05 }}
@@ -195,12 +195,12 @@ export default function GeometriaView() {
             <div className="lg:col-span-2 space-y-6">
               {/* Selector de figuras */}
               <motion.div
-                className="bg-white/95 dark:bg-slate-800/95 rounded-3xl p-6 border-4 border-white shadow-xl backdrop-blur-sm"
+                className="bg-white/95 rounded-3xl p-6 border-4 border-white shadow-xl backdrop-blur-sm"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
               >
-                <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <h3 className="text-2xl font-black text-slate-900 mb-4 flex items-center gap-2">
                   <span>🎨</span> Elige una Figura
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -218,7 +218,7 @@ export default function GeometriaView() {
 
               {/* Visualización 3D */}
               <motion.div
-                className="bg-white/95 dark:bg-slate-800/95 rounded-3xl overflow-hidden border-4 border-white shadow-xl backdrop-blur-sm"
+                className="bg-white/95 rounded-3xl overflow-hidden border-4 border-white shadow-xl backdrop-blur-sm"
                 style={{ minHeight: "50vh" }}
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

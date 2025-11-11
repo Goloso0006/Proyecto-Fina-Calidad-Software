@@ -104,7 +104,7 @@ export function ControlPanel({
   ayudaActiva,
 }: ControlPanelProps) {
   return (
-    <div className="bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-3xl p-6 shadow-lg border-4 border-white dark:border-slate-600">
+  <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-3xl p-6 shadow-lg border-4 border-white">
       {/* Grid de botones principales */}
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
         <ControlButton
@@ -154,10 +154,10 @@ export function ControlPanel({
       </div>
 
       {/* Control de velocidad con diseño divertido */}
-      <div className="bg-white dark:bg-slate-600 rounded-2xl p-4 mb-6 border-3 border-emerald-400">
+  <div className="bg-white rounded-2xl p-4 mb-6 border-3 border-emerald-400">
         <div className="flex items-center gap-3 mb-3">
           <span className="text-3xl">⚡</span>
-          <label className="font-bold text-slate-900 dark:text-white text-lg">
+          <label className="font-bold text-slate-900 text-lg">
             Velocidad de Rotación
           </label>
         </div>
@@ -171,10 +171,10 @@ export function ControlPanel({
             value={velocidadRotacion}
             onChange={(e) => onVelocidadChange(parseFloat(e.target.value))}
             disabled={isPaused}
-            className="flex-1 h-3 bg-slate-300 dark:bg-slate-500 rounded-full appearance-none cursor-pointer accent-emerald-500"
+            className="flex-1 h-3 bg-slate-300 rounded-full appearance-none cursor-pointer accent-emerald-500"
           />
           <span className="text-2xl">🚀</span>
-          <div className="w-16 text-center font-bold text-lg bg-emerald-100 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-100 rounded-lg py-2 px-3">
+          <div className="w-16 text-center font-bold text-lg bg-emerald-100 text-emerald-900 rounded-lg py-2 px-3">
             {velocidadRotacion.toFixed(1)}x
           </div>
         </div>
@@ -190,7 +190,7 @@ export function ControlPanel({
             ${
               mostrarCaras
                 ? "bg-gradient-to-br from-green-400 to-green-600 text-white shadow-lg"
-                : "bg-slate-300 dark:bg-slate-500 text-slate-700 dark:text-slate-300"
+                : "bg-slate-300 text-slate-700"
             }
             ${isDescompuesta ? "opacity-50 cursor-not-allowed" : "hover:scale-105"}
           `}
@@ -206,7 +206,7 @@ export function ControlPanel({
             ${
               mostrarAristas
                 ? "bg-gradient-to-br from-yellow-400 to-yellow-600 text-white shadow-lg"
-                : "bg-slate-300 dark:bg-slate-500 text-slate-700 dark:text-slate-300"
+                : "bg-slate-300 text-slate-700"
             }
             hover:scale-105
           `}
@@ -222,7 +222,7 @@ export function ControlPanel({
             ${
               mostrarVertices
                 ? "bg-gradient-to-br from-red-400 to-red-600 text-white shadow-lg"
-                : "bg-slate-300 dark:bg-slate-500 text-slate-700 dark:text-slate-300"
+                : "bg-slate-300 text-slate-700"
             }
             hover:scale-105
           `}
@@ -234,7 +234,7 @@ export function ControlPanel({
 
       {/* Mensaje motivacional */}
       <motion.div
-        className="text-center bg-gradient-to-r from-pink-300 to-purple-300 dark:from-pink-800 dark:to-purple-800 rounded-2xl p-3 border-3 border-white"
+  className="text-center bg-gradient-to-r from-pink-300 to-purple-300 rounded-2xl p-3 border-3 border-white"
         animate={{ scale: [1, 1.05, 1] }}
         transition={{ duration: 2, repeat: Infinity }}
       >

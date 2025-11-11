@@ -13,7 +13,7 @@ const AppWithLayout = () => (
 );
 
 describe("Layout - renderiza Sidebar y Navbar", () => {
-  test("en home muestra 'Panel principal' y el botón 'Matemáticas' del Sidebar", () => {
+  test("en home muestra 'GeoNova' y el botón 'Matemáticas' del Sidebar", () => {
     render(
       <MemoryRouter initialEntries={["/"]}>
         <AppWithLayout />
@@ -21,7 +21,7 @@ describe("Layout - renderiza Sidebar y Navbar", () => {
     );
 
     // Navbar
-    expect(screen.getByText("Panel principal")).toBeInTheDocument();
+    expect(screen.getByText("GeoNova")).toBeInTheDocument();
     // Sidebar
     expect(screen.getByRole("button", { name: /Matemáticas/i })).toBeInTheDocument();
 

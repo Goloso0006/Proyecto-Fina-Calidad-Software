@@ -10,7 +10,10 @@ export default function Navbar() {
 
   return (
     <motion.header
-      className="h-16 sticky top-0 z-20 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b-2 border-purple-200 dark:border-purple-800 shadow-lg"
+      className="h-16 sticky top-0 z-20 bg-cover bg-center border-b-2 border-black"
+      style={{
+        backgroundImage: `url('/navbar.jpg')`
+      }}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 15 }}
@@ -23,11 +26,15 @@ export default function Navbar() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          <div className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 text-white text-xl font-bold shadow-lg">
-            🕹️
+          <div className="inline-flex items-center justify-center w-12 h-12 ">
+            <img
+              src="/icono.ico"
+              alt="Icono GeoNova"
+              className="w-12 h-12"
+            />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Panel principal
+          <span className="text-2xl font-bold bg-gradient-to-r from-green-300 to-sky-300 bg-clip-text text-transparent">
+            GeoNova
           </span>
         </motion.div>
 

@@ -1,9 +1,14 @@
 import type { Config } from 'tailwindcss'
 
-// Forzamos estrategia por clase para el modo oscuro
 export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   darkMode: 'class',
+  theme: {
+    extend: {},
+  },
+  plugins: [],
 } satisfies Config
-
-
 

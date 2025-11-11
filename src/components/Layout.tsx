@@ -14,7 +14,7 @@ export default function Layout() {
         <Navbar />
 
         {/* Contenido dinámico (cada vista) */}
-        <main className="flex-1 overflow-y-auto bg-slate-50 dark:bg-slate-900 min-w-0 px-2 sm:px-4">
+  <main className="flex-1 overflow-y-auto bg-slate-50 min-w-0 px-2 sm:px-4">
           <Outlet />
         </main>
       </div>
