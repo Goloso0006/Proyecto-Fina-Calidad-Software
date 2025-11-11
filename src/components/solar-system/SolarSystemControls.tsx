@@ -128,15 +128,16 @@ export function SolarSystemControls({
                 className="flex-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
                 style={{
                   height: 'clamp(0.25rem, 0.4vw, 0.375rem)',
+                  minWidth: '50px',
                   background: `linear-gradient(to right, rgb(16 185 129) 0%, rgb(16 185 129) ${(velocidadAnimacion / 5) * 100}%, rgb(51 65 85) ${(velocidadAnimacion / 5) * 100}%, rgb(51 65 85) 100%)`,
                 }}
                 aria-label={`${textos.controles.velocidad}: ${velocidadAnimacion.toFixed(1)}x`}
               />
               <span 
-                className="text-white/90 text-right shrink-0"
+                className="text-white/90 text-right shrink-0 tabular-nums"
                 style={{
                   fontSize: 'clamp(0.625rem, 1.3vw, 0.75rem)',
-                  width: 'clamp(1.5rem, 5vw, 2rem)',
+                  minWidth: 'clamp(2rem, 6vw, 2.5rem)',
                 }}
               >
                 {velocidadAnimacion.toFixed(1)}x

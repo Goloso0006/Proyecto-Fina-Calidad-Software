@@ -67,6 +67,12 @@ export function usePlanetInteraction(
   
   /** Posición anterior del toque para calcular deltas de movimiento */
   const previousTouchPositionRef = useRef({ x: 0, y: 0 });
+  
+  /** Distancia inicial entre dos dedos para pinch-to-zoom */
+  const initialPinchDistanceRef = useRef(0);
+  
+  /** Flag para saber si se está haciendo pinch-to-zoom */
+  const isPinchingRef = useRef(false);
 
   // ============================================
   // REFS PARA CALLBACKS
@@ -250,12 +256,29 @@ export function usePlanetInteraction(
    * Maneja el evento de touch start (inicio de toque en pantalla táctil)
    * Similar a handleMouseDown pero para dispositivos móviles
    * Se ejecuta cuando el usuario toca la pantalla
+   * Soporta un solo dedo (rotación) o dos dedos (pinch-to-zoom)
    */
   const handleTouchStart = useCallback(
     (event: TouchEvent) => {
       if (!containerRef.current || event.touches.length === 0) return;
 
-      // Obtener el primer punto de toque (ignorar multi-touch por ahora)
+      // Verificar si es pinch-to-zoom (dos dedos)
+      if (event.touches.length === 2) {
+        isPinchingRef.current = true;
+        isDraggingRef.current = false; // No rotar mientras se hace pinch
+        
+        // Calcular distancia inicial entre los dos dedos
+        const touch1 = event.touches[0];
+        const touch2 = event.touches[1];
+        const dx = touch2.clientX - touch1.clientX;
+        const dy = touch2.clientY - touch1.clientY;
+        initialPinchDistanceRef.current = Math.sqrt(dx * dx + dy * dy);
+        
+        return;
+      }
+
+      // Un solo dedo: rotación normal
+      isPinchingRef.current = false;
       const touch = event.touches[0];
       
       // Iniciar arrastre y guardar posición/tiempo inicial
@@ -278,8 +301,10 @@ export function usePlanetInteraction(
    * Se ejecuta cuando el usuario deja de tocar la pantalla
    */
   const handleTouchEnd = useCallback(() => {
-    // Terminar arrastre
+    // Terminar arrastre y pinch
     isDraggingRef.current = false;
+    isPinchingRef.current = false;
+    initialPinchDistanceRef.current = 0;
     
     // Notificar que terminó el arrastre
     if (onDragEndRef.current) {
@@ -290,33 +315,62 @@ export function usePlanetInteraction(
   /**
    * Maneja el evento de touch move (movimiento del dedo en pantalla táctil)
    * Permite rotar la cámara deslizando el dedo por la pantalla
+   * O hacer zoom con el gesto de pinch (dos dedos)
    * CLAVE: Previene el scroll predeterminado para permitir la rotación de cámara
    */
   const handleTouchMove = useCallback(
-    // eslint-disable-next-line no-unused-vars
-    (event: TouchEvent, onRotate?: (deltaX: number, deltaY: number) => void) => {
-      // Solo procesar si se está arrastrando
-      if (!isDraggingRef.current || !onRotate || event.touches.length === 0) return;
-
+    (
+      event: TouchEvent, 
+      // eslint-disable-next-line no-unused-vars
+      onRotate?: (deltaX: number, deltaY: number) => void,
+      // eslint-disable-next-line no-unused-vars
+      onZoom?: (delta: number) => void
+    ) => {
       // IMPORTANTE: Prevenir el comportamiento predeterminado (scroll de página)
-      // Esto permite que el usuario pueda mover la cámara sin que la página se desplace
       event.preventDefault();
 
-      // Obtener el primer punto de toque
-      const touch = event.touches[0];
-      
-      // Calcular cuánto se movió el dedo desde la última posición
-      const deltaX = touch.clientX - previousTouchPositionRef.current.x;
-      const deltaY = touch.clientY - previousTouchPositionRef.current.y;
+      // Caso 1: Pinch-to-zoom (dos dedos)
+      if (isPinchingRef.current && event.touches.length === 2 && onZoom) {
+        const touch1 = event.touches[0];
+        const touch2 = event.touches[1];
+        
+        // Calcular distancia actual entre los dos dedos
+        const dx = touch2.clientX - touch1.clientX;
+        const dy = touch2.clientY - touch1.clientY;
+        const currentDistance = Math.sqrt(dx * dx + dy * dy);
+        
+        // Calcular el cambio en la distancia
+        if (initialPinchDistanceRef.current > 0) {
+          const distanceDelta = currentDistance - initialPinchDistanceRef.current;
+          
+          // Convertir el cambio de distancia en delta de zoom
+          // Negativo porque acercar dedos debe alejar la cámara (zoom out)
+          const zoomDelta = -distanceDelta * 0.02;
+          onZoom(zoomDelta);
+        }
+        
+        // Actualizar distancia para el siguiente frame
+        initialPinchDistanceRef.current = currentDistance;
+        return;
+      }
 
-      // Rotar la cámara según el movimiento del dedo
-      onRotate(deltaX, deltaY);
+      // Caso 2: Rotación con un dedo
+      if (isDraggingRef.current && onRotate && event.touches.length === 1) {
+        const touch = event.touches[0];
+        
+        // Calcular cuánto se movió el dedo desde la última posición
+        const deltaX = touch.clientX - previousTouchPositionRef.current.x;
+        const deltaY = touch.clientY - previousTouchPositionRef.current.y;
 
-      // Actualizar posición anterior para el próximo frame
-      previousTouchPositionRef.current = {
-        x: touch.clientX,
-        y: touch.clientY,
-      };
+        // Rotar la cámara según el movimiento del dedo
+        onRotate(deltaX, deltaY);
+
+        // Actualizar posición anterior para el próximo frame
+        previousTouchPositionRef.current = {
+          x: touch.clientX,
+          y: touch.clientY,
+        };
+      }
     },
     []
   );

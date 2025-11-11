@@ -313,9 +313,11 @@ export default function SistemaSolar3D({
 
     const handleTouchMove = (e: TouchEvent) => {
       if (planetInteractionRef.current && cameraControlsRef.current) {
-        planetInteractionRef.current.handleTouchMove(e, (deltaX: number, deltaY: number) => {
-          cameraControlsRef.current?.rotateCamera(deltaX, deltaY);
-        });
+        planetInteractionRef.current.handleTouchMove(
+          e, 
+          cameraControlsRef.current.rotateCamera,
+          cameraControlsRef.current.zoomCamera
+        );
       }
     };
 
