@@ -10,6 +10,9 @@ interface GeometriaFiguras3DProps {
   mostrarVertices: boolean;
   isDescompuesta: boolean;
   color: string;
+  // Triggers externos para controlar la cámara/rotación
+  resetTick?: number;
+  vistaGeneralTick?: number;
 }
 
 export default function GeometriaFiguras3D({
@@ -21,6 +24,8 @@ export default function GeometriaFiguras3D({
   mostrarVertices,
   isDescompuesta,
   color,
+  resetTick = 0,
+  vistaGeneralTick = 0,
 }: GeometriaFiguras3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -33,6 +38,13 @@ export default function GeometriaFiguras3D({
   const isDraggingRef = useRef(false);
   const previousMousePositionRef = useRef({ x: 0, y: 0 });
   const [cursor, setCursor] = useState<"grab" | "grabbing">("grab");
+  // Refs para reflejar cambios de velocidad/pausa/descomposición sin recrear la escena
+  const velocidadRef = useRef(velocidadRotacion);
+  const pausedRef = useRef(isPaused);
+  const descompuestaRef = useRef(isDescompuesta);
+  useEffect(() => { velocidadRef.current = velocidadRotacion; }, [velocidadRotacion]);
+  useEffect(() => { pausedRef.current = isPaused; }, [isPaused]);
+  useEffect(() => { descompuestaRef.current = isDescompuesta; }, [isDescompuesta]);
 
   // Crear geometría según el tipo de figura
   const crearGeometria = (id: string): THREE.BufferGeometry => {
@@ -256,9 +268,9 @@ export default function GeometriaFiguras3D({
     const animate = () => {
       animationId = requestAnimationFrame(animate);
 
-      if (!isPaused && figuraRef.current && !isDescompuesta) {
-        figuraRef.current.rotation.y += velocidadRotacion * 0.01;
-        figuraRef.current.rotation.x += velocidadRotacion * 0.005;
+      if (!pausedRef.current && figuraRef.current && !descompuestaRef.current) {
+        figuraRef.current.rotation.y += velocidadRef.current * 0.01;
+        figuraRef.current.rotation.x += velocidadRef.current * 0.005;
       }
 
       renderer.render(scene, camera);
@@ -287,10 +299,46 @@ export default function GeometriaFiguras3D({
       window.removeEventListener("mousemove", onMouseMove);
       container.removeEventListener("wheel", onWheel);
       resizeObserver.disconnect();
+      // Liberar recursos de GPU
+      try {
+        // Mesh principal
+        (mesh.geometry as THREE.BufferGeometry).dispose();
+        (mesh.material as THREE.Material).dispose();
+        // Aristas
+        (edgesGeometry as THREE.EdgesGeometry).dispose();
+        (edgesMaterial as THREE.LineBasicMaterial).dispose();
+        // Vértices
+        (verticesGeometry as THREE.BufferGeometry).dispose();
+        (verticesMaterial as THREE.PointsMaterial).dispose();
+        // Caras individuales
+        caras.forEach((cara) => {
+          cara.geometry.dispose();
+          (cara.material as THREE.Material).dispose();
+          scene.remove(cara);
+        });
+      } catch (err) {
+        // Evitar fallo de lint por bloque vacío y continuar
+        void err;
+      }
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
   }, [figuraId, color]);
+
+  // Reset de vista (rotación y cámara)
+  useEffect(() => {
+    if (!figuraRef.current || !cameraRef.current) return;
+    figuraRef.current.rotation.set(0, 0, 0);
+    cameraRef.current.position.set(0, 0, 8);
+    cameraRef.current.lookAt(0, 0, 0);
+  }, [resetTick]);
+
+  // Vista general (alejar cámara)
+  useEffect(() => {
+    if (!cameraRef.current) return;
+    cameraRef.current.position.set(0, 2, 12);
+    cameraRef.current.lookAt(0, 0, 0);
+  }, [vistaGeneralTick]);
 
   // Efecto para mostrar/ocultar aristas
   useEffect(() => {
@@ -373,7 +421,7 @@ export default function GeometriaFiguras3D({
   return (
     <div
       ref={containerRef}
-  className="w-full h-full rounded-lg border-2 border-slate-300 bg-slate-50"
+      className="w-full h-full rounded-lg border-2 border-slate-300 bg-slate-50"
       style={{ minHeight: "50vh", cursor }}
     />
   );
