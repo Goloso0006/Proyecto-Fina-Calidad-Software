@@ -47,7 +47,9 @@ jest.mock("three", () => {
             const mesh: any = {
                 position: { x: 0, y: 0, z: 0, set: jest.fn() },
                 rotation: { x: 0, y: 0, z: 0, set: jest.fn() },
+                scale: { set: jest.fn() },
                 userData: {},
+                add: jest.fn(), // Agregar método add para los anillos de Saturno
                 getWorldPosition: jest.fn((vec: any) => {
                     if (vec) {
                         vec.x = 0;

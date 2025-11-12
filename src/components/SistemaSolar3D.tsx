@@ -130,6 +130,7 @@ export default function SistemaSolar3D({
   const followFramesRef = useRef(0);
   const selectedPlanetRef = useRef<string | null>(planetaSeleccionado);
   const onPlanetaClickRef = useRef(onPlanetaClick);
+  // eslint-disable-next-line no-unused-vars
   const handlePlanetHoverRef = useRef<(planetaId: string | null) => void>(() => {});
   
   // Datos de planetas para obtener nombres
