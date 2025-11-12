@@ -46,6 +46,28 @@ export function createPlanet(
 
   orbitaGroup.add(planetaMesh);
 
+  // Agregar anillos a Saturno
+  if (config.id === "saturno") {
+    const ringGeometry = new THREE.RingGeometry(
+      config.tamaño * 1.5,  // Radio interior
+      config.tamaño * 2.5,  // Radio exterior
+      64                     // Segmentos
+    );
+    const ringMaterial = new THREE.MeshBasicMaterial({
+      color: 0xc9b182,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.8,
+    });
+    const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
+    
+    // Rotar los anillos para que estén horizontales
+    ringMesh.rotation.x = Math.PI / 2;
+    
+    // Agregar los anillos al planeta
+    planetaMesh.add(ringMesh);
+  }
+
   // Crear anillo de órbita visual
   const orbitRing = createOrbitRing(
     config.distancia,

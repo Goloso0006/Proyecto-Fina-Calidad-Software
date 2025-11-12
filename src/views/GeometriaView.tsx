@@ -79,7 +79,7 @@ export default function GeometriaView() {
   };
 
   return (
-  <div className="min-h-screen bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200 p-4 sm:p-6 lg:p-8">
+  <div className="min-h-screen bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200">
       {/* Decoración de fondo */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         {[...Array(15)].map((_, i) => (
@@ -106,7 +106,7 @@ export default function GeometriaView() {
       </div>
 
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto"
+        className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8"
         variants={containerVariants}
         initial="hidden"
         animate="visible"

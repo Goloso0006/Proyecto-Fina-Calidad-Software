@@ -21,7 +21,7 @@ export default function Layout() {
         <Navbar onToggleSidebar={toggleSidebar} />
 
         {/* Contenido dinámico (cada vista) */}
-  <main className="flex-1 overflow-y-auto bg-slate-50 min-w-0 px-2 sm:px-4">
+  <main className="flex-1 overflow-y-auto min-w-0">
           <Outlet />
         </main>
       </div>

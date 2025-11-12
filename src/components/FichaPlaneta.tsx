@@ -101,11 +101,11 @@ return (
     aria-modal="true"
     >
     <div
-    className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+    className="bg-blue-100 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
     >
         {/* Header */}
-    <div className="sticky top-0 bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+    <div className="sticky top-0 bg-blue-200 border-b border-blue-300 px-6 py-4 flex justify-between items-center">
         <h2
             id="ficha-titulo"
             className="text-2xl font-bold text-slate-900"
@@ -115,14 +115,14 @@ return (
         <div className="flex items-center gap-2">
             <button
             onClick={leerContenido}
-            className="px-3 py-1 bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500"
+            className="px-3 py-1 bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] hover:from-[#2563EB] hover:to-[#3B82F6] text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
             aria-label="Escuchar descripción"
             >
             🔊 Escuchar
             </button>
             <button
             onClick={onCerrar}
-            className="text-slate-500 hover:text-slate-700 text-2xl font-bold rounded-lg px-3 py-1 hover:bg-slate-100 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="text-slate-700 hover:text-slate-900 text-2xl font-bold rounded-lg px-3 py-1 hover:bg-blue-300/40 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
             aria-label={textosData.sistemaSolar.controles.cerrarFicha}
             >
             ×
@@ -134,12 +134,12 @@ return (
         <div className="p-6 space-y-6" aria-live="polite">
         {/* Imagen */}
         <div className="flex justify-center">
-            <div className="w-64 h-64 bg-slate-200 rounded-lg flex items-center justify-center overflow-hidden">
+            <div className="w-64 h-85 rounded-full flex items-center justify-center overflow-hidden">
             {planeta.imagen && !planeta.imagen.startsWith("//") ? (
                 <img
                 src={planeta.imagen}
                 alt={planeta.nombre}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 onError={(e) => {
                     // Si la imagen falla al cargar, mostrar mensaje
                     const target = e.target as HTMLImageElement;
@@ -174,41 +174,41 @@ return (
 
         {/* Datos básicos */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-slate-50 rounded-lg p-4">
-            <dt className="text-sm font-medium text-slate-500 mb-1">
+            <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
+            <dt className="text-sm font-medium text-blue-700 mb-1">
                 {textos.datos.diametro}
             </dt>
-            <dd className="text-lg font-semibold text-slate-900">
+            <dd className="text-lg font-semibold text-blue-900">
                 {planeta.diametro}
             </dd>
             </div>
 
             {planeta.distanciaSol && (
-                <div className="bg-slate-50 rounded-lg p-4">
-                <dt className="text-sm font-medium text-slate-500 mb-1">
+                <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
+                <dt className="text-sm font-medium text-blue-700 mb-1">
                     {textos.datos.distanciaSol}
                 </dt>
-                <dd className="text-lg font-semibold text-slate-900">
+                <dd className="text-lg font-semibold text-blue-900">
                     {planeta.distanciaSol}
                 </dd>
                 </div>
             )}
 
-            <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
-            <dt className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">
+            <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
+            <dt className="text-sm font-medium text-blue-700 mb-1">
                 {textos.datos.periodoRotacion}
             </dt>
-            <dd className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+            <dd className="text-lg font-semibold text-blue-900">
                 {planeta.periodoRotacion}
             </dd>
             </div>
 
             {planeta.periodoOrbital && (
-                <div className="bg-slate-50 rounded-lg p-4">
-                <dt className="text-sm font-medium text-slate-500 mb-1">
+                <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
+                <dt className="text-sm font-medium text-blue-700 mb-1">
                     {textos.datos.periodoOrbital}
                 </dt>
-                <dd className="text-lg font-semibold text-slate-900">
+                <dd className="text-lg font-semibold text-blue-900">
                     {planeta.periodoOrbital}
                 </dd>
                 </div>
@@ -226,7 +226,7 @@ return (
                 key={index}
                 className="flex items-start gap-2 text-slate-700"
                 >
-                <span className="text-emerald-500 mt-1">•</span>
+                <span className="text-pink-500 mt-1 text-xl">👽</span>
                 <span>{dato}</span>
                 </li>
             ))}
@@ -235,7 +235,7 @@ return (
         </div>
 
         {/* Footer con navegación */}
-    <div className="sticky bottom-0 bg-white border-t border-slate-200 px-6 py-4 flex justify-between items-center">
+    <div className="sticky bottom-0 bg-blue-200 border-t border-blue-300 px-6 py-4 flex justify-between items-center">
         <button
             onClick={onAnterior}
             disabled={esPrimerPlaneta}
@@ -249,7 +249,7 @@ return (
             {textos.anterior}
         </button>
 
-    <span className="text-sm text-slate-500">
+    <span className="text-sm text-slate-700">
             {planetaActualIndex + 1} de {totalPlanetas}
         </span>
 

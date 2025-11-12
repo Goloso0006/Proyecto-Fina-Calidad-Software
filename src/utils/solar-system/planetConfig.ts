@@ -84,7 +84,7 @@ export const CAMERA_CONTROLS_CONFIG = {
   minDistance: 10,
   maxDistance: 150,
   rotationSpeed: 0.01,
-  zoomSpeed: 0.01,
+  zoomSpeed: 0.05, // Aumentado de 0.01 a 0.05 para zoom más rápido
   minRotationX: -Math.PI / 2,
   maxRotationX: Math.PI / 2,
   defaultDistance: 50,

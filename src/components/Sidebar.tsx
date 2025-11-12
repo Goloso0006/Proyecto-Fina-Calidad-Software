@@ -31,7 +31,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       to={route}
       onClick={onClose} // Cerrar sidebar al hacer clic en un enlace (móvil)
       className={({ isActive }) =>
-  `w-full text-left flex items-center gap-2 justify-between rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50 ${isActive ? "bg-emerald-50 text-emerald-700" : ""}`
+  `w-full text-left flex items-center gap-2 justify-between rounded-lg px-3 py-2 bg-white/75 hover:bg-white text-slate-700 shadow-sm border border-slate-200 transition-all ${isActive ? "bg-emerald-100 text-emerald-700 border-emerald-300" : ""}`
       }
     >
       <div className="flex items-center gap-2">{icon} {label}</div>

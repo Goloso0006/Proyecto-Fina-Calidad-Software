@@ -42,6 +42,9 @@ export function usePlanetInteraction(
   /** ID del último planeta clickeado/tapeado */
   const lastClickPlanetRef = useRef<string | null>(null);
 
+  /** ID del planeta actualmente en hover */
+  const hoveredPlanetRef = useRef<string | null>(null);
+
   // ============================================
   // REFS PARA EVENTOS DE MOUSE (Escritorio)
   // ============================================
@@ -148,8 +151,32 @@ export function usePlanetInteraction(
    */
   const handleMouseMove = useCallback(
     // eslint-disable-next-line no-unused-vars
-    (event: MouseEvent, onRotate?: (deltaX: number, deltaY: number) => void) => {
-      // Solo procesar si se está arrastrando
+    (event: MouseEvent, onRotate?: (deltaX: number, deltaY: number) => void, onHover?: (planetaId: string | null) => void) => {
+      // Detectar hover sobre planetas (siempre, incluso si no se está arrastrando)
+      if (onHover && containerRef.current && cameraRef.current && sceneRef.current && raycasterRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        mouseRef.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouseRef.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+        raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current);
+        const intersects = raycasterRef.current.intersectObjects(sceneRef.current.children, true);
+
+        let newHoveredPlanet: string | null = null;
+        for (const intersect of intersects) {
+          if (intersect.object.userData.esPlaneta) {
+            newHoveredPlanet = intersect.object.userData.planetaId;
+            break;
+          }
+        }
+
+        // Solo notificar si cambió el planeta en hover
+        if (newHoveredPlanet !== hoveredPlanetRef.current) {
+          hoveredPlanetRef.current = newHoveredPlanet;
+          onHover(newHoveredPlanet);
+        }
+      }
+
+      // Solo procesar rotación si se está arrastrando
       if (!isDraggingRef.current || !onRotate) return;
 
       // Calcular cuánto se movió el mouse desde la última posición
@@ -165,7 +192,7 @@ export function usePlanetInteraction(
         y: event.clientY,
       };
     },
-    []
+    [containerRef, cameraRef, sceneRef]
   );
 
   /**
@@ -242,8 +269,24 @@ export function usePlanetInteraction(
       event.preventDefault();
       
       // Calcular delta de zoom (positivo = alejar, negativo = acercar)
-      const delta = event.deltaY * 0.01;
+      // Aumentado el multiplicador de 0.01 a 0.05 para zoom más rápido
+      const delta = event.deltaY * 0.05;
       onZoom(delta);
+    },
+    []
+  );
+
+  /**
+   * Maneja el evento de mouse leave (cuando el mouse sale del contenedor)
+   * Limpia el estado de hover
+   */
+  const handleMouseLeave = useCallback(
+    // eslint-disable-next-line no-unused-vars
+    (onHover?: (planetaId: string | null) => void) => {
+      if (onHover && hoveredPlanetRef.current !== null) {
+        hoveredPlanetRef.current = null;
+        onHover(null);
+      }
     },
     []
   );
@@ -345,7 +388,8 @@ export function usePlanetInteraction(
           
           // Convertir el cambio de distancia en delta de zoom
           // Negativo porque acercar dedos debe alejar la cámara (zoom out)
-          const zoomDelta = -distanceDelta * 0.02;
+          // Aumentado el multiplicador de 0.02 a 0.08 para zoom más rápido en móviles
+          const zoomDelta = -distanceDelta * 0.08;
           onZoom(zoomDelta);
         }
         
@@ -450,12 +494,14 @@ export function usePlanetInteraction(
     raycasterRef,
     mouseRef,
     isDraggingRef,
+    hoveredPlanetRef,
     initRaycaster,
     
     // Eventos de MOUSE (escritorio)
     handleMouseDown,
     handleMouseUp,
     handleMouseMove,
+    handleMouseLeave,
     handleClick,
     handleWheel,
     

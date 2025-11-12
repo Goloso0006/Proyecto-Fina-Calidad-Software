@@ -122,7 +122,7 @@ export default function SistemaSolar3D({
   const sunRef = useRef<THREE.Mesh | null>(null);
 
   // Estados de UI
-  const [cursor, setCursor] = useState<"grab" | "grabbing">("grab");
+  const [cursor, setCursor] = useState<"grab" | "grabbing" | "pointer">("grab");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [mostrarControles, setMostrarControles] = useState(true);
   const [mostrarFicha, setMostrarFicha] = useState(true);
@@ -130,6 +130,7 @@ export default function SistemaSolar3D({
   const followFramesRef = useRef(0);
   const selectedPlanetRef = useRef<string | null>(planetaSeleccionado);
   const onPlanetaClickRef = useRef(onPlanetaClick);
+  const handlePlanetHoverRef = useRef<(planetaId: string | null) => void>(() => {});
   
   // Datos de planetas para obtener nombres
   const planetas = (planetasData as PlanetasData).planetas;
@@ -164,6 +165,41 @@ export default function SistemaSolar3D({
   const handleDragEnd = useCallback(() => {
     setCursor("grab");
   }, []);
+
+  // Callback para manejar hover de planetas y el Sol
+  const handlePlanetHover = useCallback((planetaId: string | null) => {
+    // Restaurar escala de todos los planetas
+    planetasRef.current.forEach((planeta) => {
+      planeta.mesh.scale.set(1, 1, 1);
+    });
+
+    // Restaurar escala del Sol
+    if (sunRef.current) {
+      sunRef.current.scale.set(1, 1, 1);
+    }
+
+    // Si hay un planeta o el Sol en hover, aumentar su escala y cambiar cursor
+    if (planetaId) {
+      if (planetaId === "sol" && sunRef.current) {
+        // Aumentar escala del Sol
+        sunRef.current.scale.set(1.15, 1.15, 1.15);
+      } else {
+        // Aumentar escala del planeta
+        const planeta = planetasRef.current.find((p) => p.id === planetaId);
+        if (planeta) {
+          planeta.mesh.scale.set(1.2, 1.2, 1.2);
+        }
+      }
+      // Cambiar cursor a pointer solo si no se está arrastrando
+      setCursor((current) => (current === "grabbing" ? "grabbing" : "pointer"));
+    } else {
+      // Restaurar cursor cuando no hay hover (solo si no se está arrastrando)
+      setCursor((current) => (current === "grabbing" ? "grabbing" : "grab"));
+    }
+  }, []);
+
+  // Actualizar ref del callback de hover
+  handlePlanetHoverRef.current = handlePlanetHover;
 
   // Hooks personalizados - siempre se llaman (reglas de hooks)
   const cameraControls = useCameraControls(cameraRef);
@@ -284,7 +320,16 @@ export default function SistemaSolar3D({
     };
     const handleMouseMove = (e: MouseEvent) => {
       if (planetInteractionRef.current && cameraControlsRef.current) {
-        planetInteractionRef.current.handleMouseMove(e, cameraControlsRef.current.rotateCamera);
+        planetInteractionRef.current.handleMouseMove(
+          e, 
+          cameraControlsRef.current.rotateCamera,
+          handlePlanetHoverRef.current
+        );
+      }
+    };
+    const handleMouseLeave = () => {
+      if (planetInteractionRef.current) {
+        planetInteractionRef.current.handleMouseLeave(handlePlanetHoverRef.current);
       }
     };
     const handleWheel = (e: WheelEvent) => {
@@ -331,6 +376,7 @@ export default function SistemaSolar3D({
     container.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
     container.addEventListener("wheel", handleWheel, { passive: false as unknown as boolean });
     container.addEventListener("click", handleClick);
 
@@ -394,6 +440,7 @@ export default function SistemaSolar3D({
       container.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseleave", handleMouseLeave);
       container.removeEventListener("wheel", handleWheel as unknown as EventListener);
       container.removeEventListener("click", handleClick);
       
@@ -571,7 +618,7 @@ export default function SistemaSolar3D({
     >
       <div
         ref={containerRef}
-  className="w-full h-full rounded-lg border border-slate-200 bg-black"
+        className="w-full h-full rounded-lg bg-black"
         style={{
           cursor,
           maxWidth: "100%",
