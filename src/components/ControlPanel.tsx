@@ -51,14 +51,7 @@ export function ControlButton({
         <span className="hidden sm:inline flex-1 truncate text-sm sm:text-base md:text-lg">{label}</span>
       </div>
 
-      {/* Efecto de brillo */}
-      {!disabled && (
-        <motion.div
-          className="absolute inset-0 bg-white/20 rounded-2xl pointer-events-none"
-          animate={{ opacity: [0.3, 0.6, 0.3] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-      )}
+      {/* Efecto de brillo eliminado para mejor rendimiento */}
     </motion.button>
   );
 }
@@ -233,15 +226,11 @@ export function ControlPanel({
       </div>
 
       {/* Mensaje motivacional */}
-      <motion.div
-  className="text-center bg-gradient-to-r from-pink-300 to-purple-300 rounded-2xl p-3 border-3 border-white"
-        animate={{ scale: [1, 1.05, 1] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
+      <div className="text-center bg-gradient-to-r from-pink-300 to-purple-300 rounded-2xl p-3 border-3 border-white">
         <p className="font-bold text-white text-lg">
           ¡Explora y diviértete aprendiendo! 🎉
         </p>
-      </motion.div>
+      </div>
     </div>
   );
 }

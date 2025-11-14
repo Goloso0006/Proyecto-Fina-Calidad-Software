@@ -72,15 +72,11 @@ export function HelpPanel({ isActive }: HelpPanelProps) {
         ))}
       </div>
 
-      <motion.div
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        className="mt-4 bg-white rounded-2xl p-4 border-4 border-blue-500 text-center"
-      >
+      <div className="mt-4 bg-white rounded-2xl p-4 border-4 border-blue-500 text-center">
         <p className="font-black text-slate-900 text-lg">
           ¡Diviértete explorando las figuras! 🚀
         </p>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

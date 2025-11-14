@@ -106,17 +106,6 @@ describe("FiguraCard - Interacción", () => {
 });
 
 describe("FiguraCard - Decoración y estilo", () => {
-  test("renderiza 8 partículas decorativas de fondo", () => {
-    const onClick = jest.fn();
-    const { container } = render(
-      <FiguraCard figura={mockFiguraBase} isSelected={false} onClick={onClick} emoji={""} />
-    );
-    const dots = container.querySelectorAll(
-      "div.absolute.w-2.h-2.bg-white.rounded-full.opacity-60"
-    );
-    expect(dots.length).toBe(8);
-  });
-
   test("aplica gradiente de fondo basado en el color de la figura", () => {
     const onClick = jest.fn();
     render(

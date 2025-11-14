@@ -51,43 +51,11 @@ export default function FiguraCard({
       whileTap={{ scale: 0.95 }}
       animate={isSelected ? { scale: 1.05 } : { scale: 1 }}
     >
-      {/* Partículas decorativas de fondo */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-white rounded-full opacity-60"
-            initial={{
-              x: Math.random() * 100 + "%",
-              y: Math.random() * 100 + "%",
-              scale: 0,
-            }}
-            animate={
-              isSelected
-                ? {
-                    scale: [1, 1.5, 0],
-                    y: -20,
-                    opacity: [0.6, 1, 0],
-                  }
-                : { scale: 0 }
-            }
-            transition={{
-              duration: 1,
-              delay: i * 0.1,
-            }}
-          />
-        ))}
-      </div>
-
       <div className="relative z-10 flex flex-col items-center justify-center h-full gap-3">
         {/* Emoji grande */}
-        <motion.div
-          className="text-5xl"
-          animate={isSelected ? { rotate: [0, 10, -10, 0], scale: [1, 1.2, 1] } : {}}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="text-5xl">
             {displayEmoji}
-        </motion.div>
+        </div>
 
         {/* Nombre */}
         <h3 className="text-2xl font-bold text-white text-center drop-shadow-lg">
@@ -128,16 +96,6 @@ export default function FiguraCard({
           </motion.div>
         )}
       </div>
-
-      {/* Brillo de selección */}
-      {isSelected && (
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent pointer-events-none"
-          initial={{ x: -100 }}
-          animate={{ x: 100 }}
-          transition={{ duration: 2, repeat: Infinity }}
-        />
-      )}
     </motion.button>
   );
 }

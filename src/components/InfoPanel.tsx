@@ -16,20 +16,13 @@ const estadoVariants = {
 };
 
 const containerVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    y: 0,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      duration: 0.3,
     },
   },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 },
 };
 
 export function InfoPanel({ figura, euler }: InfoPanelProps) {
@@ -50,7 +43,7 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
     >
       {/* Header - Nombre de la figura */}
       <motion.div
-        variants={itemVariants}
+
         className="bg-gradient-to-r from-blue-400 to-blue-600 rounded-3xl p-6 shadow-lg border-4 border-white text-center"
       >
         <div className="text-6xl mb-3">{emojis[figura.id] || "✨"}</div>
@@ -61,7 +54,7 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
 
       {/* Descripción */}
       <motion.div
-        variants={itemVariants}
+
   className="bg-white rounded-2xl p-5 border-3 border-slate-300 shadow-md"
       >
   <p className="text-slate-900 text-lg leading-relaxed">
@@ -71,13 +64,10 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
 
       {/* Datos numéricos - Tarjetas grandes y coloridas */}
       <motion.div
-        variants={itemVariants}
+
         className="grid grid-cols-3 gap-3"
       >
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className="bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-4 text-center border-4 border-white shadow-lg cursor-pointer"
-        >
+        <div className="bg-gradient-to-br from-green-400 to-green-600 rounded-2xl p-4 text-center border-4 border-white shadow-lg transition-transform hover:scale-105">
           <div className="text-5xl font-black text-white">
             {figura.vertices}
           </div>
@@ -85,12 +75,9 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
             Vértices
           </div>
           <div className="text-xs text-white/80 mt-1">esquinas 🔴</div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl p-4 text-center border-4 border-white shadow-lg cursor-pointer"
-        >
+        <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl p-4 text-center border-4 border-white shadow-lg transition-transform hover:scale-105">
           <div className="text-5xl font-black text-white">
             {figura.aristas}
           </div>
@@ -98,12 +85,9 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
             Aristas
           </div>
           <div className="text-xs text-white/80 mt-1">líneas 📏</div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-2xl p-4 text-center border-4 border-white shadow-lg cursor-pointer"
-        >
+        <div className="bg-gradient-to-br from-pink-400 to-pink-600 rounded-2xl p-4 text-center border-4 border-white shadow-lg transition-transform hover:scale-105">
           <div className="text-5xl font-black text-white">
             {figura.caras}
           </div>
@@ -111,12 +95,12 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
             Caras
           </div>
           <div className="text-xs text-white/80 mt-1">superficies 🎨</div>
-        </motion.div>
+        </div>
       </motion.div>
 
       {/* Tipo de caras */}
       <motion.div
-        variants={itemVariants}
+
   className="bg-white rounded-2xl p-5 border-3 border-purple-400 shadow-md"
       >
         <div className="flex items-center gap-3">
@@ -134,7 +118,7 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
 
       {/* Fórmula de Euler - Panel especial */}
       <motion.div
-        variants={itemVariants}
+
   className="bg-gradient-to-br from-purple-300 to-pink-300 rounded-3xl p-6 border-4 border-white shadow-lg"
       >
         <div className="flex items-center gap-2 mb-4">
@@ -193,7 +177,7 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
 
       {/* Datos curiosos */}
       <motion.div
-        variants={itemVariants}
+
   className="bg-white rounded-3xl p-6 border-4 border-amber-400 shadow-lg"
       >
         <div className="flex items-center gap-2 mb-4">
@@ -222,7 +206,7 @@ export function InfoPanel({ figura, euler }: InfoPanelProps) {
 
       {/* Ejemplos en la vida real */}
       <motion.div
-        variants={itemVariants}
+
   className="bg-white rounded-3xl p-6 border-4 border-cyan-400 shadow-lg"
       >
         <div className="flex items-center gap-2 mb-4">

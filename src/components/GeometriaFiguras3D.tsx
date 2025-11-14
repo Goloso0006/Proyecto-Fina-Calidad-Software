@@ -82,10 +82,13 @@ export default function GeometriaFiguras3D({
     camera.lookAt(0, 0, 0);
     cameraRef.current = camera;
 
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    // Renderer optimizado para rendimiento
+    const renderer = new THREE.WebGLRenderer({ 
+      antialias: false, // Desactivar para mejor FPS
+      powerPreference: 'high-performance'
+    });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(1); // Forzar 1 para máximo rendimiento
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -101,8 +104,8 @@ export default function GeometriaFiguras3D({
     directionalLight2.position.set(-5, -5, -5);
     scene.add(directionalLight2);
 
-    // Grid de referencia
-    const gridHelper = new THREE.GridHelper(10, 10, 0xcccccc, 0xe0e0e0);
+    // Grid de referencia optimizado (menos líneas = mejor FPS)
+    const gridHelper = new THREE.GridHelper(10, 5, 0xcccccc, 0xe0e0e0);
     gridHelper.position.y = -2;
     scene.add(gridHelper);
 
@@ -113,12 +116,13 @@ export default function GeometriaFiguras3D({
 
     const geometry = crearGeometria(figuraId);
 
-    // Mesh principal con caras
+    // Mesh principal con caras (optimizado)
     const material = new THREE.MeshStandardMaterial({
       color: color,
       transparent: true,
       opacity: 0.8,
       side: THREE.DoubleSide,
+      flatShading: true, // Reduce cálculos de sombreado
     });
     const mesh = new THREE.Mesh(geometry, material);
     figuraGroup.add(mesh);
@@ -237,8 +241,14 @@ export default function GeometriaFiguras3D({
       setCursor("grab");
     };
 
+    let lastMoveTime = 0;
     const onMouseMove = (event: MouseEvent) => {
       if (!isDraggingRef.current || !figuraRef.current) return;
+      
+      // Throttle para reducir procesamiento (16ms = ~60fps)
+      const now = Date.now();
+      if (now - lastMoveTime < 16) return;
+      lastMoveTime = now;
 
       const deltaX = event.clientX - previousMousePositionRef.current.x;
       const deltaY = event.clientY - previousMousePositionRef.current.y;
@@ -260,8 +270,8 @@ export default function GeometriaFiguras3D({
 
     container.addEventListener("mousedown", onMouseDown);
     window.addEventListener("mouseup", onMouseUp);
-    window.addEventListener("mousemove", onMouseMove);
-    container.addEventListener("wheel", onWheel);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    container.addEventListener("wheel", onWheel, { passive: false });
 
     // Animación
     let animationId: number;
@@ -277,15 +287,19 @@ export default function GeometriaFiguras3D({
     };
     animate();
 
-    // Manejar resize
+    // Manejar resize con debounce
+    let resizeTimeout: NodeJS.Timeout;
     const onResize = () => {
-      if (!containerRef.current) return;
-      const newWidth = containerRef.current.clientWidth;
-      const newHeight = containerRef.current.clientHeight;
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (!containerRef.current) return;
+        const newWidth = containerRef.current.clientWidth;
+        const newHeight = containerRef.current.clientHeight;
 
-      camera.aspect = newWidth / newHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(newWidth, newHeight);
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(newWidth, newHeight);
+      }, 100);
     };
 
     const resizeObserver = new ResizeObserver(onResize);
@@ -293,6 +307,7 @@ export default function GeometriaFiguras3D({
 
     // Cleanup
     return () => {
+      clearTimeout(resizeTimeout);
       cancelAnimationFrame(animationId);
       container.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mouseup", onMouseUp);
