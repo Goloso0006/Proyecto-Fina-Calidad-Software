@@ -20,6 +20,8 @@ export default function GeometriaView() {
   const [isDescompuesta, setIsDescompuesta] = useState(false);
   const [ayudaActiva, setAyudaActiva] = useState(false);
   const [vistaActual, setVistaActual] = useState<"3d" | "galeria">("3d");
+  const [resetTick, setResetTick] = useState(0);
+  const [vistaGeneralTick, setVistaGeneralTick] = useState(0);
 
   const data = figurasData as FigurasData;
   const { figuras, textos } = data;
@@ -224,16 +226,18 @@ export default function GeometriaView() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                <GeometriaFiguras3D
-                  figuraId={figuraSeleccionada.id}
-                  velocidadRotacion={velocidadRotacion}
-                  isPaused={isPaused}
-                  mostrarCaras={mostrarCaras}
-                  mostrarAristas={mostrarAristas}
-                  mostrarVertices={mostrarVertices}
-                  isDescompuesta={isDescompuesta}
-                  color={figuraSeleccionada.color}
-                />
+              <GeometriaFiguras3D
+                figuraId={figuraSeleccionada.id}
+                velocidadRotacion={velocidadRotacion}
+                isPaused={isPaused}
+                mostrarCaras={mostrarCaras}
+                mostrarAristas={mostrarAristas}
+                mostrarVertices={mostrarVertices}
+                isDescompuesta={isDescompuesta}
+                color={figuraSeleccionada.color}
+                resetTick={resetTick}
+                vistaGeneralTick={vistaGeneralTick}
+              />
               </motion.div>
 
               {/* Panel de Controles */}
@@ -247,8 +251,8 @@ export default function GeometriaView() {
                   onPauseToggle={() => setIsPaused(!isPaused)}
                   velocidadRotacion={velocidadRotacion}
                   onVelocidadChange={setVelocidadRotacion}
-                  onResetVista={() => {}}
-                  onVistaGeneral={() => {}}
+                  onResetVista={() => setResetTick((n) => n + 1)}
+                  onVistaGeneral={() => setVistaGeneralTick((n) => n + 1)}
                   mostrarCaras={mostrarCaras}
                   onCarasToggle={() => setMostrarCaras(!mostrarCaras)}
                   mostrarAristas={mostrarAristas}
