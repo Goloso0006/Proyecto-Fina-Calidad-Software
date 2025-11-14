@@ -10,7 +10,7 @@
 }
 /* ------------------------- ---------------- ------------------------- */
 
-/* ----------------------- Scrollbar personalizado ----------------------- */
+/* ----------------------- Scroll personalizado ----------------------- */
 /* Para navegadores Webkit (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width: 6px;
@@ -35,7 +35,7 @@
   scrollbar-width: thin;
   scrollbar-color: #000000 transparent;
 }
-/* ------------------------- ----------------------- ------------------------- */
+/* ------------------------- ---------------- ------------------------- */
 
 /* ----------------------- sombreado múltiple ----------------------- */
 @layer utilities {
@@ -109,6 +109,7 @@
 }
 /* ------------------------- ----------------------- ------------------------- */
 
+/* ----------------------- fuente personalizada ----------------------- */
 .font-caveat {
   font-family: 'Caveat Brush', cursive;
   letter-spacing: clamp(0.02rem, 0.17vw, 1.1rem);
@@ -119,3 +120,4 @@
   font-family: 'Caveat Brush', cursive;
   letter-spacing: clamp(0.02rem, 0.17vw, 1.1rem);
 }
+/* ------------------------- ---------------- ------------------------- */
