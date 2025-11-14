@@ -64,9 +64,9 @@ export function PlanetCardFullscreen({
 
       {/* Panel de ficha */}
       {mostrarFicha && (
-        <div className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl p-3 sm:p-4 md:p-5 w-full max-h-[65vh] sm:max-h-[75vh] md:max-h-[80vh] overflow-y-auto">
+        <div className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl p-3 sm:p-4 md:p-5 w-full h-[52vh] sm:h-[75vh] md:h-[64vh] overflow-hidden flex flex-col">
           {/* Header */}
-          <div className="flex justify-between items-start mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-slate-700/50">
+          <div className="flex-none pb-3 sm:pb-4 border-b border-slate-700/50 flex justify-between items-start">
             <h3 className="text-base sm:text-lg font-bold text-white">{planetaData.nombre}</h3>
             {onCerrarFicha && (
               <button
@@ -80,13 +80,15 @@ export function PlanetCardFullscreen({
             )}
           </div>
 
-          {/* Descripción */}
-          <p className="text-xs sm:text-sm md:text-base text-white/90 mb-3 sm:mb-4 md:mb-5 leading-relaxed">
-            {planetaData.descripcion}
-          </p>
+          {/* Contenido desplazable */}
+          <div className="flex-1 overflow-y-auto pr-1">
+            {/* Descripción */}
+            <p className="text-xs sm:text-sm md:text-base text-white/90 mb-3 sm:mb-4 md:mb-5 leading-relaxed">
+              {planetaData.descripcion}
+            </p>
 
-          {/* Datos básicos - Grid compacto */}
-          <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4 md:mb-5">
+            {/* Datos básicos - Grid compacto */}
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 mb-3 sm:mb-4 md:mb-5">
             <div className="bg-slate-800/50 rounded-lg p-2 sm:p-3 md:p-4">
               <div className="text-xs sm:text-sm text-white/70 mb-1 sm:mb-1.5">{textos.ficha.datos.diametro}</div>
               <div className="text-xs sm:text-sm md:text-base font-semibold text-white break-words">{planetaData.diametro}</div>
@@ -107,28 +109,30 @@ export function PlanetCardFullscreen({
                 <div className="text-xs sm:text-sm md:text-base font-semibold text-white break-words">{planetaData.periodoOrbital}</div>
               </div>
             )}
+            </div>
+
+            {/* Datos curiosos - Compacto */}
+            {planetaData.datosCuriosos && planetaData.datosCuriosos.length > 0 && (
+              <div className="mb-3 sm:mb-4 md:mb-5">
+                <h4 className="text-xs sm:text-sm md:text-base font-semibold text-white/90 mb-2 sm:mb-3">
+                  {textos.ficha.datos.datosCuriosos}
+                </h4>
+                <ul className="space-y-1.5 sm:space-y-2 md:space-y-2.5">
+                  {planetaData.datosCuriosos.slice(0, 3).map((dato, index) => (
+                    <li key={index} className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm text-white/80">
+                      <span className="text-emerald-400 mt-0.5 shrink-0">•</span>
+                      <span>{dato}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
           </div>
 
-          {/* Datos curiosos - Compacto */}
-          {planetaData.datosCuriosos && planetaData.datosCuriosos.length > 0 && (
-            <div className="mb-3 sm:mb-4 md:mb-5">
-              <h4 className="text-xs sm:text-sm md:text-base font-semibold text-white/90 mb-2 sm:mb-3">
-                {textos.ficha.datos.datosCuriosos}
-              </h4>
-              <ul className="space-y-1.5 sm:space-y-2 md:space-y-2.5">
-                {planetaData.datosCuriosos.slice(0, 3).map((dato, index) => (
-                  <li key={index} className="flex items-start gap-2 sm:gap-2.5 text-xs sm:text-sm text-white/80">
-                    <span className="text-emerald-400 mt-0.5 shrink-0">•</span>
-                    <span>{dato}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Navegación */}
+          {/* Navegación fija al fondo del panel */}
           {(onAnteriorPlaneta || onSiguientePlaneta) && (
-            <div className="flex items-center justify-between gap-2 pt-3 sm:pt-4 border-t border-slate-700/50">
+            <div className="flex-none flex items-center justify-between gap-2 pt-3 sm:pt-4 border-t border-slate-700/50">
               {onAnteriorPlaneta && (
                 <button
                   onClick={onAnteriorPlaneta}

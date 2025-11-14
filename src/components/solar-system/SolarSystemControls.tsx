@@ -46,7 +46,7 @@ export function SolarSystemControls({
     // Responsive positioning:
     // - Pantallas < 1024px (< lg): bottom-3 left-3, 50% ancho máximo, esquina inferior izquierda
     // - Pantallas >= 1024px (>= lg): top-3 left-3, ancho fijo, esquina superior izquierda
-    <div className="absolute bottom-3 lg:top-3 left-3 z-20 w-[50%] max-w-xs lg:w-auto">
+    <div className="absolute bottom-3 lg:top-3 left-3 z-20 w-[75%] max-w-lg lg:w-auto lg:max-w-xl">
       {/* Botón para ocultar/mostrar controles */}
       <button
         onClick={(e) => {
@@ -109,7 +109,7 @@ export function SolarSystemControls({
                 className="text-white/90 shrink-0"
                 style={{
                   fontSize: 'clamp(0.625rem, 1.3vw, 0.75rem)',
-                  width: 'clamp(2.5rem, 8vw, 3rem)',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {textos.controles.velocidad}:

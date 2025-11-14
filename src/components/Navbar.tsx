@@ -14,7 +14,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
 
   return (
     <motion.header
-      className="h-16 sticky top-0 z-20 bg-cover bg-center border-b-2 border-black"
+      className="h-16 sticky top-0 z-20 bg-cover bg-center relative"
       style={{
         backgroundImage: `url('/navbar.jpg')`
       }}
@@ -51,7 +51,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
                 className="w-12 h-12"
               />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-green-300 to-sky-300 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-green-300 to-sky-300 bg-clip-text text-transparent text-outline-blue font-caveat">
               GeoNova
             </span>
           </motion.div>
@@ -68,12 +68,14 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
               whileTap={{ scale: 0.95 }}
             >
               <FaHome />
-              <span className="hidden sm:inline">Inicio</span>
+              <span className="hidden sm:inline font-caveat-lg">Inicio</span>
             </motion.button>
           )}
 
         </div>
       </div>
+      {/* Sombra/degradado ubicado justo fuera del navbar para no cubrir su interior */}
+      <div className="pointer-events-none absolute inset-x-0 top-full h-6 bg-gradient-to-b from-black/60 to-transparent" />
     </motion.header>
   );
 }

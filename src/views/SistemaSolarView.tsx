@@ -170,22 +170,27 @@ const labelAyuda = ayudaActiva ? "Ocultar ayuda" : "Mostrar ayuda";
 
 return (
     <div className="min-h-screen bg-gradient-to-br from-[#1E3A8A] via-[#2563EB] to-[#60A5FA] relative overflow-hidden">
-        <div className="space-y-2 sm:space-y-4 px-2 sm:px-4 py-4">
+        <div className="space-y-2 sm:space-y-4 px-2 sm:px-4 py-">
         {/* Header */}
         <div className="mb-4 sm:mb-8 text-center">
                 <h1
-                    className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3 bg-gradient-to-r from-amber-300 via-emerald-300 to-sky-400 bg-clip-text text-transparent drop-shadow-[0_2px_8px_rgba(16,185,129,0.25)] animate-fade-pulse text-outline-blue"
+                    className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-3 bg-gradient-to-r from-amber-300 via-emerald-300 to-sky-400 bg-clip-text text-transparent drop-shadow-[0_2px_8px_rgba(16,185,129,0.25)] animate-fade-pulse text-outline-blue font-caveat"
                     aria-label={textos.titulo}
                 ><br />
                     {textos.titulo}
                 </h1>
-                <p className="mx-auto max-w-3xl text-sm sm:text-lg text-slate-200/90 leading-relaxed text-outline-blue">
+                <p className="mx-auto max-w-3xl text-sm sm:text-2xl text-slate-200/90 leading-relaxed text-outline-blue font-caveat">
                     {textos.subtitulo}
                 </p>
         </div>
 
     {/* Controles principales (barra superior) */}
-    <div className="flex flex-wrap items-center gap-2 sm:gap-4 p-2 sm:p-4 rounded-lg border border-blue-300 bg-slate-900/60 backdrop-blur-sm shadow-[0_10px_25px_-10px_rgba(0,0,0,0.6)]">
+    <div className="gap-2 sm:gap-4 p-2 sm:p-4 rounded-lg border-b border-blue-300 bg-black/20 shadow-[0_10px_25px_-10px_rgba(0,0,0,0.6)]" style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        width: '100%'
+    }}>
         {/* Botón Pausar/Reanudar */}
         <button
         onClick={(e) => {
@@ -193,7 +198,14 @@ return (
             setIsPaused(!isPaused);
             if (vozActiva) voz.speak(isPaused ? textos.controles.reanudar : textos.controles.pausar);
         }}
-        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 cursor-pointer"
+        className="btn-1"
+        style={{
+            background: '#FBBF24',
+            boxShadow: '0 6px 0px #B45309',
+            flex: '1 1 auto',
+            minWidth: '102px',
+            order: 99
+        }}
         aria-label={
             isPaused ? textos.controles.reanudar : textos.controles.pausar
         }
@@ -203,10 +215,10 @@ return (
         </button>
 
         {/* Control de velocidad */}
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex items-center justify-center gap-1 sm:gap-2" style={{ flex: '1 1 auto', minWidth: 'auto' }}>
         <label
             htmlFor="velocidad"
-            className="text-xs sm:text-sm font-medium text-slate-200 hidden sm:inline"
+            className="text-sm sm:text-2xl font-medium text-slate-200 hidden sm:inline font-caveat"
         >
             {textos.controles.velocidad}:
         </label>
@@ -225,7 +237,7 @@ return (
             className="w-20 sm:w-32 cursor-pointer"
             aria-label={`${textos.controles.velocidad}: ${velocidadAnimacion.toFixed(1)}x`}
         />
-                <span className="text-xs sm:text-sm text-slate-200 w-8 sm:w-12">
+                <span className="text-sm sm:text-lg text-slate-200 w-10 sm:w-14">
             {velocidadAnimacion.toFixed(1)}x
         </span>
         </div>
@@ -236,7 +248,13 @@ return (
             e.stopPropagation();
             handleResetVista();
         }}
-        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-500 hover:bg-slate-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 cursor-pointer"
+        className="btn-1"
+        style={{
+            background: '#6B7280',
+            boxShadow: '0 6px 0px #374151',
+            flex: '1 1 auto',
+            minWidth: 'auto'
+        }}
         aria-label={textos.controles.resetVista}
         >
         <span className="hidden sm:inline">{textos.controles.resetVista}</span>
@@ -249,7 +267,13 @@ return (
             e.stopPropagation();
             handleVistaGeneral();
         }}
-        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 cursor-pointer"
+        className="btn-1"
+        style={{
+            background: '#3B82F6',          
+            boxShadow: '0 6px 0px #1D4ED8',
+            flex: '1 1 auto',
+            minWidth: 'auto'
+        }}
         aria-label={textos.controles.vistaGeneral}
         >
         <span className="hidden sm:inline">{textos.controles.vistaGeneral}</span>
@@ -263,7 +287,11 @@ return (
                 e.stopPropagation();
                 handleAcercarPlaneta();
             }}
-            className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 cursor-pointer"
+            className="btn-1"
+            style={{
+                background: '#8B5CF6',
+                boxShadow: '0 6px 0px #6D28D9'
+            }}
             aria-label={`${textos.controles.acercar} - ${planetas.find((p) => p.id === planetaSeleccionado)?.nombre}`}
         >
             <span className="hidden sm:inline">{textos.controles.acercar}</span>
@@ -277,7 +305,11 @@ return (
             e.stopPropagation();
             handleRestablecerSistema();
         }}
-        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 cursor-pointer"
+        className="btn-1 justify-center"
+        style={{
+            background: '#EB6565',
+            boxShadow: '0 6px 0px #DB1818 '
+        }}
         aria-label="Restablecer sistema"
         >
         <span className="hidden sm:inline">Restablecer</span>
@@ -297,7 +329,14 @@ return (
                 return nuevoEstado;
             }); 
         }}
-        className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ml-auto cursor-pointer"
+        className="btn-1"
+        style={{
+            background: '#6366F1',
+            boxShadow: '0 6px 0px #4338CA',
+            flex: '1 1 auto',
+            minWidth: '255px',
+            gridColumn: 'span 2 / span 2'
+        }}
         aria-label={labelVerLista}
         >
         <span className="hidden sm:inline">{labelVerLista}</span>
@@ -307,7 +346,13 @@ return (
         {/* Ayuda interactiva */}
         <button
         onClick={() => { if (vozActiva) voz.speak(labelAyuda); setAyudaActiva((prev) => !prev); }}
-        className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer"
+        className="btn-1"
+        style={{
+            background: '#FBBF24',
+            boxShadow: '0 6px 0px #B45309',
+            flex: '1 1 auto',
+            minWidth: '173px'
+        }}
         aria-pressed={ayudaActiva}
         aria-label={labelAyuda}
         >
@@ -318,7 +363,13 @@ return (
         {/* Accesibilidad: Voz */}
         <button
         onClick={() => { const nuevo = !vozActiva; setVozActiva(nuevo); voz.setEnabled(nuevo); if (nuevo) voz.speak("Narración activada"); else voz.stop(); }}
-        className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-rose-500 hover:bg-rose-600 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500 cursor-pointer"
+        className="btn-1"
+        style={{
+            background: vozActiva ? '#10B981' : '#EF4444',  
+            boxShadow: vozActiva ? '0 6px 0px #059669' : '0 6px 0px #B91C1C',
+            flex: '1 1 auto',
+            minWidth: '126px'
+        }}
         aria-pressed={vozActiva}
         aria-label="Alternar narración por voz"
         >
@@ -383,7 +434,7 @@ return (
             <button
             key={planeta.id}
             onClick={() => handlePlanetaClick(planeta.id)}
-                        className="p-4 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-700 text-slate-100 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 border border-slate-600/60 focus:outline-none focus:ring-2 focus:ring-slate-500/40 flex flex-col items-center cursor-pointer"
+                        className="  p-4 rounded-2xl bg-black/20 text-slate-100 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 border-b-2 border-black focus:outline-none focus:ring-2 focus:ring-black/40 flex flex-col items-center cursor-pointer"
             >
                         <div className="w-32 h-42 mb-3 rounded-full flex items-center justify-center overflow-hidden">
                 {planeta.imagen ? (

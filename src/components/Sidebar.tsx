@@ -43,7 +43,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Overlay para cuando está abierto */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-30 animate-fade-in"
+          className="fixed inset-0 bg-black/50 z-30"
           onClick={onClose}
           aria-label="Cerrar menú"
         />
@@ -80,7 +80,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Acordeón Matemáticas / Geometría */}
         <button
           onClick={() => setOpenMatematicas(!openMatematicas)}
-          className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-color bg-color-start hover:bg-color-end font-medium cursor-pointer transition-colors duration-200"
+          className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-color bg-color-start hover:bg-color-end font-medium cursor-pointer transition-colors duration-200 text-xl font-caveat"
         >
           📐 Matemáticas
           <span>{openMatematicas ? "▲" : "▼"}</span>
@@ -90,9 +90,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Acordeón Ciencias Naturales */}
         <button
           onClick={() => setOpenCiencias(!openCiencias)}
-          className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-color bg-color-start hover:bg-color-end font-medium cursor-pointer transition-colors duration-200"
+          className="w-full text-left flex items-center justify-between rounded-lg px-3 py-2 text-color bg-color-start hover:bg-color-end font-medium cursor-pointer transition-colors duration-200 text-lg font-caveat"
         >
-          🌍 Ciencias Naturales
+          🌍 Naturales
           <span>{openCiencias ? "▲" : "▼"}</span>
         </button>
         {openCiencias && <div className="pl-4 space-y-1">{cienciasItems.map(renderNavItem)}</div>}

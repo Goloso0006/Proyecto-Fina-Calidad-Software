@@ -7,7 +7,11 @@ export default {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'caveat': ['Caveat Brush', 'cursive'],
+      },
+    },
   },
   plugins: [],
 } satisfies Config

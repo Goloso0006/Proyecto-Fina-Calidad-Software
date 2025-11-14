@@ -197,21 +197,21 @@ export default function HomeView() {
           </motion.div>
 
           <motion.h1
-            className="text-6xl md:text-7xl font-extrabold mb-4 bg-gradient-to-r from-green-400 to-sky-400 bg-clip-text text-transparent"
+            className="text-6xl md:text-7xl font-extrabold mb-4 bg-gradient-to-r from-green-400 to-sky-400 bg-clip-text text-transparent font-caveat text-outline-blue"
             variants={itemVariants}
           >
             ¡Bienvenido A GeoNova!
           <br /><br /></motion.h1>
 
           <motion.p
-              className="text-2xl md:text-3xl font-semibold mb-2 text-[#E5F0DF] text-outline-blue animate-fade-pulse"
+              className="text-2xl md:text-4xl font-semibold mb-2 text-[#E5F0DF] text-outline-blue animate-fade-pulse font-caveat"
             variants={itemVariants}
           >
             ¡Prepárate para una aventura donde las matemáticas y el universo se unen!
           <br /><br /></motion.p>
 
           <motion.p
-          className="text-lg md:text-xl  text-[#FAFCF7] text-outline-blue"
+          className="text-lg md:text-2xl  text-[#FAFCF7] text-outline-blue font-caveat"
             variants={itemVariants}
           >
 
@@ -246,26 +246,26 @@ export default function HomeView() {
                   whileHover="hover"
                 >
                   <div className="bg-white/20 backdrop-blur-sm rounded-full p-6 w-24 h-24 flex items-center justify-center">
-                    <span className="text-5xl">{modulo.emoji}</span>
+                    <span className="text-6xl">{modulo.emoji}</span>
                   </div>
                 </motion.div>
 
                 {/* Título */}
-                <h2 className="text-3xl font-bold text-white mb-3 text-center">
+                <h2 className="text-4xl font-bold text-white mb-3 text-center font-caveat">
                   {modulo.titulo}
                 </h2>
 
                 {/* Descripción */}
-                <p className="text-white/90 text-center mb-6 text-lg">
+                <p className="text-white/90 text-center mb-6 text-xl font-caveat">
                   {modulo.descripcion}
                 </p>
 
                 {/* Botón de acción */}
                 <motion.div
                   className="flex justify-center"
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.87 }}
                 >
-                  <div className="bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 font-bold text-white text-lg border-2 border-white/50 flex items-center gap-3">
+                  <div className="bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 font-bold text-white text-lg border-2 border-white/50 flex items-center gap-3 font-caveat">
                     <img 
                       src="iconoSeleccion.ico" 
                       alt="Icono de un marciano" 
@@ -306,7 +306,7 @@ export default function HomeView() {
         {/* Mensaje motivacional en la parte inferior */}
         <motion.div className="text-center mt-12" variants={itemVariants}>
           <motion.p
-              className="text-xl md:text-2xl font-bold text-[#E5F0DF] text-outline-blue animate-fade-pulse"
+              className="text-xl md:text-3xl font-bold text-[#E5F0DF] text-outline-blue animate-fade-pulse font-caveat"
           >
             👾 ¡Elige un módulo y comienza tu aventura de aprendizaje! 👾
           </motion.p>

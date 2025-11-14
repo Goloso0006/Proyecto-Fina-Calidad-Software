@@ -231,7 +231,7 @@ export default function SistemaSolar3D({
     reanudar: "Reanudar",
     resetVista: "Reset Vista",
     vistaGeneral: "Vista General",
-    velocidad: "Velocidad",
+    velocidad:"Velocidad",
   };
 
   const textosFicha = textos?.ficha || {
@@ -632,7 +632,7 @@ export default function SistemaSolar3D({
 
       {/* Mensaje de planeta seleccionado (doble clic) */}
       {mensajeSeleccion && (
-        <div className="absolute top-3 left-1/2 transform -translate-x-1/2 z-30 px-4 py-2 bg-emerald-500/90 text-white rounded-lg shadow-lg backdrop-blur-sm animate-fade-in">
+        <div className="absolute top-3 left-1/2 transform -translate-x-1/2 z-30 px-4 py-2 bg-emerald-500/90 text-white rounded-lg shadow-lg backdrop-blur-sm">
           <p className="text-sm font-medium whitespace-nowrap">{mensajeSeleccion}</p>
         </div>
       )}
@@ -643,30 +643,32 @@ export default function SistemaSolar3D({
           e.stopPropagation();
           toggleFullscreen();
         }}
-        className="absolute bottom-3 right-3 z-20 px-3 py-1.5 rounded-md text-xs font-medium bg-slate-800/70 text-white hover:bg-slate-700/80 focus:outline-none focus:ring-2 focus:ring-emerald-500 backdrop-blur-sm"
+        className="absolute bottom-3 right-3 z-20 px-3 py-1.5 rounded-md text-xl font-medium bg-slate-800/70 text-white hover:bg-slate-700/80 focus:outline-none focus:ring-2 focus:ring-emerald-500 backdrop-blur-sm font-caveat-lg"
         aria-pressed={isFullscreen}
         aria-label={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
         title={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
       >
-        {isFullscreen ? "Salir" : "Pantalla completa"}
+        {isFullscreen ? "Esc" : "Pantalla completa"}
       </button>
 
       {/* Controles en modo fullscreen */}
       {isFullscreen && onPauseToggle && (
-        <SolarSystemControls
-          isPaused={isPaused}
-          velocidadAnimacion={velocidadAnimacion}
-          mostrarControles={mostrarControles}
-          vozActiva={vozActiva}
-          textos={{ controles: textosControles }}
-          onToggleControles={() => setMostrarControles(!mostrarControles)}
-          onPauseToggle={onPauseToggle}
-          onVelocidadChange={onVelocidadChange}
-          onResetVista={onResetVista}
-          onVistaGeneral={onVistaGeneral}
-          onRestablecer={onRestablecer}
-          onVozToggle={onVozToggle}
-        />
+        <div className="font-caveat-lg">
+          <SolarSystemControls
+            isPaused={isPaused}
+            velocidadAnimacion={velocidadAnimacion}
+            mostrarControles={mostrarControles}
+            vozActiva={vozActiva}
+            textos={{ controles: textosControles }}
+            onToggleControles={() => setMostrarControles(!mostrarControles)}
+            onPauseToggle={onPauseToggle}
+            onVelocidadChange={onVelocidadChange}
+            onResetVista={onResetVista}
+            onVistaGeneral={onVistaGeneral}
+            onRestablecer={onRestablecer}
+            onVozToggle={onVozToggle}
+          />
+        </div>
       )}
 
       {/* Ficha del planeta en modo fullscreen */}

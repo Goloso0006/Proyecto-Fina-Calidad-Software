@@ -17,7 +17,7 @@ describe("Sidebar - estados por defecto", () => {
     renderWithRouter();
 
     const btnMat = screen.getByRole("button", { name: /Matemáticas/i });
-    const btnCien = screen.getByRole("button", { name: /Ciencias Naturales/i });
+    const btnCien = screen.getByRole("button", { name: /Naturales/i });
 
     expect(within(btnMat).getByText("▲")).toBeInTheDocument();
     expect(within(btnCien).getByText("▼")).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe("Sidebar - toggles de acordeón", () => {
 
   test("abrir Ciencias muestra 'Sistema Solar Interactivo'", () => {
     renderWithRouter();
-    const btnCien = screen.getByRole("button", { name: /Ciencias Naturales/i });
+    const btnCien = screen.getByRole("button", { name: /Naturales/i });
     fireEvent.click(btnCien);
 
     expect(screen.getByRole("link", { name: /Sistema Solar Interactivo/i })).toBeInTheDocument();

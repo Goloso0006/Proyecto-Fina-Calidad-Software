@@ -48,7 +48,22 @@ export function clampDistance(distance: number): number {
  * Calcula la distancia deseada para enfocar un planeta
  */
 export function getPlanetFocusDistance(planetaDistancia: number): number {
-  return planetaDistancia + CAMERA_CONTROLS_CONFIG.focusDistance;
+  // Base: distancia del planeta + margen estándar
+  let desired = planetaDistancia + CAMERA_CONTROLS_CONFIG.focusDistance;
+
+  // Acercar más para los planetas exteriores (4 últimos):
+  // júpiter (>=28), saturno (>=38), urano (>=48), neptuno (>=58)
+  if (planetaDistancia >= 58) {
+    desired -= 12; // Neptuno: acercar bastante
+  } else if (planetaDistancia >= 48) {
+    desired -= 10; // Urano
+  } else if (planetaDistancia >= 38) {
+    desired -= 8; // Saturno
+  } else if (planetaDistancia >= 28) {
+    desired -= 6; // Júpiter
+  }
+
+  return clampDistance(desired);
 }
 
 /**
