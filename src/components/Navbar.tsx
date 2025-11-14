@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaHome, FaBars } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 
 interface NavbarProps {
   onToggleSidebar: () => void;
@@ -51,7 +51,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
                 className="w-12 h-12"
               />
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-green-300 to-sky-300 bg-clip-text text-transparent text-outline-blue font-caveat">
+            <span className="text-2xl font-bold font-caveat text-[#344570] text-outline-blue font-caveat">
               GeoNova
             </span>
           </motion.div>
@@ -61,15 +61,14 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
         <div className="flex items-center gap-3">
           {/* Botón Home (solo si no estamos en home) */}
           {!isHome && (
-            <motion.button
+            <button
               onClick={() => navigate("/")}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#97B854] to-[#65851C] text-white font-semibold shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2 cursor-pointer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="btn-animated h-12"
             >
-              <FaHome />
-              <span className="hidden sm:inline font-caveat-lg">Inicio</span>
-            </motion.button>
+              <img src="/iconox2.png" alt="icon" />
+              <span className="play">Inicio</span>
+              <span className="now">Ir</span>
+            </button>
           )}
 
         </div>

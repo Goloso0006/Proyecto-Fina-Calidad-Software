@@ -121,3 +121,68 @@
   letter-spacing: clamp(0.02rem, 0.17vw, 1.1rem);
 }
 /* ------------------------- ---------------- ------------------------- */
+
+/* ----------------------- Botón animado con icono ----------------------- */
+.btn-animated {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 10px;
+  color: #222;
+  text-shadow: 2px 2px #ccc;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: solid 2px #444;
+  letter-spacing: 1px;
+  font-weight: 600;
+  font-size: 17px;
+  font-family: 'Caveat Brush', cursive;
+  background-color: #66B11A;
+  border-radius: 50px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+
+.btn-animated:active {
+  transform: scale(0.9);
+  transition: all 100ms ease;
+}
+
+.btn-animated svg,
+.btn-animated img {
+  transition: all 0.5s ease;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+}
+
+.btn-animated .play {
+  transition: all 0.5s ease;
+  transition-delay: 300ms;
+}
+
+.btn-animated:hover svg,
+.btn-animated:hover img {
+  transform: scale(3) translate(50%);
+}
+
+.btn-animated .now {
+  position: absolute;
+  left: 0;
+  transform: translateX(-100%);
+  transition: all 0.5s ease;
+  z-index: 2;
+}
+
+.btn-animated:hover .now {
+  transform: translateX(10px);
+  transition-delay: 300ms;
+}
+
+.btn-animated:hover .play {
+  transform: translateX(200%);
+  transition-delay: 300ms;
+}
+/* ------------------------- ------------------- ------------------------- */
