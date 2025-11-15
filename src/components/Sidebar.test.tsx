@@ -28,10 +28,13 @@ describe("Sidebar - estados por defecto", () => {
 });
 
 describe("Sidebar - toggles de acordeón", () => {
-  test("cerrar Matemáticas oculta sus enlaces", () => {
+  test("cerrar Matemáticas oculta sus enlaces", async () => {
     renderWithRouter();
     const btnMat = screen.getByRole("button", { name: /Matemáticas/i });
     fireEvent.click(btnMat);
+
+    // Esperar a que la animación termine y el elemento desaparezca
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     expect(screen.queryByRole("link", { name: /Geometría 3D/i })).not.toBeInTheDocument();
     expect(within(btnMat).getByText("▼")).toBeInTheDocument();
