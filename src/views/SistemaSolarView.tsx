@@ -169,7 +169,7 @@ const labelVerLista = mostrarLista ? textos.menu.volverVisualizacion : textos.me
 const labelAyuda = ayudaActiva ? "Ocultar ayuda" : "Mostrar ayuda";
 
 return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1E3A8A] via-[#2563EB] to-[#60A5FA] relative overflow-hidden">
+    <div className="bkg-glaxy h-[140vh]">
         <div className="space-y-2 sm:space-y-4 px-2 sm:px-4 py-">
         {/* Header */}
         <div className="mb-4 sm:mb-8 text-center">
@@ -185,7 +185,7 @@ return (
         </div>
 
     {/* Controles principales (barra superior) */}
-    <div className="gap-2 sm:gap-4 p-2 sm:p-4 rounded-lg border-b border-blue-300 bg-black/20 shadow-[0_10px_25px_-10px_rgba(0,0,0,0.6)]" style={{
+    <div className="gap-2 sm:gap-4 p-2 sm:p-4 rounded-lg bg-[#DEF9] shadow-[0_10px_25px_-10px_#DEF]" style={{
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
@@ -218,7 +218,7 @@ return (
         <div className="flex items-center justify-center gap-1 sm:gap-2" style={{ flex: '1 1 auto', minWidth: 'auto' }}>
         <label
             htmlFor="velocidad"
-            className="text-sm sm:text-2xl font-medium text-slate-200 hidden sm:inline font-caveat"
+            className="text-sm sm:text-2xl font-medium text-black/90 hidden sm:inline font-caveat"
         >
             {textos.controles.velocidad}:
         </label>
@@ -237,7 +237,7 @@ return (
             className="w-20 sm:w-32 cursor-pointer"
             aria-label={`${textos.controles.velocidad}: ${velocidadAnimacion.toFixed(1)}x`}
         />
-                <span className="text-sm sm:text-lg text-slate-200 w-10 sm:w-14">
+                <span className="text-sm sm:text-lg text-black/90 w-10 sm:w-14 font-caveat">
             {velocidadAnimacion.toFixed(1)}x
         </span>
         </div>
@@ -427,14 +427,14 @@ return (
         </div>
     )}
 
-    {/* Lista de planetas (alterna con la simulación) - Excluir el Sol */}
+    {/* Ver Lista de planetas - Escluido al Sol */}
     {mostrarLista && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {planetas.filter((planeta) => planeta.id !== "sol").map((planeta) => (
             <button
             key={planeta.id}
             onClick={() => handlePlanetaClick(planeta.id)}
-                        className="  p-4 rounded-2xl bg-black/20 text-slate-100 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 border-b-2 border-black focus:outline-none focus:ring-2 focus:ring-black/40 flex flex-col items-center cursor-pointer"
+                        className="  p-4 rounded-2xl bg-[#DEF9] text-slate-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1.5 transition-all duration-300 border-b-2 border-[#DEF] focus:outline-none focus:ring-2 focus:ring-black/40 flex flex-col items-center cursor-pointer font-caveat"
             >
                         <div className="w-32 h-42 mb-3 rounded-full flex items-center justify-center overflow-hidden">
                 {planeta.imagen ? (
@@ -448,19 +448,19 @@ return (
                             const parent = target.parentElement;
                             if (parent && !parent.querySelector("span")) {
                                 const span = document.createElement("span");
-                                span.className = "text-slate-200 text-xs text-center p-2";
+                                span.className = "text-slate-200 text-xs text-center p-2 font-caveat";
                                 span.textContent = "Imagen no disponible";
                                 parent.appendChild(span);
                             }
                         }}
                     />
                 ) : (
-                    <span className="text-slate-200 text-xs text-center p-2">
+                    <span className="text-[#222] text-xs text-center p-2 font-caveat">
                         Imagen no disponible
                     </span>
                 )}
             </div>
-            <h3 className="font-semibold text-lg text-slate-100 text-center">
+            <h3 className="font-semibold text-lg text-[#222] text-center font-caveat">
                 {planeta.nombre}
             </h3>
             </button>

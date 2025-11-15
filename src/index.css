@@ -65,17 +65,25 @@
   
   /* color comienzo */
   .bg-color-start {
-    background-color: #7B9C25;
+    background-color: #C4ED6F;
+    margin: 8px 0;
+    transition: transform 0.8s ease;
   }
-  
+
+  .bg-color-start:hover {
+    transform: scale(0.95) rotate(1deg);
+    transition: transform 0.8s ease;
+    box-shadow: 0 4px 12px #315;
+  }
+
   /* color final */
   .hover\:bg-color-end:hover {
-    background-color: #67851B;
+    background-color: #A0D932;
   }
 
   /* color texto */
   .text-color {
-    color: #ffffff;
+    color: #222;
   }
 }
 /* ------------------------- ------------- ------------------------- */
@@ -129,11 +137,11 @@
   justify-content: center;
   gap: 10px;
   padding: 0 10px;
-  color: #222;
-  text-shadow: 2px 2px #ccc;
+  color: #ddd;
+  text-shadow: 2px 2px #111;
   text-transform: uppercase;
   cursor: pointer;
-  border: solid 2px #444;
+  border: solid 2px #ddd;
   letter-spacing: 1px;
   font-weight: 600;
   font-size: 17px;
@@ -171,7 +179,7 @@
 .btn-animated .now {
   position: absolute;
   left: 0;
-  transform: translateX(-100%);
+  transform: translateX(-120%);
   transition: all 0.5s ease;
   z-index: 2;
 }
@@ -184,5 +192,13 @@
 .btn-animated:hover .play {
   transform: translateX(200%);
   transition-delay: 300ms;
+}
+/* ------------------------- ------------------- ------------------------- */
+
+
+/* --------------------- fondo modulo sistema solar  --------------------- */
+.bkg-glaxy {
+  background: url('/fondo-Ssolar.webp');
+  background-size: cover;
 }
 /* ------------------------- ------------------- ------------------------- */

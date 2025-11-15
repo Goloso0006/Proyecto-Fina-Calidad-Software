@@ -94,7 +94,7 @@ useEffect(() => {
 
 return (
     <div
-    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+    className="fixed inset-0 flex items-center justify-center z-50 p-4"
     onClick={onCerrar}
     role="dialog"
     aria-labelledby="ficha-titulo"
@@ -105,27 +105,35 @@ return (
         onClick={(e) => e.stopPropagation()}
     >
         {/* Header */}
-    <div className="sticky top-0 bg-blue-200 border-b border-blue-300 px-6 py-4 flex justify-between items-center">
+    <div className="sticky top-0 bg-[#777FE0] px-6 py-4 flex justify-between items-center">
         <h2
             id="ficha-titulo"
-            className="text-2xl font-bold text-slate-900"
+            className="text-3xl font-bold text-slate-900 font-caveat-lg"
         >
             {planeta.nombre}
         </h2>
         <div className="flex items-center gap-2">
             <button
             onClick={leerContenido}
-            className="px-3 py-1 bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] hover:from-[#2563EB] hover:to-[#3B82F6] text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="px-3 py-1 bg-gradient-to-r from-[#61A4FF] to-[#60A5FA] hover:from-[#3B82F6] hover:to-[#61A4FF] text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 font-caveat-lg"
             aria-label="Escuchar descripción"
             >
             🔊 Escuchar
             </button>
             <button
             onClick={onCerrar}
-            className="text-slate-700 hover:text-slate-900 text-2xl font-bold rounded-lg px-3 py-1 hover:bg-blue-300/40 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="relative group w-8 h-8 duration-500 overflow-hidden cursor-pointer rounded-lg shadow-[0_0_8px_#ddd] hover:shadow-[0_0_7px_#222] transition-shadow"
             aria-label={textosData.sistemaSolar.controles.cerrarFicha}
+            type="button"
             >
-            ×
+            <p className="font-Manrope text-3xl h-full w-full flex items-center justify-center text-blue-100 duration-500 relative z-10 group-hover:scale-0 -mt-[6px]">
+              ×
+            </p>
+            {/* Barras animadas */}
+            <span className="absolute w-full h-full bg-blue-100 rotate-45 top-8 left-0 group-hover:top-[27px] group-hover:bg-[#222] duration-500" />
+            <span className="absolute w-full h-full bg-blue-100 rotate-45 top-0 left-8 group-hover:left-[27px] group-hover:bg-[#222] duration-500" />
+            <span className="absolute w-full h-full bg-blue-100 rotate-45 top-0 right-8 group-hover:right-[27px] group-hover:bg-[#222] duration-500" />
+            <span className="absolute w-full h-full bg-blue-100 rotate-45 bottom-8 right-0 group-hover:bottom-[27px] group-hover:bg-[#222] duration-500" />
             </button>
         </div>
         </div>
@@ -164,10 +172,10 @@ return (
 
         {/* Descripción */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">
+            <h3 className="text-xl font-semibold text-slate-900 mb-2 font-caveat-lg">
             Descripción
             </h3>
-            <p className="text-slate-700 leading-relaxed">
+            <p className="text-slate-700 leading-relaxed font-caveat-lg">
             {planeta.descripcion}
             </p>
         </div>
@@ -175,40 +183,40 @@ return (
         {/* Datos básicos */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
-            <dt className="text-sm font-medium text-blue-700 mb-1">
+            <dt className="text-sm font-medium text-blue-700 mb-1 font-caveat-lg">
                 {textos.datos.diametro}
             </dt>
-            <dd className="text-lg font-semibold text-blue-900">
+            <dd className="text-lg font-semibold text-blue-900 font-caveat-lg">
                 {planeta.diametro}
             </dd>
             </div>
 
             {planeta.distanciaSol && (
                 <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
-                <dt className="text-sm font-medium text-blue-700 mb-1">
+                <dt className="text-sm font-medium text-blue-700 mb-1 font-caveat-lg">
                     {textos.datos.distanciaSol}
                 </dt>
-                <dd className="text-lg font-semibold text-blue-900">
+                <dd className="text-lg font-semibold text-blue-900 font-caveat-lg">
                     {planeta.distanciaSol}
                 </dd>
                 </div>
             )}
 
             <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
-            <dt className="text-sm font-medium text-blue-700 mb-1">
+            <dt className="text-sm font-medium text-blue-700 mb-1 font-caveat-lg">
                 {textos.datos.periodoRotacion}
             </dt>
-            <dd className="text-lg font-semibold text-blue-900">
+            <dd className="text-lg font-semibold text-blue-900 font-caveat-lg">
                 {planeta.periodoRotacion}
             </dd>
             </div>
 
             {planeta.periodoOrbital && (
                 <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
-                <dt className="text-sm font-medium text-blue-700 mb-1">
+                <dt className="text-sm font-medium text-blue-700 mb-1 font-caveat-lg">
                     {textos.datos.periodoOrbital}
                 </dt>
-                <dd className="text-lg font-semibold text-blue-900">
+                <dd className="text-lg font-semibold text-blue-900 font-caveat-lg">
                     {planeta.periodoOrbital}
                 </dd>
                 </div>
@@ -217,14 +225,14 @@ return (
 
         {/* Datos curiosos */}
         <div>
-            <h3 className="text-lg font-semibold text-slate-900 mb-3">
+            <h3 className="text-xl font-semibold text-slate-900 mb-3 font-caveat-lg">
             {textos.datos.datosCuriosos}
             </h3>
             <ul className="space-y-2">
             {planeta.datosCuriosos.map((dato, index) => (
                 <li
                 key={index}
-                className="flex items-start gap-2 text-slate-700"
+                className="flex items-start gap-2 text-slate-700 font-caveat-lg"
                 >
                 <span className="text-pink-500 mt-1 text-xl">👽</span>
                 <span>{dato}</span>
@@ -239,7 +247,7 @@ return (
         <button
             onClick={onAnterior}
             disabled={esPrimerPlaneta}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 font-caveat-lg ${
             esPrimerPlaneta
                 ? "bg-slate-100 text-slate-400 cursor-not-allowed"
                 : "bg-emerald-500 hover:bg-emerald-600 text-white"
@@ -249,14 +257,14 @@ return (
             {textos.anterior}
         </button>
 
-    <span className="text-sm text-slate-700">
+    <span className="text-sm text-slate-700 font-caveat-lg">
             {planetaActualIndex + 1} de {totalPlanetas}
         </span>
 
         <button
             onClick={onSiguiente}
             disabled={esUltimoPlaneta}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 font-caveat-lg ${
             esUltimoPlaneta
                 ? "bg-slate-100 text-slate-400 cursor-not-allowed"
                 : "bg-emerald-500 hover:bg-emerald-600 text-white"

@@ -3,7 +3,7 @@
     {
       "id": "sol",
       "nombre": "Sol",
-      "descripcion": "El Sol es la estrella central del sistema solar. Es una esfera casi perfecta de plasma caliente que genera energía mediante fusión nuclear en su núcleo.",
+      "descripcion": "Es la estrella central del sistema solar. Es una esfera casi perfecta de plasma caliente que genera energía mediante fusión nuclear en su núcleo.",
       "imagen": "/sol.png",
       "diametro": "1,392,700 km",
       "periodoRotacion": "25.4 días (ecuador), 34 días (polos)",
@@ -15,7 +15,7 @@
     {
       "id": "mercurio",
       "nombre": "Mercurio",
-      "descripcion": "Mercurio es el planeta más cercano al Sol y el más pequeño del sistema solar. Tiene una superficie rocosa cubierta de cráteres, similar a la Luna.",
+      "descripcion": "Es el planeta más cercano al Sol y el más pequeño del sistema solar. Tiene una superficie rocosa cubierta de cráteres, similar a la Luna.",
       "imagen": "/mercurio.png",
       "diametro": "4,879 km",
       "distanciaSol": "57.9 millones de km",
@@ -29,7 +29,7 @@
     {
       "id": "venus",
       "nombre": "Venus",
-      "descripcion": "Venus es el planeta más caliente del sistema solar debido a su densa atmósfera de dióxido de carbono que crea un efecto invernadero extremo.",
+      "descripcion": "Es el planeta más caliente del sistema solar debido a su densa atmósfera de dióxido de carbono que crea un efecto invernadero extremo.",
       "imagen": "/venus.png",
       "diametro": "12,104 km",
       "distanciaSol": "108.2 millones de km",
@@ -43,7 +43,7 @@
     {
       "id": "tierra",
       "nombre": "Tierra",
-      "descripcion": "La Tierra es el único planeta conocido con vida. Tiene océanos de agua líquida, una atmósfera rica en oxígeno y una superficie diversa.",
+      "descripcion": "Es el único planeta conocido con vida. Tiene océanos de agua líquida, una atmósfera rica en oxígeno y una superficie diversa.",
       "imagen": "/tierra.png",
       "diametro": "12,756 km",
       "distanciaSol": "149.6 millones de km (1 UA)",
@@ -57,7 +57,7 @@
     {
       "id": "marte",
       "nombre": "Marte",
-      "descripcion": "Marte, conocido como el planeta rojo, tiene una atmósfera delgada y evidencia de agua líquida en el pasado. Es el objetivo de futuras misiones tripuladas.",
+      "descripcion": "Es conocido como el planeta rojo, tiene una atmósfera delgada y evidencia de agua líquida en el pasado. Es el objetivo de futuras misiones tripuladas.",
       "imagen": "/marte.png",
       "diametro": "6,792 km",
       "distanciaSol": "227.9 millones de km",
@@ -71,7 +71,7 @@
     {
       "id": "jupiter",
       "nombre": "Júpiter",
-      "descripcion": "Júpiter es el planeta más grande del sistema solar. Es un gigante gaseoso con una atmósfera turbulenta y la famosa Gran Mancha Roja.",
+      "descripcion": "Es el planeta más grande del sistema solar. Es un gigante gaseoso con una atmósfera turbulenta y la famosa Gran Mancha Roja.",
       "imagen": "/jupiter.png",
       "diametro": "142,984 km",
       "distanciaSol": "778.5 millones de km",
@@ -85,7 +85,7 @@
     {
       "id": "saturno",
       "nombre": "Saturno",
-      "descripcion": "Saturno es famoso por sus espectaculares anillos compuestos de hielo y roca. Es el segundo planeta más grande del sistema solar.",
+      "descripcion": "Es famoso por sus espectaculares anillos compuestos de hielo y roca. Es el segundo planeta más grande del sistema solar.",
       "imagen": "/saturno.png",
       "diametro": "120,536 km",
       "distanciaSol": "1,432 millones de km",
@@ -99,7 +99,7 @@
     {
       "id": "urano",
       "nombre": "Urano",
-      "descripcion": "Urano es un gigante de hielo que rota de lado, probablemente debido a una colisión en el pasado. Tiene una atmósfera azul verdosa.",
+      "descripcion": "Es un gigante de hielo que rota de lado, probablemente debido a una colisión en el pasado. Tiene una atmósfera azul verdosa.",
       "imagen": "/urano.png",
       "diametro": "51,118 km",
       "distanciaSol": "2,867 millones de km",
@@ -113,7 +113,7 @@
     {
       "id": "neptuno",
       "nombre": "Neptuno",
-      "descripcion": "Neptuno es el planeta más lejano del Sol y el más ventoso del sistema solar, con vientos que pueden alcanzar hasta 2,100 km/h.",
+      "descripcion": "Es el planeta más lejano del Sol y el más ventoso del sistema solar, con vientos que pueden alcanzar hasta 2,100 km/h.",
       "imagen": "/neptuno.png",
       "diametro": "49,528 km",
       "distanciaSol": "4,515 millones de km",

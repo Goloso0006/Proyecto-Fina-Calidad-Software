@@ -1,6 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaBars } from "react-icons/fa";
 
 interface NavbarProps {
   onToggleSidebar: () => void;
@@ -26,16 +25,52 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
         {/* Botón menú hamburguesa + Logo y título */}
         <div className="flex items-center gap-3">
           {/* Botón hamburguesa - SIEMPRE VISIBLE */}
-          <motion.button
+          <label 
             onClick={onToggleSidebar}
-            className="p-2 rounded-lg bg-white/90 hover:bg-white text-slate-700 shadow-lg hover:shadow-xl border border-slate-300 relative z-10 cursor-pointer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label="Abrir menú"
+            className="cursor-pointer group p-1.5 rounded-lg bg-[#ddd] hover:shadow-[0_0_12px_#ddd] relative z-10 inline-block transition-shadow duration-300"
             title="Abrir/Cerrar menú"
+            aria-label="Abrir menú"
           >
-            <FaBars size={22} />
-          </motion.button>
+            <svg
+              strokeWidth="2.5"
+              className="block w-5 h-5 fill-none stroke-slate-700 overflow-hidden"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <g className="origin-center transition-transform duration-300 ease-out">
+                <circle
+                  cx="4"
+                  cy="4"
+                  r="1.5"
+                  className="group-hover:translate-x-3 transition-transform duration-300"
+                ></circle>
+                <circle cx="16" cy="4" r="1.5"></circle>
+                <circle
+                  cx="28"
+                  cy="4"
+                  r="1.5"
+                  className="group-hover:translate-y-3 transition-transform duration-300"
+                ></circle>
+
+                <circle cx="4" cy="16" r="1.5"></circle>
+                <circle cx="16" cy="16" r="1.5"></circle>
+                <circle cx="28" cy="16" r="1.5"></circle>
+
+                <circle
+                  cx="4"
+                  cy="28"
+                  r="1.5"
+                  className="group-hover:-translate-y-3 transition-transform duration-300"
+                ></circle>
+                <circle cx="16" cy="28" r="1.5"></circle>
+                <circle
+                  cx="28"
+                  cy="28"
+                  r="1.5"
+                  className="group-hover:-translate-x-3 transition-transform duration-300"
+                ></circle>
+              </g>
+            </svg>
+          </label>
 
           {/* Logo y título */}
           <motion.div
@@ -51,7 +86,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
                 className="w-12 h-12"
               />
             </div>
-            <span className="text-2xl font-bold font-caveat text-[#344570] text-outline-blue font-caveat">
+            <span className="text-2xl font-bold font-caveat text-[#ddd] text-outline-blue font-caveat">
               GeoNova
             </span>
           </motion.div>
