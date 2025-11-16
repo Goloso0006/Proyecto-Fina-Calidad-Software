@@ -4,11 +4,10 @@
     "subtitulo": "Despega rumbo al sistema solar",
     "controles": {
     "pausar": "Pausar",
-    "reanudar": "Reanudar",
+    "reanudar": "Seguir",
     "resetVista": "Restablecer Vista",
     "vistaGeneral": "Vista General",
     "velocidad": "Velocida",
-    "acercar": "Acercar al Planeta",
     "cerrarFicha": "Cerrar",
     "modoPantallaCompleta": "Modo pantalla completa",
     "salirPantallaCompleta": "Salir de pantalla completa"
@@ -33,7 +32,7 @@
     },
     "menu": {
     "verPlanetas": "Ver Lista de Planetas",
-    "volverVisualizacion": "Volver a Visualización 3D"
+    "volverVisualizacion": "Regresar a visión 3D."
     },
     "anunciarSeleccion": "Planeta seleccionado",
     "anunciarCerrarFicha": "Ficha cerrada"

@@ -94,7 +94,7 @@ useEffect(() => {
 
 return (
     <div
-    className="fixed inset-0 flex items-center justify-center z-50 p-4"
+    className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/80 backdrop-blur-sm"
     onClick={onCerrar}
     role="dialog"
     aria-labelledby="ficha-titulo"
@@ -115,7 +115,7 @@ return (
         <div className="flex items-center gap-2">
             <button
             onClick={leerContenido}
-            className="px-3 py-1 bg-gradient-to-r from-[#61A4FF] to-[#60A5FA] hover:from-[#3B82F6] hover:to-[#61A4FF] text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 font-caveat-lg"
+            className="px-3 py-1 bg-gradient-to-r from-[#61A4FF] to-[#60A5FA] hover:from-[#3B82F6] hover:to-[#61A4FF] text-white text-xl rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 font-caveat-lg"
             aria-label="Escuchar descripción"
             >
             🔊 Escuchar
@@ -127,7 +127,7 @@ return (
             type="button"
             >
             <p className="font-Manrope text-3xl h-full w-full flex items-center justify-center text-blue-100 duration-500 relative z-10 group-hover:scale-0 -mt-[6px]">
-              ×
+                ×
             </p>
             {/* Barras animadas */}
             <span className="absolute w-full h-full bg-blue-100 rotate-45 top-8 left-0 group-hover:top-[27px] group-hover:bg-[#222] duration-500" />
@@ -172,10 +172,10 @@ return (
 
         {/* Descripción */}
         <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2 font-caveat-lg">
+            <h3 className="text-3xl font-semibold text-slate-900 mb-2 font-caveat-lg">
             Descripción
             </h3>
-            <p className="text-slate-700 leading-relaxed font-caveat-lg">
+            <p className="text-slate-700 leading-relaxed font-caveat-lg text-2xl">
             {planeta.descripcion}
             </p>
         </div>
@@ -183,40 +183,40 @@ return (
         {/* Datos básicos */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
-            <dt className="text-sm font-medium text-blue-700 mb-1 font-caveat-lg">
+            <dt className="text-2xl font-medium text-blue-700 mb-1 font-caveat-lg">
                 {textos.datos.diametro}
             </dt>
-            <dd className="text-lg font-semibold text-blue-900 font-caveat-lg">
+            <dd className="text-xl font-semibold text-blue-900 font-caveat-lg">
                 {planeta.diametro}
             </dd>
             </div>
 
             {planeta.distanciaSol && (
                 <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
-                <dt className="text-sm font-medium text-blue-700 mb-1 font-caveat-lg">
+                <dt className="text-2xl font-medium text-blue-700 mb-1 font-caveat-lg">
                     {textos.datos.distanciaSol}
                 </dt>
-                <dd className="text-lg font-semibold text-blue-900 font-caveat-lg">
+                <dd className="text-xl font-semibold text-blue-900 font-caveat-lg">
                     {planeta.distanciaSol}
                 </dd>
                 </div>
             )}
 
             <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
-            <dt className="text-sm font-medium text-blue-700 mb-1 font-caveat-lg">
+            <dt className="text-2xl font-medium text-blue-700 mb-1 font-caveat-lg">
                 {textos.datos.periodoRotacion}
             </dt>
-            <dd className="text-lg font-semibold text-blue-900 font-caveat-lg">
+            <dd className="text-xl font-semibold text-blue-900 font-caveat-lg">
                 {planeta.periodoRotacion}
             </dd>
             </div>
 
             {planeta.periodoOrbital && (
                 <div className="rounded-lg p-4 border-2 border-blue-200 bg-blue-50 shadow-sm">
-                <dt className="text-sm font-medium text-blue-700 mb-1 font-caveat-lg">
+                <dt className="text-2xl font-medium text-blue-700 mb-1 font-caveat-lg">
                     {textos.datos.periodoOrbital}
                 </dt>
-                <dd className="text-lg font-semibold text-blue-900 font-caveat-lg">
+                <dd className="text-xl font-semibold text-blue-900 font-caveat-lg">
                     {planeta.periodoOrbital}
                 </dd>
                 </div>
@@ -225,10 +225,10 @@ return (
 
         {/* Datos curiosos */}
         <div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-3 font-caveat-lg">
+            <h3 className="text-3xl font-semibold text-slate-900 mb-3 font-caveat-lg">
             {textos.datos.datosCuriosos}
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 text-2xl">
             {planeta.datosCuriosos.map((dato, index) => (
                 <li
                 key={index}
@@ -247,7 +247,7 @@ return (
         <button
             onClick={onAnterior}
             disabled={esPrimerPlaneta}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 font-caveat-lg ${
+            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 font-caveat-lg text-xl ${
             esPrimerPlaneta
                 ? "bg-slate-100 text-slate-400 cursor-not-allowed"
                 : "bg-emerald-500 hover:bg-emerald-600 text-white"
@@ -264,7 +264,7 @@ return (
         <button
             onClick={onSiguiente}
             disabled={esUltimoPlaneta}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 font-caveat-lg ${
+            className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 font-caveat-lg text-xl ${
             esUltimoPlaneta
                 ? "bg-slate-100 text-slate-400 cursor-not-allowed"
                 : "bg-emerald-500 hover:bg-emerald-600 text-white"

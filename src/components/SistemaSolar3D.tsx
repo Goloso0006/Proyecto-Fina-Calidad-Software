@@ -125,7 +125,6 @@ export default function SistemaSolar3D({
   const [cursor, setCursor] = useState<"grab" | "grabbing" | "pointer">("grab");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [mostrarControles, setMostrarControles] = useState(true);
-  const [mostrarFicha, setMostrarFicha] = useState(true);
   const [mensajeSeleccion, setMensajeSeleccion] = useState<string | null>(null);
   const followFramesRef = useRef(0);
   const selectedPlanetRef = useRef<string | null>(planetaSeleccionado);
@@ -547,17 +546,8 @@ export default function SistemaSolar3D({
   }, [onFullscreenChange]);
 
   // Mostrar/ocultar ficha en fullscreen
-  useEffect(() => {
-    if (isFullscreen && planetaData) {
-      if (fichaAbierta) {
-        setMostrarFicha(true);
-      } else {
-        setMostrarFicha(false);
-      }
-    } else if (!isFullscreen) {
-      setMostrarFicha(true);
-    }
-  }, [isFullscreen, planetaData?.id, fichaAbierta]);
+  // Ya no necesitamos este useEffect porque usamos directamente fichaAbierta del padre
+  // Removido para evitar conflictos de estado duplicado
 
   // Lectura automática de ficha en fullscreen
   useEffect(() => {
@@ -643,12 +633,12 @@ export default function SistemaSolar3D({
           e.stopPropagation();
           toggleFullscreen();
         }}
-        className="absolute bottom-3 right-3 z-20 px-3 py-1.5 rounded-md text-xl font-medium bg-slate-800/70 text-white hover:bg-slate-700/80 focus:outline-none focus:ring-2 focus:ring-emerald-500 backdrop-blur-sm font-caveat-lg"
+        className="absolute bottom-3 right-3 z-20 px-3 py-1.5 rounded-md text-xl font-medium bg-slate-800 text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-[#ccc] backdrop-blur-sm font-caveat-lg cursor-pointer"
         aria-pressed={isFullscreen}
         aria-label={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
         title={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
       >
-        {isFullscreen ? "Esc" : "Pantalla completa"}
+        {isFullscreen ? "Salir" : "Pantalla completa"}
       </button>
 
       {/* Controles en modo fullscreen */}
@@ -672,13 +662,13 @@ export default function SistemaSolar3D({
       )}
 
       {/* Ficha del planeta en modo fullscreen */}
-      {isFullscreen && planetaData && (
+      {isFullscreen && planetaData && fichaAbierta && (
         <PlanetCardFullscreen
           planetaData={planetaData}
           planetaActualIndex={planetaActualIndex}
-          mostrarFicha={mostrarFicha}
+          mostrarFicha={fichaAbierta}
           textos={{ ficha: textosFicha }}
-          onToggleFicha={() => setMostrarFicha(!mostrarFicha)}
+          onToggleFicha={onCerrarFicha || (() => {})}
           onCerrarFicha={onCerrarFicha}
           onAnteriorPlaneta={onAnteriorPlaneta}
           onSiguientePlaneta={onSiguientePlaneta}

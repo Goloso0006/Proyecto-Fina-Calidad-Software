@@ -91,6 +91,10 @@ const handleAnterior = () => {
     if (planetaActualIndex > 0) {
     const nuevo = planetas[planetaActualIndex - 1].id;
     setPlanetaSeleccionado(nuevo);
+    // Mantener la ficha abierta si ya estaba abierta
+    if (fichaAbierta || isFullscreen) {
+        setFichaAbierta(true);
+    }
     if (vozActiva) voz.speak(`${planetas[planetaActualIndex - 1].nombre}`);
     }
 };
@@ -99,6 +103,10 @@ const handleSiguiente = () => {
     if (planetaActualIndex < planetas.length - 1) {
     const nuevo = planetas[planetaActualIndex + 1].id;
     setPlanetaSeleccionado(nuevo);
+    // Mantener la ficha abierta si ya estaba abierta
+    if (fichaAbierta || isFullscreen) {
+        setFichaAbierta(true);
+    }
     if (vozActiva) voz.speak(`${planetas[planetaActualIndex + 1].nombre}`);
     }
 };
@@ -113,13 +121,6 @@ const handleVistaGeneral = () => {
     setVistaGeneral((prev) => !prev);
     setPlanetaSeleccionado(null);
     if (vozActiva) voz.speak(textos.controles.vistaGeneral);
-};
-
-const handleAcercarPlaneta = () => {
-    if (planetaSeleccionado) {
-    setFocusTick((t) => t + 1);
-    if (vozActiva) voz.speak(`${textos.controles.acercar}: ${planetas.find((p) => p.id === planetaSeleccionado)?.nombre}`);
-    }
 };
 
 const handleRestablecerSistema = () => {
@@ -169,7 +170,7 @@ const labelVerLista = mostrarLista ? textos.menu.volverVisualizacion : textos.me
 const labelAyuda = ayudaActiva ? "Ocultar ayuda" : "Mostrar ayuda";
 
 return (
-    <div className="bkg-glaxy h-[140vh]">
+    <div className="bkg-glaxy min-h-screen">
         <div className="space-y-2 sm:space-y-4 px-2 sm:px-4 py-">
         {/* Header */}
         <div className="mb-4 sm:mb-8 text-center">
@@ -203,7 +204,7 @@ return (
             background: '#FBBF24',
             boxShadow: '0 6px 0px #B45309',
             flex: '1 1 auto',
-            minWidth: '102px',
+            minWidth: 'auto',
             order: 99
         }}
         aria-label={
@@ -215,7 +216,7 @@ return (
         </button>
 
         {/* Control de velocidad */}
-        <div className="flex items-center justify-center gap-1 sm:gap-2" style={{ flex: '1 1 auto', minWidth: 'auto' }}>
+        <div className="flex items-center justify-center gap-1 sm:gap-2" style={{ flex: '1 1 auto', minWidth: 'auto', order: 1 }}>
         <label
             htmlFor="velocidad"
             className="text-sm sm:text-2xl font-medium text-black/90 hidden sm:inline font-caveat"
@@ -250,10 +251,11 @@ return (
         }}
         className="btn-1"
         style={{
-            background: '#6B7280',
-            boxShadow: '0 6px 0px #374151',
+            background: '#EB6565',
+            boxShadow: '0 6px 0px #DB1818',
             flex: '1 1 auto',
-            minWidth: 'auto'
+            minWidth: 'auto',
+            order: 6
         }}
         aria-label={textos.controles.resetVista}
         >
@@ -269,10 +271,11 @@ return (
         }}
         className="btn-1"
         style={{
-            background: '#3B82F6',          
-            boxShadow: '0 6px 0px #1D4ED8',
+            background: '#6366F1',          
+            boxShadow: '0 6px 0px #4338CA',
             flex: '1 1 auto',
-            minWidth: 'auto'
+            minWidth: 'auto',
+            order: 2
         }}
         aria-label={textos.controles.vistaGeneral}
         >
@@ -280,24 +283,7 @@ return (
         <span className="sm:hidden">Vista</span>
         </button>
 
-        {/* Botón Acercar al Planeta */}
-        {planetaSeleccionado && (
-        <button
-            onClick={(e) => {
-                e.stopPropagation();
-                handleAcercarPlaneta();
-            }}
-            className="btn-1"
-            style={{
-                background: '#8B5CF6',
-                boxShadow: '0 6px 0px #6D28D9'
-            }}
-            aria-label={`${textos.controles.acercar} - ${planetas.find((p) => p.id === planetaSeleccionado)?.nombre}`}
-        >
-            <span className="hidden sm:inline">{textos.controles.acercar}</span>
-            <span className="sm:hidden">Acercar</span>
-        </button>
-        )}
+
 
         {/* Botón Restablecer Sistema */}
         <button
@@ -308,11 +294,12 @@ return (
         className="btn-1 justify-center"
         style={{
             background: '#EB6565',
-            boxShadow: '0 6px 0px #DB1818 '
+            boxShadow: '0 6px 0px #DB1818 ',
+            order: 5
         }}
         aria-label="Restablecer sistema"
         >
-        <span className="hidden sm:inline">Restablecer</span>
+        <span className="hidden sm:inline">Reiniciar</span>
         <span className="sm:hidden">Reset</span>
         </button>
 
@@ -334,8 +321,9 @@ return (
             background: '#6366F1',
             boxShadow: '0 6px 0px #4338CA',
             flex: '1 1 auto',
-            minWidth: '255px',
-            gridColumn: 'span 2 / span 2'
+            minWidth: '19%',
+            gridColumn: 'span 2 / span 2',
+            order: 3
         }}
         aria-label={labelVerLista}
         >
@@ -348,10 +336,11 @@ return (
         onClick={() => { if (vozActiva) voz.speak(labelAyuda); setAyudaActiva((prev) => !prev); }}
         className="btn-1"
         style={{
-            background: '#FBBF24',
-            boxShadow: '0 6px 0px #B45309',
+            background: '#6366F1',
+            boxShadow: '0 6px 0px #4338CA',
             flex: '1 1 auto',
-            minWidth: '173px'
+            minWidth: '15%',
+            order: 4
         }}
         aria-pressed={ayudaActiva}
         aria-label={labelAyuda}
@@ -365,10 +354,12 @@ return (
         onClick={() => { const nuevo = !vozActiva; setVozActiva(nuevo); voz.setEnabled(nuevo); if (nuevo) voz.speak("Narración activada"); else voz.stop(); }}
         className="btn-1"
         style={{
-            background: vozActiva ? '#10B981' : '#EF4444',  
-            boxShadow: vozActiva ? '0 6px 0px #059669' : '0 6px 0px #B91C1C',
+            background: vozActiva ? '#10B981' : '#EB6565',  
+            boxShadow: vozActiva ? '0 6px 0px #059669' : '0 6px 0px #DB1818',
             flex: '1 1 auto',
-            minWidth: '126px'
+            minWidth: '11%',
+            boxSizing: 'border-box',
+            order: 7
         }}
         aria-pressed={vozActiva}
         aria-label="Alternar narración por voz"
@@ -385,7 +376,8 @@ return (
             height: "65vh",
             maxHeight: "90vh", 
             maxWidth: "100%",
-            aspectRatio: "16/9"
+            aspectRatio: "16/9",
+            borderRadius: "1rem",
         }}>
         {/* coach marks simples */}
         {ayudaActiva && (
@@ -460,7 +452,7 @@ return (
                     </span>
                 )}
             </div>
-            <h3 className="font-semibold text-lg text-[#222] text-center font-caveat">
+            <h3 className="font-semibold text-3xl text-[#222] text-center font-caveat">
                 {planeta.nombre}
             </h3>
             </button>

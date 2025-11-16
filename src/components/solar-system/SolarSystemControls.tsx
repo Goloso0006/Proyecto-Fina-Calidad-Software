@@ -57,7 +57,7 @@ export function SolarSystemControls({
           fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)',
           padding: 'clamp(0.25rem, 0.5vw, 0.375rem) clamp(0.375rem, 1vw, 0.5rem)',
         }}
-        className="mb-1 bg-slate-900/80 backdrop-blur-sm text-white rounded-md hover:bg-slate-800/90 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        className="mb-1 bg-slate-900/80 backdrop-blur-sm text-white rounded-md hover:bg-slate-800/90 transition-colors focus:outline-none focus:ring-2 focus:ring-[#ccc] cursor-pointer"
         aria-label={mostrarControles ? "Ocultar controles" : "Mostrar controles"}
         title={mostrarControles ? "Ocultar controles" : "Mostrar controles"}
       >
@@ -82,11 +82,11 @@ export function SolarSystemControls({
               onPauseToggle();
             }}
             style={{
-              fontSize: 'clamp(0.625rem, 1.5vw, 0.75rem)',
+              fontSize: 'clamp(0.625rem, 1.5vw, 0.95rem)',
               padding: 'clamp(0.375rem, 0.8vw, 0.5rem) clamp(0.5rem, 1.2vw, 0.625rem)',
               gap: 'clamp(0.25rem, 0.8vw, 0.375rem)',
             }}
-            className="bg-emerald-500/90 hover:bg-emerald-500 text-white rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 flex items-center justify-center w-full"
+            className="bg-[#FBBF24] text-black rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[#ccc] flex items-center justify-center w-full cursor-pointer"
             aria-label={isPaused ? textos.controles.reanudar : textos.controles.pausar}
           >
             <span style={{ fontSize: 'clamp(0.75rem, 1.8vw, 1rem)' }}>
@@ -108,7 +108,7 @@ export function SolarSystemControls({
                 htmlFor="velocidad-fs" 
                 className="text-white/90 shrink-0"
                 style={{
-                  fontSize: 'clamp(0.625rem, 1.3vw, 0.75rem)',
+                  fontSize: 'clamp(0.625rem, 1.3vw, 0.95rem)',
                   whiteSpace: 'nowrap',
                 }}
               >
@@ -125,18 +125,18 @@ export function SolarSystemControls({
                   e.stopPropagation();
                   onVelocidadChange(parseFloat(e.target.value));
                 }}
-                className="flex-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                className="flex-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#ffcd50]"
                 style={{
                   height: 'clamp(0.25rem, 0.4vw, 0.375rem)',
                   minWidth: '50px',
-                  background: `linear-gradient(to right, rgb(16 185 129) 0%, rgb(16 185 129) ${(velocidadAnimacion / 5) * 100}%, rgb(51 65 85) ${(velocidadAnimacion / 5) * 100}%, rgb(51 65 85) 100%)`,
+                  background: `linear-gradient(to right, #ffcd508f 0%, #fbbe24d6 ${(velocidadAnimacion / 5) * 100}%, rgb(51 65 85) ${(velocidadAnimacion / 5) * 100}%, rgb(51 65 85) 100%)`,
                 }}
                 aria-label={`${textos.controles.velocidad}: ${velocidadAnimacion.toFixed(1)}x`}
               />
               <span 
                 className="text-white/90 text-right shrink-0 tabular-nums"
                 style={{
-                  fontSize: 'clamp(0.625rem, 1.3vw, 0.75rem)',
+                  fontSize: 'clamp(0.625rem, 1.3vw, 0.95rem)',
                   minWidth: 'clamp(2rem, 6vw, 2.5rem)',
                 }}
               >
@@ -160,16 +160,16 @@ export function SolarSystemControls({
                   onResetVista();
                 }}
                 style={{
-                  fontSize: 'clamp(0.625rem, 1.3vw, 0.75rem)',
+                  fontSize: 'clamp(0.625rem, 1.3vw, 0.95rem)',
                   padding: 'clamp(0.25rem, 0.6vw, 0.375rem) clamp(0.375rem, 0.8vw, 0.5rem)',
                   gap: 'clamp(0.125rem, 0.25vw, 0.25rem)',
                 }}
-                className="bg-slate-600/80 hover:bg-slate-600 text-white rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-slate-500 flex items-center justify-center"
+                className="bg-[#C44747] hover:bg-[#EB6565] text-black rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[#ccc] flex items-center justify-center cursor-pointer"
                 aria-label={textos.controles.resetVista}
                 title={textos.controles.resetVista}
               >
                 <span style={{ fontSize: 'clamp(0.75rem, 1.6vw, 0.875rem)' }}>🔄</span>
-                <span className="hidden sm:inline">Reset</span>
+                <span className="hidden sm:inline">ResetView</span>
               </button>
             )}
 
@@ -181,11 +181,11 @@ export function SolarSystemControls({
                   onVistaGeneral();
                 }}
                 style={{
-                  fontSize: 'clamp(0.625rem, 1.3vw, 0.75rem)',
+                  fontSize: 'clamp(0.625rem, 1.3vw, 0.95rem)',
                   padding: 'clamp(0.25rem, 0.6vw, 0.375rem) clamp(0.375rem, 0.8vw, 0.5rem)',
                   gap: 'clamp(0.125rem, 0.25vw, 0.25rem)',
                 }}
-                className="bg-blue-500/90 hover:bg-blue-500 text-white rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center justify-center"
+                className="bg-[#6A6CD4] hover:bg-[#6366F1] text-black rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[#ccc] flex items-center justify-center cursor-pointer"
                 aria-label={textos.controles.vistaGeneral}
                 title={textos.controles.vistaGeneral}
               >
@@ -210,16 +210,16 @@ export function SolarSystemControls({
                   onRestablecer();
                 }}
                 style={{
-                  fontSize: 'clamp(0.625rem, 1.3vw, 0.75rem)',
+                  fontSize: 'clamp(0.625rem, 1.3vw, 0.95rem)',
                   padding: 'clamp(0.25rem, 0.6vw, 0.375rem) clamp(0.375rem, 0.8vw, 0.5rem)',
                   gap: 'clamp(0.125rem, 0.25vw, 0.25rem)',
                 }}
-                className="bg-red-500/90 hover:bg-red-500 text-white rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-red-500 flex items-center justify-center"
+                className="bg-[#C44747] hover:bg-[#EB6565] text-black rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-[#ccc] flex items-center justify-center cursor-pointer"
                 aria-label="Restablecer sistema"
                 title="Restablecer sistema"
               >
                 <span style={{ fontSize: 'clamp(0.75rem, 1.6vw, 0.875rem)' }}>🔁</span>
-                <span className="hidden sm:inline">Reset</span>
+                <span className="hidden sm:inline">ResetAll</span>
               </button>
             )}
 
@@ -231,14 +231,14 @@ export function SolarSystemControls({
                   onVozToggle();
                 }}
                 style={{
-                  fontSize: 'clamp(0.625rem, 1.3vw, 0.75rem)',
+                  fontSize: 'clamp(0.625rem, 1.3vw, 0.95rem)',
                   padding: 'clamp(0.25rem, 0.6vw, 0.375rem) clamp(0.375rem, 0.8vw, 0.5rem)',
                   gap: 'clamp(0.125rem, 0.25vw, 0.25rem)',
                 }}
-                className={`rounded-md font-medium transition-all focus:outline-none focus:ring-2 flex items-center justify-center ${
+                className={`rounded-md font-medium transition-all focus:outline-none focus:ring-2 flex items-center justify-center cursor-pointer ${
                   vozActiva
-                    ? "bg-rose-500/90 hover:bg-rose-500 text-white focus:ring-rose-500"
-                    : "bg-slate-600/80 hover:bg-slate-600 text-white focus:ring-slate-500"
+                    ? "bg-[#C44747] hover:bg-[#EB6565] text-black focus:ring-[#ccc]"
+                    : "bg-[#6A6CD4] hover:bg-[#6366F1] text-black focus:ring-[#ccc]"
                 }`}
                 aria-pressed={vozActiva}
                 aria-label="Alternar narración por voz"

@@ -24,7 +24,6 @@ export interface TextosInterfaz {
       resetVista: string;
       vistaGeneral: string;
       velocidad: string;
-      acercar: string;
       cerrarFicha: string;
       modoPantallaCompleta: string;
       salirPantallaCompleta: string;

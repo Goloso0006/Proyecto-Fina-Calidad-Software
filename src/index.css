@@ -92,7 +92,7 @@
 .btn-1 {
   font-family: 'Caveat Brush' !important;
   font-size: clamp(0.875rem, 1.5vw, 1.25rem) !important;
-  padding: 0.5% 1% !important;
+  padding: 0.5% 12px !important;
   margin-bottom: 7px !important;
   color: #222 !important;
   border: none !important;
@@ -195,10 +195,12 @@
 }
 /* ------------------------- ------------------- ------------------------- */
 
-
 /* --------------------- fondo modulo sistema solar  --------------------- */
 .bkg-glaxy {
   background: url('/fondo-Ssolar.webp');
   background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  min-height: 100vh;
 }
 /* ------------------------- ------------------- ------------------------- */
