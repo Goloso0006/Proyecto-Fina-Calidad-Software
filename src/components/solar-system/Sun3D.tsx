@@ -22,4 +22,3 @@ export function createSun(scene: THREE.Scene): THREE.Mesh {
   scene.add(sun);
   return sun;
 }
-

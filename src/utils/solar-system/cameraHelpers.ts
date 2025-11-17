@@ -118,4 +118,3 @@ export function setSunFocusControls(targetPosition: THREE.Vector3): CameraContro
     target: targetPosition.clone(),
   };
 }
-

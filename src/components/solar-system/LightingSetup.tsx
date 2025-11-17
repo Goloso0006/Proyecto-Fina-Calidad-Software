@@ -42,4 +42,3 @@ export function setupLighting(scene: THREE.Scene) {
     dirLight,
   };
 }
-

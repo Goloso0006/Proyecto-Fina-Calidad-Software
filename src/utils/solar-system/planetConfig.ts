@@ -101,4 +101,3 @@ export const CLICK_DETECTION_CONFIG = {
   maxClickTime: 300, // ms
   maxClickDistance: 5, // píxeles
 };
-

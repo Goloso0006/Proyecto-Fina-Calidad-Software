@@ -115,4 +115,3 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
     </motion.header>
   );
 }
-

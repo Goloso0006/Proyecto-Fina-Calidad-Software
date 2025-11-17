@@ -87,4 +87,3 @@ export function createPlanet(
     id: config.id,
   };
 }
-

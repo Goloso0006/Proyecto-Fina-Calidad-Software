@@ -95,4 +95,3 @@ export function disposeThreeObject(object: THREE.Object3D): void {
     }
   });
 }
-

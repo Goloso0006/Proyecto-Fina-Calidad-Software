@@ -90,4 +90,3 @@ export function useResizeHandler(
     };
   }, [containerRef, cameraRef, rendererRef]);
 }
-

@@ -157,7 +157,7 @@ export function PlanetCardFullscreen({
               </span>
               {onSiguientePlaneta && (
                 <button
-                  type="button"
+                type="button"
                   onClick={onSiguientePlaneta}
                   disabled={planetaActualIndex >= 8}
                   className={`px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-lg rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 font-caveat-lg cursor-pointer ${
@@ -177,4 +177,3 @@ export function PlanetCardFullscreen({
     </div>
   );
 }
-

@@ -110,4 +110,3 @@ export function useCameraControls(cameraRef: React.RefObject<THREE.PerspectiveCa
     updateCameraPosition,
   };
 }
-
