@@ -13,10 +13,10 @@
     "salirPantallaCompleta": "Salir de pantalla completa"
     },
     "instrucciones": {
-    "clicPlaneta": "Haz clic en un planeta para ver su información",
-    "zoom": "Usa la rueda del mouse para hacer zoom",
+    "clicPlaneta": "Selecciona un planeta para ver su información",
+    "zoom": "Acerca o aleja la imagen haciendo el gesto de zoom",
     "rotar": "Arrastra para rotar la vista",
-    "velocidad": "Ajusta la velocidad de la animación"
+    "dobleClicPlaneta": "Pincha dos veces un planeta para ver su nombre"
     },
     "ficha": {
     "titulo": "Información del Planeta",

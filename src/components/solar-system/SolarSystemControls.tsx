@@ -73,7 +73,7 @@ export function SolarSystemControls({
             gap: 'clamp(0.25rem, 0.4vw, 0.375rem)',
             maxHeight: '70vh',
           }}
-          className="bg-slate-900/85 backdrop-blur-md rounded-lg border border-slate-700/50 shadow-2xl flex flex-col w-full lg:min-w-44"
+          className="bg-[#0F172A] backdrop-blur-md rounded-lg border border-[#334155] shadow-2xl flex flex-col w-full lg:min-w-44"
         >
           {/* Botón Pausar/Reanudar - Ancho completo, tamaño dinámico */}
           <button

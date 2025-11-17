@@ -42,9 +42,15 @@ export default function GeometriaFiguras3D({
   const velocidadRef = useRef(velocidadRotacion);
   const pausedRef = useRef(isPaused);
   const descompuestaRef = useRef(isDescompuesta);
-  useEffect(() => { velocidadRef.current = velocidadRotacion; }, [velocidadRotacion]);
-  useEffect(() => { pausedRef.current = isPaused; }, [isPaused]);
-  useEffect(() => { descompuestaRef.current = isDescompuesta; }, [isDescompuesta]);
+  useEffect(() => {
+    velocidadRef.current = velocidadRotacion;
+  }, [velocidadRotacion]);
+  useEffect(() => {
+    pausedRef.current = isPaused;
+  }, [isPaused]);
+  useEffect(() => {
+    descompuestaRef.current = isDescompuesta;
+  }, [isDescompuesta]);
 
   // Crear geometría según el tipo de figura
   const crearGeometria = (id: string): THREE.BufferGeometry => {
@@ -83,12 +89,12 @@ export default function GeometriaFiguras3D({
     cameraRef.current = camera;
 
     // Renderer optimizado para rendimiento
-    const renderer = new THREE.WebGLRenderer({ 
+    const renderer = new THREE.WebGLRenderer({
       antialias: false, // Desactivar para mejor FPS
-      powerPreference: 'high-performance'
+      powerPreference: "high-performance",
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(1); // Forzar 1 para máximo rendimiento
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Máx 2x para balance calidad/rendimiento
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -244,7 +250,7 @@ export default function GeometriaFiguras3D({
     let lastMoveTime = 0;
     const onMouseMove = (event: MouseEvent) => {
       if (!isDraggingRef.current || !figuraRef.current) return;
-      
+
       // Throttle para reducir procesamiento (16ms = ~60fps)
       const now = Date.now();
       if (now - lastMoveTime < 16) return;
@@ -273,8 +279,8 @@ export default function GeometriaFiguras3D({
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     container.addEventListener("wheel", onWheel, { passive: false });
 
-    // Animación
-    let animationId: number;
+    // Animación con pausa en visibilidad
+    let animationId: number | null = null;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
 
@@ -285,7 +291,29 @@ export default function GeometriaFiguras3D({
 
       renderer.render(scene, camera);
     };
-    animate();
+
+    const startAnimation = () => {
+      if (animationId === null) animate();
+    };
+
+    const stopAnimation = () => {
+      if (animationId !== null) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+    };
+
+    // Pausar cuando pestaña oculta
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        stopAnimation();
+      } else {
+        startAnimation();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    startAnimation();
 
     // Manejar resize con debounce
     let resizeTimeout: NodeJS.Timeout;
@@ -308,7 +336,8 @@ export default function GeometriaFiguras3D({
     // Cleanup
     return () => {
       clearTimeout(resizeTimeout);
-      cancelAnimationFrame(animationId);
+      stopAnimation();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       container.removeEventListener("mousedown", onMouseDown);
       window.removeEventListener("mouseup", onMouseUp);
       window.removeEventListener("mousemove", onMouseMove);

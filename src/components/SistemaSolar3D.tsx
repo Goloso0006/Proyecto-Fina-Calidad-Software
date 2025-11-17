@@ -74,6 +74,7 @@ interface SistemaSolar3DProps {
     datosCuriosos: string[];
   } | null;
   planetaActualIndex?: number;
+  onToggleFicha?: () => void;
   onCerrarFicha?: () => void;
   onAnteriorPlaneta?: () => void;
   onSiguientePlaneta?: () => void;
@@ -106,6 +107,7 @@ export default function SistemaSolar3D({
   textos,
   planetaData,
   planetaActualIndex = -1,
+  onToggleFicha,
   onCerrarFicha,
   onAnteriorPlaneta,
   onSiguientePlaneta,
@@ -334,7 +336,13 @@ export default function SistemaSolar3D({
     };
     const handleWheel = (e: WheelEvent) => {
       if (planetInteractionRef.current && cameraControlsRef.current) {
-        planetInteractionRef.current.handleWheel(e, cameraControlsRef.current.zoomCamera);
+        if (followFramesRef.current > 0) {
+          followFramesRef.current = 0; // Cancelar seguimiento suave para permitir zoom inmediato
+        }
+        planetInteractionRef.current.handleWheel(
+          e,
+          cameraControlsRef.current.zoomCamera
+        );
       }
     };
     const handleClick = (e: MouseEvent) => {
@@ -662,13 +670,13 @@ export default function SistemaSolar3D({
       )}
 
       {/* Ficha del planeta en modo fullscreen */}
-      {isFullscreen && planetaData && fichaAbierta && (
+      {isFullscreen && planetaData && (
         <PlanetCardFullscreen
           planetaData={planetaData}
           planetaActualIndex={planetaActualIndex}
           mostrarFicha={fichaAbierta}
           textos={{ ficha: textosFicha }}
-          onToggleFicha={onCerrarFicha || (() => {})}
+          onToggleFicha={onToggleFicha || (() => {})}
           onCerrarFicha={onCerrarFicha}
           onAnteriorPlaneta={onAnteriorPlaneta}
           onSiguientePlaneta={onSiguientePlaneta}

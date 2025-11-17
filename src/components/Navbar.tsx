@@ -84,6 +84,8 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
                 src="/icono.ico"
                 alt="Icono GeoNova"
                 className="w-12 h-12"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <span className="text-2xl font-bold font-caveat text-[#ddd] text-outline-blue font-caveat">
@@ -100,7 +102,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
               onClick={() => navigate("/")}
               className="btn-animated h-12"
             >
-              <img src="/iconox2.png" alt="icon" />
+              <img src="/iconox2.png" alt="icon" loading="lazy" decoding="async" />
               <span className="play">Inicio</span>
               <span className="now">Ir</span>
             </button>

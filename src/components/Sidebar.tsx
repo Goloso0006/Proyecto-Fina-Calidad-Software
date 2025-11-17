@@ -61,7 +61,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         className={`fixed top-0 left-0 h-full w-64 bg-center bg-cover transform transition-transform duration-300 ease-in-out z-40 opacity-95 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ backgroundImage: 'url("/sidebar.jpg")' }}
+        style={{ backgroundImage: 'url("/sidebar.jpg")'}}
       >
         {/* Botón cerrar animado */}
         <div className="flex justify-end p-3">

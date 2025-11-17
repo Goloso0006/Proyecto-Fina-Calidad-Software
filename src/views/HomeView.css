@@ -1,0 +1,24 @@
+/* Optimización de imagen de fondo con CSS puro */
+.home-background {
+  background-image: url('/fondohome.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  /* Habilitar aceleración por GPU para el scroll */
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Contenedor optimizado para hardware acceleration */
+.home-content {
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Preload hint para la imagen de fondo */
+@supports (content-visibility: auto) {
+  .home-background {
+    content-visibility: auto;
+  }
+}

@@ -122,7 +122,7 @@ return (
             </button>
             <button
             onClick={onCerrar}
-            className="relative group w-8 h-8 duration-500 overflow-hidden cursor-pointer rounded-lg shadow-[0_0_8px_#ddd] hover:shadow-[0_0_7px_#222] transition-shadow"
+            className="relative group w-8 h-8 duration-500 overflow-hidden cursor-pointer rounded-lg shadow-[0_0_8px_#ddd] hover:shadow-[0_0_7px_#C4ED6F] transition-shadow"
             aria-label={textosData.sistemaSolar.controles.cerrarFicha}
             type="button"
             >
@@ -130,10 +130,10 @@ return (
                 ×
             </p>
             {/* Barras animadas */}
-            <span className="absolute w-full h-full bg-blue-100 rotate-45 top-8 left-0 group-hover:top-[27px] group-hover:bg-[#222] duration-500" />
-            <span className="absolute w-full h-full bg-blue-100 rotate-45 top-0 left-8 group-hover:left-[27px] group-hover:bg-[#222] duration-500" />
-            <span className="absolute w-full h-full bg-blue-100 rotate-45 top-0 right-8 group-hover:right-[27px] group-hover:bg-[#222] duration-500" />
-            <span className="absolute w-full h-full bg-blue-100 rotate-45 bottom-8 right-0 group-hover:bottom-[27px] group-hover:bg-[#222] duration-500" />
+            <span className="absolute w-full h-full bg-blue-100 rotate-45 top-8 left-0 group-hover:top-[27px] group-hover:bg-[#C4ED6F] duration-500" />
+            <span className="absolute w-full h-full bg-blue-100 rotate-45 top-0 left-8 group-hover:left-[27px] group-hover:bg-[#C4ED6F] duration-500" />
+            <span className="absolute w-full h-full bg-blue-100 rotate-45 top-0 right-8 group-hover:right-[27px] group-hover:bg-[#C4ED6F] duration-500" />
+            <span className="absolute w-full h-full bg-blue-100 rotate-45 bottom-8 right-0 group-hover:bottom-[27px] group-hover:bg-[#C4ED6F] duration-500" />
             </button>
         </div>
         </div>
@@ -148,6 +148,8 @@ return (
                 src={planeta.imagen}
                 alt={planeta.nombre}
                 className="w-full h-full object-contain"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                     // Si la imagen falla al cargar, mostrar mensaje
                     const target = e.target as HTMLImageElement;

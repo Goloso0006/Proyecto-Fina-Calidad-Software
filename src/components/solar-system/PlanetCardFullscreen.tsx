@@ -51,9 +51,12 @@ export function PlanetCardFullscreen({
     // - Pantallas pequeñas (< 640px): Posicionada en esquina superior derecha
     // - Pantallas medianas (640px - 768px): top-3, más espacio lateral
     // - Pantallas grandes (> 768px): posición normal desde la derecha
-    <div className="absolute top-3 right-3 left-auto z-20 flex flex-col items-end max-w-[85vw] sm:max-w-md md:max-w-lg">
+    <div
+      className="absolute top-3 right-3 left-auto z-20 flex flex-col items-end max-w-[85vw] sm:max-w-md md:max-w-lg"
+    >
       {/* Botón para ocultar/mostrar ficha */}
       <button
+        type="button"
         onClick={onToggleFicha}
         className="mb-1 px-2 py-1 text-xs bg-slate-900/80 backdrop-blur-sm text-white rounded-md hover:bg-slate-800/90 transition-colors focus:outline-none focus:ring-2 focus:ring-[#ccc] cursor-pointer"
         aria-label={mostrarFicha ? "Ocultar ficha" : "Mostrar ficha"}
@@ -70,6 +73,7 @@ export function PlanetCardFullscreen({
             <h3 className="text-base sm:text-lg font-bold text-white">{planetaData.nombre}</h3>
             {onCerrarFicha && (
               <button
+                type="button"
                 onClick={onCerrarFicha}
                 className="text-white/70 hover:text-white text-lg leading-none transition-colors focus:outline-none cursor-pointer"
                 aria-label="Cerrar ficha"
@@ -135,6 +139,7 @@ export function PlanetCardFullscreen({
             <div className="flex-none flex items-center justify-between gap-2 pt-3 sm:pt-4 border-t border-slate-700/50">
               {onAnteriorPlaneta && (
                 <button
+                  type="button"
                   onClick={onAnteriorPlaneta}
                   disabled={planetaActualIndex <= 0}
                   className={`px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-lg rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 font-caveat-lg cursor-pointer ${
@@ -152,6 +157,7 @@ export function PlanetCardFullscreen({
               </span>
               {onSiguientePlaneta && (
                 <button
+                  type="button"
                   onClick={onSiguientePlaneta}
                   disabled={planetaActualIndex >= 8}
                   className={`px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-lg rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 font-caveat-lg cursor-pointer ${

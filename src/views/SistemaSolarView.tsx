@@ -83,6 +83,11 @@ const handleCerrarFicha = () => {
     if (vozActiva) voz.speak(anunciarCerrarFicha);
 };
 
+const handleToggleFicha = () => {
+    // Alternar visibilidad de la ficha sin modificar la selección ni fullscreen
+    setFichaAbierta((prev) => !prev);
+};
+
 const planetaSeleccionadoData = planetaSeleccionado
     ? planetas.find((p) => p.id === planetaSeleccionado)
     : null;
@@ -168,6 +173,19 @@ const handleFullscreenChange = (isFullscreenNow: boolean) => {
 
 const labelVerLista = mostrarLista ? textos.menu.volverVisualizacion : textos.menu.verPlanetas;
 const labelAyuda = ayudaActiva ? "Ocultar ayuda" : "Mostrar ayuda";
+
+const handleAyudaToggle = () => {
+    const nuevoEstado = !ayudaActiva;
+    setAyudaActiva(nuevoEstado);
+    
+    if (vozActiva && nuevoEstado) {
+        // Narrar las instrucciones de ayuda cuando se activa
+        const instrucciones = `Guía informativa del sistema solar. ${textos.instrucciones.zoom}. ${textos.instrucciones.dobleClicPlaneta}. ${textos.instrucciones.clicPlaneta}. ${textos.instrucciones.rotar}.`;
+        voz.speak(instrucciones);
+    } else if (vozActiva && !nuevoEstado) {
+        voz.speak("Ayuda ocultada");
+    }
+};
 
 return (
     <div className="bkg-glaxy min-h-screen">
@@ -333,7 +351,7 @@ return (
 
         {/* Ayuda interactiva */}
         <button
-        onClick={() => { if (vozActiva) voz.speak(labelAyuda); setAyudaActiva((prev) => !prev); }}
+        onClick={handleAyudaToggle}
         className="btn-1"
         style={{
             background: '#6366F1',
@@ -381,12 +399,13 @@ return (
         }}>
         {/* coach marks simples */}
         {ayudaActiva && (
-            <div className="absolute z-10 top-3 left-3 bg-white/90 border border-amber-300 rounded-lg p-3 text-sm text-slate-800 max-w-xs shadow">
-            <div className="font-semibold mb-1">Consejos</div>
-            <ul className="list-disc list-inside space-y-1">
-                <li>{textos.instrucciones.clicPlaneta}</li>
-                <li>{textos.instrucciones.zoom}</li>
-                <li>{textos.instrucciones.rotar}</li>
+            <div className="absolute z-10 top-3 left-3 bg-[#0F172A] border border-[#334155] rounded-lg p-2 text-sm text-[#bbb] font-caveat-lg max-w-xs text-justify">
+            <div className="text-xl text-[#fff] mb-4 text-center">Guia Informativa</div>
+            <ul className="space-y-2 marker:text-[#334155]">
+                <li>- {textos.instrucciones.zoom}</li>
+                <li>- {textos.instrucciones.dobleClicPlaneta}</li>
+                <li>- {textos.instrucciones.clicPlaneta}</li>
+                <li>- {textos.instrucciones.rotar}</li>
             </ul>
             </div>
         )}
@@ -410,6 +429,7 @@ return (
             textos={textos}
             planetaData={isFullscreen && planetaSeleccionadoData ? planetaSeleccionadoData : null}
             planetaActualIndex={planetaActualIndex}
+            onToggleFicha={handleToggleFicha}
             onCerrarFicha={handleCerrarFicha}
             onAnteriorPlaneta={handleAnterior}
             onSiguientePlaneta={handleSiguiente}
@@ -434,6 +454,8 @@ return (
                         src={planeta.imagen}
                         alt={planeta.nombre}
                         className="w-full h-full object-contain"
+                        loading="lazy"
+                        decoding="async"
                         onError={(e) => {
                             const target = e.target as HTMLImageElement;
                             target.style.display = "none";

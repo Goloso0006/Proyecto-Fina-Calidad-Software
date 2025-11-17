@@ -81,10 +81,10 @@ export default function GeometriaView() {
   };
 
   return (
-  <div className="min-h-screen bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200">
+    <div className="min-h-screen bg-gradient-to-br from-blue-200 via-purple-200 to-pink-200">
       {/* Decoración de fondo */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        {[...Array(15)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute text-6xl opacity-10"
@@ -123,8 +123,8 @@ export default function GeometriaView() {
           <div className="flex items-center justify-center gap-3 mb-3">
             <motion.span
               className="text-6xl"
-              animate={{ rotate: [0, 15, -15, 0], scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
+              animate={{ rotate: [0, 15, -15, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             >
               🔷
             </motion.span>
@@ -133,8 +133,13 @@ export default function GeometriaView() {
             </h1>
             <motion.span
               className="text-6xl"
-              animate={{ rotate: [0, -15, 15, 0], scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+              animate={{ rotate: [0, -15, 15, 0] }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.3,
+              }}
             >
               🔷
             </motion.span>
@@ -181,7 +186,10 @@ export default function GeometriaView() {
         </motion.div>
 
         {/* Panel de ayuda */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
           <HelpPanel isActive={ayudaActiva} />
         </motion.div>
 
@@ -226,18 +234,18 @@ export default function GeometriaView() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-              <GeometriaFiguras3D
-                figuraId={figuraSeleccionada.id}
-                velocidadRotacion={velocidadRotacion}
-                isPaused={isPaused}
-                mostrarCaras={mostrarCaras}
-                mostrarAristas={mostrarAristas}
-                mostrarVertices={mostrarVertices}
-                isDescompuesta={isDescompuesta}
-                color={figuraSeleccionada.color}
-                resetTick={resetTick}
-                vistaGeneralTick={vistaGeneralTick}
-              />
+                <GeometriaFiguras3D
+                  figuraId={figuraSeleccionada.id}
+                  velocidadRotacion={velocidadRotacion}
+                  isPaused={isPaused}
+                  mostrarCaras={mostrarCaras}
+                  mostrarAristas={mostrarAristas}
+                  mostrarVertices={mostrarVertices}
+                  isDescompuesta={isDescompuesta}
+                  color={figuraSeleccionada.color}
+                  resetTick={resetTick}
+                  vistaGeneralTick={vistaGeneralTick}
+                />
               </motion.div>
 
               {/* Panel de Controles */}

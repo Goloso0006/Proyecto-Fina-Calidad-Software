@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { FaGlobe, FaCube, FaStar } from "react-icons/fa";
+import { useMemo } from "react";
+import "./HomeView.css";
 
 interface ModuloCard {
   id: string;
@@ -90,6 +92,16 @@ const iconVariants = {
 export default function HomeView() {
   const navigate = useNavigate();
 
+  // Memoizar posiciones de estrellas para evitar recálculos
+  const starPositions = useMemo(() => {
+    return [...Array(12)].map(() => ({
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: 3 + Math.random() * 2,
+    }));
+  }, []);
+
   const handleModuloClick = (ruta: string) => {
     // Efecto de sonido (opcional - usando Web Audio API para un sonido suave)
     if (typeof window !== "undefined" && window.AudioContext) {
@@ -120,57 +132,39 @@ export default function HomeView() {
   };
 
   return (
-    <div 
-      className="min-h-screen relative overflow-hidden bg-cover bg-center" style={{ backgroundImage: "url('/fondohome.jpg')" }}
-    > 
+    <div className="min-h-screen relative overflow-hidden home-background">
       {/* Capa semitransparente encima del fondo */}
       <div className="absolute inset-0 bg-black/30"></div>
 
-      {/* Estrellas animadas de fondo */}
+      {/* Estrellas animadas de fondo - optimizadas */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(20)].map((_, i) => {
-          const randomX =
-            typeof window !== "undefined"
-              ? Math.random() * window.innerWidth
-              : Math.random() * 1000;
-          const randomY =
-            typeof window !== "undefined"
-              ? Math.random() * window.innerHeight
-              : Math.random() * 1000;
-          return (
-            <motion.div
-              key={i}
-              className="absolute text-yellow-300 text-2xl"
-              initial={{
-                x: randomX,
-                y: randomY,
-                opacity: 0.3,
-              }}
-              animate={{
-                y: [
-                  null,
-                  typeof window !== "undefined"
-                    ? Math.random() * window.innerHeight
-                    : randomY + 100,
-                ],
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.5, 1],
-              }}
-              transition={{
-                duration: 3 + Math.random() * 2,
-                repeat: Infinity,
-                delay: Math.random() * 2,
-              }}
-            >
-              <FaStar />
-            </motion.div>
-          );
-        })}
+        {starPositions.map((star, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-yellow-300 text-2xl"
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+            }}
+            animate={{
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.3, 1],
+            }}
+            transition={{
+              duration: star.duration,
+              repeat: Infinity,
+              delay: star.delay,
+              ease: "easeInOut",
+            }}
+          >
+            <FaStar />
+          </motion.div>
+        ))}
       </div>
 
       {/* Contenido principal */}
       <motion.div
-        className="relative z-10 container mx-auto px-4 py-12"
+        className="relative z-10 container mx-auto px-4 py-12 home-content"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -179,20 +173,23 @@ export default function HomeView() {
         <motion.div className="text-center mb-12" variants={itemVariants}>
           <motion.div
             className="inline-block mb-4"
+            initial={{ scale: 1 }}
             animate={{
               rotate: [0, 10, -10, 10, 0],
-              scale: [1, 1.1, 1],
             }}
             transition={{
-              duration: 2,
+              duration: 3,
               repeat: Infinity,
               repeatType: "reverse",
+              ease: "easeInOut",
             }}
           >
-            <img 
-              src="/iconox2.png" 
-              alt="imagen marciano con un casco espacial" 
+            <img
+              src="/iconox2.png"
+              alt="imagen marciano con un casco espacial"
               className="w-24 h-24 md:w-32 md:h-32 object-contain"
+              loading="lazy"
+              decoding="async"
             />
           </motion.div>
 
@@ -201,23 +198,30 @@ export default function HomeView() {
             variants={itemVariants}
           >
             ¡Bienvenido A GeoNova!
-          <br /><br /></motion.h1>
+            <br />
+            <br />
+          </motion.h1>
 
           <motion.p
-              className="text-2xl md:text-4xl font-semibold mb-2 text-[#E5F0DF] text-outline-blue animate-fade-pulse font-caveat"
+            className="text-2xl md:text-4xl font-semibold mb-2 text-[#E5F0DF] text-outline-blue animate-fade-pulse font-caveat"
             variants={itemVariants}
           >
-            ¡Prepárate para una aventura donde las matemáticas y el universo se unen!
-          <br /><br /></motion.p>
+            ¡Prepárate para una aventura donde las matemáticas y el universo se
+            unen!
+            <br />
+            <br />
+          </motion.p>
 
           <motion.p
-          className="text-lg md:text-2xl  text-[#FAFCF7] text-outline-blue font-caveat"
+            className="text-lg md:text-2xl  text-[#FAFCF7] text-outline-blue font-caveat"
             variants={itemVariants}
           >
-
-            Aquí podrás viajar por el espacio y descubrir las formas que se esconden en los planetas<br/>
-            Juega, aprende y diviértete mientras exploras el sistema solar y las figuras geométricas<br /> con actividades llenas de color y sorpresas
-          
+            Aquí podrás viajar por el espacio y descubrir las formas que se
+            esconden en los planetas
+            <br />
+            Juega, aprende y diviértete mientras exploras el sistema solar y las
+            figuras geométricas
+            <br /> con actividades llenas de color y sorpresas
           </motion.p>
         </motion.div>
 
@@ -236,7 +240,7 @@ export default function HomeView() {
               onClick={() => handleModuloClick(modulo.ruta)}
             >
               <div
-                  className={`bg-gradient-to-br ${modulo.colorGradiente} ${modulo.colorHover} rounded-3xl p-8 shadow-2xl transform transition-all duration-300 border-4 border-white`}
+                className={`bg-gradient-to-br ${modulo.colorGradiente} ${modulo.colorHover} rounded-3xl p-8 shadow-2xl transform transition-all duration-300 border-4 border-white`}
               >
                 {/* Icono animado */}
                 <motion.div
@@ -266,38 +270,16 @@ export default function HomeView() {
                   whileTap={{ scale: 0.87 }}
                 >
                   <div className="bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 font-bold text-white text-lg border-2 border-white/50 flex items-center gap-3 font-caveat">
-                    <img 
-                      src="iconoSeleccion.ico" 
-                      alt="Icono de un marciano" 
+                    <img
+                      src="iconoSeleccion.ico"
+                      alt="Icono de un marciano"
                       className="w-6 h-6 md:w-8 md:h-8 object-contain"
+                      loading="lazy"
+                      decoding="async"
                     />
                     ¡Explorar!
                   </div>
                 </motion.div>
-
-                {/* Partículas decorativas */}
-                <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
-                  {[...Array(5)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute w-2 h-2 bg-white rounded-full"
-                      initial={{
-                        x: Math.random() * 100 + "%",
-                        y: Math.random() * 100 + "%",
-                        opacity: 0,
-                      }}
-                      animate={{
-                        opacity: [0, 1, 0],
-                        scale: [0, 1.5, 0],
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        delay: i * 0.4,
-                      }}
-                    />
-                  ))}
-                </div>
               </div>
             </motion.div>
           ))}
@@ -305,9 +287,7 @@ export default function HomeView() {
 
         {/* Mensaje motivacional en la parte inferior */}
         <motion.div className="text-center mt-12" variants={itemVariants}>
-          <motion.p
-              className="text-xl md:text-3xl font-bold text-[#E5F0DF] text-outline-blue animate-fade-pulse font-caveat"
-          >
+          <motion.p className="text-xl md:text-3xl font-bold text-[#E5F0DF] text-outline-blue animate-fade-pulse font-caveat">
             👾 ¡Elige un módulo y comienza tu aventura de aprendizaje! 👾
           </motion.p>
         </motion.div>

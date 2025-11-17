@@ -32,7 +32,7 @@ export interface TextosInterfaz {
       clicPlaneta: string;
       zoom: string;
       rotar: string;
-      velocidad: string;
+      dobleClicPlaneta: string;
     };
     ficha: {
       titulo: string;
