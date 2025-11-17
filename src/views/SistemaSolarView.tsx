@@ -36,6 +36,13 @@ export default function SistemaSolarView() {
 
   const voz = useVoz(false, { lang: "es-ES", rate: 1 });
 
+  // Detectar si es dispositivo móvil
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    ) ||
+    ("ontouchstart" in window && window.innerWidth < 1024);
+
   // Frases de anuncio con fallback para evitar errores de tipado
   const anunciarSeleccion =
     (textos as any)?.anunciarSeleccion ?? "Planeta seleccionado";
@@ -55,6 +62,12 @@ export default function SistemaSolarView() {
     planetaId: string,
     isDoubleClick: boolean = false
   ) => {
+    // En modo fullscreen móvil, solo responder a doble tap/clic
+    // En desktop fullscreen: 1 clic muestra ficha, 2 clics muestra mensaje adicional
+    if (isFullscreen && isMobile && !isDoubleClick) {
+      return; // Ignorar clics simples en fullscreen móvil
+    }
+
     // Guardar si veníamos de la lista antes de ocultarla
     const estabaEnLista = mostrarLista;
     setVeniaDeLista(estabaEnLista);
@@ -64,7 +77,7 @@ export default function SistemaSolarView() {
     // Siempre abrir la ficha para que el narrador funcione (pero solo se mostrará si no estamos en fullscreen)
     setFichaAbierta(true);
 
-    // Solo decir "Planeta seleccionado" en doble clic o más
+    // Solo decir "Planeta seleccionado" en doble clic
     // En clic simple, solo se abrirá la ficha y se leerá su contenido automáticamente
     if (vozActiva && isDoubleClick) {
       const p = planetas.find((pl) => pl.id === planetaId);

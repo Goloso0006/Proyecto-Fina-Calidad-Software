@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from "three";
-import { PLANET_CONFIGS, CAMERA_CONFIG } from "../utils/solar-system/planetConfig";
+import {
+  PLANET_CONFIGS,
+  CAMERA_CONFIG,
+} from "../utils/solar-system/planetConfig";
 import { setupLighting } from "./solar-system/LightingSetup";
 import { createSun } from "./solar-system/Sun3D";
 import { createPlanet, type Planeta3D } from "./solar-system/Planet3D";
@@ -17,8 +20,6 @@ import {
   getSunFocusDistance,
 } from "../utils/solar-system/cameraHelpers";
 import { CAMERA_CONTROLS_CONFIG } from "../utils/solar-system/planetConfig";
-import planetasData from "../data/planetas.json";
-import type { PlanetasData } from "../types/planetas";
 
 /**
  * Props del componente SistemaSolar3D
@@ -127,38 +128,25 @@ export default function SistemaSolar3D({
   const [cursor, setCursor] = useState<"grab" | "grabbing" | "pointer">("grab");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [mostrarControles, setMostrarControles] = useState(true);
-  const [mensajeSeleccion, setMensajeSeleccion] = useState<string | null>(null);
   const followFramesRef = useRef(0);
   const selectedPlanetRef = useRef<string | null>(planetaSeleccionado);
   const onPlanetaClickRef = useRef(onPlanetaClick);
   // eslint-disable-next-line no-unused-vars
-  const handlePlanetHoverRef = useRef<(planetaId: string | null) => void>(() => {});
-  
-  // Datos de planetas para obtener nombres
-  const planetas = (planetasData as PlanetasData).planetas;
+  const handlePlanetHoverRef = useRef<(planetaId: string | null) => void>(
+    () => {}
+  );
 
   // Actualizar refs directamente (sin useEffect para evitar ejecuciones innecesarias)
   selectedPlanetRef.current = planetaSeleccionado;
   onPlanetaClickRef.current = onPlanetaClick;
 
   // Callbacks estables usando useCallback
-  const handlePlanetClick = useCallback((id: string, isDoubleClick: boolean = false) => {
-    onPlanetaClickRef.current(id, isDoubleClick);
-    
-    // Mostrar mensaje visual cuando hay doble clic
-    if (isDoubleClick) {
-      const planeta = planetas.find((p) => p.id === id);
-      if (planeta) {
-        const anunciarSeleccion = (textos as any)?.anunciarSeleccion ?? "Planeta seleccionado";
-        setMensajeSeleccion(`${anunciarSeleccion}: ${planeta.nombre}`);
-        
-        // Ocultar el mensaje después de 3 segundos
-        setTimeout(() => {
-          setMensajeSeleccion(null);
-        }, 3000);
-      }
-    }
-  }, [planetas, textos]); // Incluir dependencias necesarias
+  const handlePlanetClick = useCallback(
+    (id: string, isDoubleClick: boolean = false) => {
+      onPlanetaClickRef.current(id, isDoubleClick);
+    },
+    []
+  );
 
   const handleDragStart = useCallback(() => {
     setCursor("grabbing");
@@ -232,7 +220,7 @@ export default function SistemaSolar3D({
     reanudar: "Reanudar",
     resetVista: "Reset Vista",
     vistaGeneral: "Vista General",
-    velocidad:"Velocidad",
+    velocidad: "Velocidad",
   };
 
   const textosFicha = textos?.ficha || {
@@ -323,7 +311,7 @@ export default function SistemaSolar3D({
     const handleMouseMove = (e: MouseEvent) => {
       if (planetInteractionRef.current && cameraControlsRef.current) {
         planetInteractionRef.current.handleMouseMove(
-          e, 
+          e,
           cameraControlsRef.current.rotateCamera,
           handlePlanetHoverRef.current
         );
@@ -331,7 +319,9 @@ export default function SistemaSolar3D({
     };
     const handleMouseLeave = () => {
       if (planetInteractionRef.current) {
-        planetInteractionRef.current.handleMouseLeave(handlePlanetHoverRef.current);
+        planetInteractionRef.current.handleMouseLeave(
+          handlePlanetHoverRef.current
+        );
       }
     };
     const handleWheel = (e: WheelEvent) => {
@@ -367,7 +357,7 @@ export default function SistemaSolar3D({
     const handleTouchMove = (e: TouchEvent) => {
       if (planetInteractionRef.current && cameraControlsRef.current) {
         planetInteractionRef.current.handleTouchMove(
-          e, 
+          e,
           cameraControlsRef.current.rotateCamera,
           cameraControlsRef.current.zoomCamera
         );
@@ -385,14 +375,18 @@ export default function SistemaSolar3D({
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", handleMouseLeave);
-    container.addEventListener("wheel", handleWheel, { passive: false as unknown as boolean });
+    container.addEventListener("wheel", handleWheel, {
+      passive: false as unknown as boolean,
+    });
     container.addEventListener("click", handleClick);
 
     // Registrar eventos táctiles para soporte móvil
     container.addEventListener("touchstart", handleTouchStart);
     window.addEventListener("touchend", handleTouchEnd);
     // passive: false permite llamar preventDefault() para evitar el scroll
-    container.addEventListener("touchmove", handleTouchMove, { passive: false as unknown as boolean });
+    container.addEventListener("touchmove", handleTouchMove, {
+      passive: false as unknown as boolean,
+    });
     container.addEventListener("touchend", handleTap);
 
     // Loop de animación
@@ -407,18 +401,28 @@ export default function SistemaSolar3D({
 
       // Seguir planeta seleccionado suavemente
       const currentSelected = selectedPlanetRef.current;
-      if (currentSelected && followFramesRef.current > 0 && cameraControlsRef.current) {
+      if (
+        currentSelected &&
+        followFramesRef.current > 0 &&
+        cameraControlsRef.current
+      ) {
         if (currentSelected === "sol" && sunRef.current) {
-          sunRef.current.getWorldPosition(cameraControlsRef.current.tempVec.current);
+          sunRef.current.getWorldPosition(
+            cameraControlsRef.current.tempVec.current
+          );
           cameraControlsRef.current.focusOnPosition(
             cameraControlsRef.current.tempVec.current,
             getSunFocusDistance(),
             true
           );
         } else {
-          const planeta = planetasRef.current.find((p) => p.id === currentSelected);
+          const planeta = planetasRef.current.find(
+            (p) => p.id === currentSelected
+          );
           if (planeta && cameraControlsRef.current) {
-            planeta.mesh.getWorldPosition(cameraControlsRef.current.tempVec.current);
+            planeta.mesh.getWorldPosition(
+              cameraControlsRef.current.tempVec.current
+            );
             cameraControlsRef.current.focusOnPosition(
               cameraControlsRef.current.tempVec.current,
               getPlanetFocusDistance(planeta.distancia),
@@ -449,15 +453,21 @@ export default function SistemaSolar3D({
       window.removeEventListener("mouseup", handleMouseUp);
       window.removeEventListener("mousemove", handleMouseMove);
       container.removeEventListener("mouseleave", handleMouseLeave);
-      container.removeEventListener("wheel", handleWheel as unknown as EventListener);
+      container.removeEventListener(
+        "wheel",
+        handleWheel as unknown as EventListener
+      );
       container.removeEventListener("click", handleClick);
-      
+
       // Remover eventos táctiles
       container.removeEventListener("touchstart", handleTouchStart);
       window.removeEventListener("touchend", handleTouchEnd);
-      container.removeEventListener("touchmove", handleTouchMove as unknown as EventListener);
+      container.removeEventListener(
+        "touchmove",
+        handleTouchMove as unknown as EventListener
+      );
       container.removeEventListener("touchend", handleTap);
-      
+
       if (renderer) {
         renderer.dispose();
       }
@@ -489,15 +499,21 @@ export default function SistemaSolar3D({
 
     if (planetaSeleccionado === "sol") {
       if (!sunRef.current) return;
-      sunRef.current.getWorldPosition(cameraControlsRef.current.tempVec.current);
-      const controls = setSunFocusControls(cameraControlsRef.current.tempVec.current);
+      sunRef.current.getWorldPosition(
+        cameraControlsRef.current.tempVec.current
+      );
+      const controls = setSunFocusControls(
+        cameraControlsRef.current.tempVec.current
+      );
       cameraControlsRef.current.controlsRef.current = controls;
       followFramesRef.current = CAMERA_CONTROLS_CONFIG.followFrames;
       return;
     }
 
     if (!planetasRef.current.length) return;
-    const planeta = planetasRef.current.find((p) => p.id === planetaSeleccionado);
+    const planeta = planetasRef.current.find(
+      (p) => p.id === planetaSeleccionado
+    );
     if (!planeta) return;
 
     planeta.mesh.getWorldPosition(cameraControlsRef.current.tempVec.current);
@@ -523,7 +539,11 @@ export default function SistemaSolar3D({
 
   // Vista general - solo ejecutar cuando cambia de false a true
   useEffect(() => {
-    if (vistaGeneral && !prevVistaGeneralRef.current && cameraControlsRef.current) {
+    if (
+      vistaGeneral &&
+      !prevVistaGeneralRef.current &&
+      cameraControlsRef.current
+    ) {
       cameraControlsRef.current.setGeneralView();
     }
     prevVistaGeneralRef.current = vistaGeneral;
@@ -559,7 +579,13 @@ export default function SistemaSolar3D({
 
   // Lectura automática de ficha en fullscreen
   useEffect(() => {
-    if (isFullscreen && planetaData && autoLeerFicha && vozActiva && fichaAbierta) {
+    if (
+      isFullscreen &&
+      planetaData &&
+      autoLeerFicha &&
+      vozActiva &&
+      fichaAbierta
+    ) {
       let resumen = `${planetaData.nombre}. ${planetaData.descripcion}. ${textosFicha.datos.diametro}: ${planetaData.diametro}.`;
       if (planetaData.distanciaSol) {
         resumen += ` ${textosFicha.datos.distanciaSol}: ${planetaData.distanciaSol}.`;
@@ -613,7 +639,12 @@ export default function SistemaSolar3D({
     <div
       ref={outerRef}
       className="relative w-full h-full"
-      style={{ maxWidth: "100%", overflow: "hidden", width: "100%", height: "100%" }}
+      style={{
+        maxWidth: "100%",
+        overflow: "hidden",
+        width: "100%",
+        height: "100%",
+      }}
     >
       <div
         ref={containerRef}
@@ -628,13 +659,6 @@ export default function SistemaSolar3D({
         }}
       />
 
-      {/* Mensaje de planeta seleccionado (doble clic) */}
-      {mensajeSeleccion && (
-        <div className="absolute top-3 left-1/2 transform -translate-x-1/2 z-30 px-4 py-2 bg-emerald-500/90 text-white rounded-lg shadow-lg backdrop-blur-sm">
-          <p className="text-sm font-medium whitespace-nowrap">{mensajeSeleccion}</p>
-        </div>
-      )}
-
       {/* Botón de pantalla completa */}
       <button
         onClick={(e) => {
@@ -643,8 +667,12 @@ export default function SistemaSolar3D({
         }}
         className="absolute bottom-3 right-3 z-20 px-3 py-1.5 rounded-md text-xl font-medium bg-slate-800 text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-[#ccc] backdrop-blur-sm font-caveat-lg cursor-pointer"
         aria-pressed={isFullscreen}
-        aria-label={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
-        title={isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"}
+        aria-label={
+          isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"
+        }
+        title={
+          isFullscreen ? "Salir de pantalla completa" : "Pantalla completa"
+        }
       >
         {isFullscreen ? "Salir" : "Pantalla completa"}
       </button>
